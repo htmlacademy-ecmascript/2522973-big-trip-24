@@ -43,7 +43,7 @@ function createListTemplate() {
           </ul>`);
 }
 
-export default class ListView {
+export default class PointView {
   getTemplate() {
     return createListTemplate();
   }

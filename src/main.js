@@ -1,8 +1,7 @@
-import TripInfoView from './view/trip-info-view.js';
-import TripFilterView from './view/trip-filter-view.js';
-import TripSortView from './view/trip-event-view.js';
-import AddPoint from './view/trip-addPoint-view.js';
-import ListView from './view/trip-list-view.js';
+import TripInfoView from './view/trip-info-view.js'; //Инфо в шапке про маршрут
+import TripFilterView from './view/trip-filter-view.js'; //Фильтры
+import TripSortView from './view/trip-event-view.js'; //Сортировка DAY, EVENT, PRICE
+//import AddPointView from './view/trip-add-point-view.js'; //Форма создания
 
 import BoardPresenter from './presenter/board-presenter.js';
 
@@ -12,16 +11,13 @@ const siteMainElement = document.querySelector('.page-body');
 const siteTripInfoElement = siteMainElement.querySelector('.trip-main'); // шапка
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 const siteFiltersElement = siteTripInfoElement.querySelector('.trip-controls__filters'); // Фильтры EVERYTHING, FUTURE, PAST и т.д
-const siteEventsElement = siteMainElement.querySelector('.trip-events'); // Сортировка DAY, EVENT, TIME итд.
-const siteAddPointElement = siteMainElement.querySelector('.trip-events'); // Форма
-const siteListElement = siteMainElement.querySelector('.trip-events'); // Список маршрутов
+const siteEventsElement = siteMainElement.querySelector('.trip-events'); // Сортировка DAY, EVENT, TIME итд., Форма создания и Точка маршрута
 
-const boardPresenter = new BoardPresenter({boardContainer: siteMainElement});
 
-renderBegin(new TripInfoView(), siteTripInfo); // Отображение информации вверху про маршрут
-render(new TripFilterView(), siteFiltersElement); // Отрисовка компонента Фильтры
-render(new TripSortView(), siteEventsElement); // Отрисовка компонента Эвент
-render(new AddPoint(), siteAddPointElement); // Отрисовка формы
-render(new ListView(), siteListElement); // Отрисовка компонента Лист(Список с маршрутами)
+const boardPresenter = new BoardPresenter({container: siteEventsElement});
+
+renderBegin(new TripInfoView(), siteTripInfo); // Отображение информации в шапке про маршрут
+render(new TripFilterView(), siteFiltersElement); // Фильтры EVERYTHING, FUTURE, PAST и т.д
+render(new TripSortView(), siteEventsElement); // Сортировка DAY, EVENT, TIME, PRICE, OFFER
 
 boardPresenter.init();
