@@ -1,7 +1,7 @@
 import {createElement} from '../render.js';
 
 function createAddPointTemplate(offers) {
-  const { type, offers: {price} } = offers; //Необходимо деструктурировать!!!
+  const { type, offers: {price} } = offers; //Необходимо деструктурировать!!!!
 
   return (
     `<form class="event event--edit" action="#" method="post">
