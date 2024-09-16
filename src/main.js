@@ -20,7 +20,7 @@ const boardPresenter = new BoardPresenter({
   container: siteEventsElement,
   pointsModel
 });
-console.log(boardPresenter)
+
 renderBegin(new TripInfoView(), siteTripInfo); // Отображение информации в шапке про маршрут
 render(new TripFilterView(), siteFiltersElement); // Фильтры EVERYTHING, FUTURE, PAST и т.д
 render(new TripSortView(), siteEventsElement); // Сортировка DAY, EVENT, TIME, PRICE, OFFER
