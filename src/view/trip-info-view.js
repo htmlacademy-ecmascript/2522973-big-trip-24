@@ -1,6 +1,7 @@
 import {createElement} from '../render.js';
 
 function createTripInfoTemplate() {
+
   return (
     ` <section class="trip-main__trip-info  trip-info">
             <div class="trip-info__main">
@@ -12,7 +13,8 @@ function createTripInfoTemplate() {
             <p class="trip-info__cost">
               Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
             </p>
-          </section>`);
+          </section>`
+  );
 }
 
 export default class TripInfoView {

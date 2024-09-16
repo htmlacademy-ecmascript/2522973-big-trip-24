@@ -1,6 +1,8 @@
 import {createElement} from '../render.js';
 
-function createAddPointTemplate() {
+function createAddPointTemplate(offers) {
+  const { type, offers: {price} } = offers;
+
   return (
     `<form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -17,7 +19,7 @@ function createAddPointTemplate() {
 
                         <div class="event__type-item">
                           <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-                          <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
+                          <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">ffdd</label>
                         </div>
 
                         <div class="event__type-item">
@@ -65,7 +67,7 @@ function createAddPointTemplate() {
 
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                      Flight
+                      ${type}
                     </label>
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
                     <datalist id="destination-list-1">
@@ -88,7 +90,7 @@ function createAddPointTemplate() {
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="160">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -123,7 +125,7 @@ function createAddPointTemplate() {
                       <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
                         <label class="event__offer-label" for="event-offer-meal-1">
-                          <span class="event__offer-title">Add meal</span>
+                          <span class="event__offer-title">${type}</span>
                           &plus;&euro;&nbsp;
                           <span class="event__offer-price">15</span>
                         </label>
@@ -157,9 +159,13 @@ function createAddPointTemplate() {
               </form>`);
 }
 
-export default class EditPointView {
+export default class OffersView {
+  constructor({offers}) {
+    this.offers = offers;
+  }
+
   getTemplate() {
-    return createAddPointTemplate();
+    return createAddPointTemplate(this.offers);
   }
 
   getElement() {
