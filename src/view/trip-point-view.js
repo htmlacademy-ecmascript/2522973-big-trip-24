@@ -2,7 +2,7 @@ import {createElement} from '../render.js';
 import { getRandomInteger } from '../utils.js';
 
 function createListTemplate(points) {
-  const {type, destination, offers} = points;
+  const {type} = points;
   return (
     `<ul class="trip-events__list">
             <li class="trip-events__item">
@@ -11,7 +11,7 @@ function createListTemplate(points) {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${destination}</h3>
+                <h3 class="event__title">2000000</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
@@ -26,7 +26,7 @@ function createListTemplate(points) {
                 <h4 class="visually-hidden">Offers:</h4>
                 <ul class="event__selected-offers">
                   <li class="event__offer">
-                    <span class="event__offer-title">${offers}</span>
+                    <span class="event__offer-title">${type}</span>
                     &plus;&euro;&nbsp;
                     <span class="event__offer-price">${getRandomInteger(10, 100)}</span>
                   </li>
@@ -48,7 +48,6 @@ function createListTemplate(points) {
 export default class PointView {
   constructor({points}) {
     this.points = points;
-    this.offers = offers;
   }
 
   getTemplate() {
