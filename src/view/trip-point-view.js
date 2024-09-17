@@ -2,7 +2,7 @@ import {createElement} from '../render.js';
 import { getRandomInteger } from '../utils.js';
 
 function createListTemplate(points) {
-  const {type, destination, basePrice, offers} = points;
+  const {type, destination, offers} = points;
   return (
     `<ul class="trip-events__list">
             <li class="trip-events__item">
@@ -11,7 +11,7 @@ function createListTemplate(points) {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${type} ${destination}</h3>
+                <h3 class="event__title">${destination}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
@@ -21,7 +21,7 @@ function createListTemplate(points) {
                   <p class="event__duration">30M</p>
                 </div>
                 <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
+                  &euro;&nbsp;<span class="event__price-value">20000</span>
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
                 <ul class="event__selected-offers">
@@ -31,7 +31,7 @@ function createListTemplate(points) {
                     <span class="event__offer-price">${getRandomInteger(10, 100)}</span>
                   </li>
                 </ul>
-                <button class="event__favorite-btn " type="button">
+                <button class="event__favorite-btn event__favorite-btn--active" type="button">
                   <span class="visually-hidden">Add to favorite</span>
                   <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
                     <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -48,6 +48,7 @@ function createListTemplate(points) {
 export default class PointView {
   constructor({points}) {
     this.points = points;
+    this.offers = offers;
   }
 
   getTemplate() {
