@@ -25,4 +25,4 @@ renderBegin(new TripInfoView(), siteTripInfo); // Отображение инф�
 render(new TripFilterView(), siteFiltersElement); // Фильтры EVERYTHING, FUTURE, PAST и т.д
 render(new TripSortView(), siteEventsElement); // Сортировка DAY, EVENT, TIME, PRICE, OFFER
 
-boardPresenter.init();
+boardPresenter.init(); //Вызов презентера и ОТРИСОВКА!!! 2=х вьюшек

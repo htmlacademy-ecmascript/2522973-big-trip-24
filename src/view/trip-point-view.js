@@ -46,8 +46,10 @@ function createListTemplate(points) {
 }
 
 export default class PointView {
-  constructor({points}) {
+  constructor({points, offers, destinations}) {
     this.points = points;
+    this.offers = offers;
+    this.destinations = destinations;
   }
 
   getTemplate() {

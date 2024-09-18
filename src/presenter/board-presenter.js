@@ -15,6 +15,7 @@ export default class BoardPresenter {
     this.boardOffers = [...this.pointsModel.getOffers()];
     this.boardPoints = [...this.pointsModel.getPoints()];
     render(new OffersView({offers: this.boardOffers[0]}), this.container, RenderPosition.BEFOREEND); //Отображение формы редактирования
+
     for (let i = 0; i < this.boardPoints.length; i++) {
       render(new PointView({points: this.boardPoints[i]}), this.container, RenderPosition.BEFOREEND); //Отображение Точки маршрута 3 раза
     }
