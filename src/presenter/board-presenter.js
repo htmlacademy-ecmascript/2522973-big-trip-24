@@ -25,7 +25,7 @@ export default class BoardPresenter {
     for (let i = 0; i < this.boardPoints.length; i++) {
       const point = new PointView({
         point: this.boardPoints[i],
-        offers: [...this.pointsModel.getOffersById(this.boardPoints[i].type, this.boardPoints[i])],
+        offers: [...this.pointsModel.getOffersById(this.boardPoints[i].type, this.boardPoints[i].offers)],
         destination: this.pointsModel.getDestinationsById(this.boardPoints[i].destination)
       });
       render(point, this.container, RenderPosition.BEFOREEND);
