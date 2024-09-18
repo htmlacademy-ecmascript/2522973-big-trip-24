@@ -5,19 +5,31 @@ import {render, RenderPosition} from '../render.js';
 
 export default class BoardPresenter {
 
-
   constructor({container, pointsModel}) {
     this.container = container;
     this.pointsModel = pointsModel;
   }
 
   init() {
-    this.boardOffers = [...this.pointsModel.getOffers()];
     this.boardPoints = [...this.pointsModel.getPoints()];
-    render(new OffersView({offers: this.boardOffers[0]}), this.container, RenderPosition.BEFOREEND); //Отображение формы редактирования
+
+    this.boardOffers = [...this.pointsModel.getOffers()];
+    const offersView = new OffersView({
+      point: this.boardPoints[0],
+      allOffers: this.pointsModel.getOffersByType(this.boardPoints[0].type),
+      pointDestination: this.pointsModel.getDestinationsById(this.boardPoints[0].destination),
+      allDestination: this.pointsModel.getDestinations()
+    });
+    render(offersView, this.container); //Отображение формы редактирования
 
     for (let i = 0; i < this.boardPoints.length; i++) {
-      render(new PointView({points: this.boardPoints[i]}), this.container, RenderPosition.BEFOREEND); //Отображение Точки маршрута 3 раза
+      const point = new PointView({
+        point: this.boardPoints[i],
+        offers: [...this.pointsModel.getOffersById(this.boardPoints[i].type, this.boardPoints[i])],
+        destination: this.pointsModel.getDestinationsById(this.boardPoints[i].destination)
+      });
+      render(point, this.container, RenderPosition.BEFOREEND);
+      // render(new PointView({points: this.boardPoints[i]}), this.container, RenderPosition.BEFOREEND); //Отображение Точки маршрута 3 раза
     }
   }
 }
