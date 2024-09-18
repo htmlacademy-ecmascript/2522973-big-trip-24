@@ -6,7 +6,7 @@ const POINT_COUNT = 3; //Количество поинтов (сколько р�
 export default class PointsModel {
   points = Array.from({length: POINT_COUNT}, getRandomPoint); //Записываем в points массив поинтов
   offers = mockOffers;
-  destinations = mockDestinations;
+  destination = mockDestinations;
 
   getPoints() {
     return this.points;
@@ -17,7 +17,7 @@ export default class PointsModel {
   }
 
   getDestinations() {
-    return this.destinations;
+    return this.destination;
   }
 
   getDestinationsById(id) {

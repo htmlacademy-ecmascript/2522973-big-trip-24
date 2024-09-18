@@ -1,7 +1,7 @@
 import {createElement} from '../render.js';
 
-function createAddPointTemplate(offers) {
-  const { type, offers: {price} } = offers; //Необходимо деструктурировать!!
+function createAddPointTemplate(offer) {
+  const { point, offers, destination } = offer; //Необходимо деструктурировать!!
 
   return (
     `<form class="event event--edit" action="#" method="post">
@@ -67,7 +67,7 @@ function createAddPointTemplate(offers) {
 
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                      ${type}
+                      ${destination}
                     </label>
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
                     <datalist id="destination-list-1">
@@ -90,7 +90,7 @@ function createAddPointTemplate(offers) {
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="3000">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -107,7 +107,7 @@ function createAddPointTemplate(offers) {
                       <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
                         <label class="event__offer-label" for="event-offer-luggage-1">
-                          <span class="event__offer-title">Add luggage</span>
+                          <span class="event__offer-title">${point}</span>
                           &plus;&euro;&nbsp;
                           <span class="event__offer-price">50</span>
                         </label>
@@ -116,7 +116,7 @@ function createAddPointTemplate(offers) {
                       <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
                         <label class="event__offer-label" for="event-offer-comfort-1">
-                          <span class="event__offer-title">Switch to comfort</span>
+                          <span class="event__offer-title">${offers}</span>
                           &plus;&euro;&nbsp;
                           <span class="event__offer-price">80</span>
                         </label>
@@ -125,7 +125,7 @@ function createAddPointTemplate(offers) {
                       <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
                         <label class="event__offer-label" for="event-offer-meal-1">
-                          <span class="event__offer-title">${type}</span>
+                          <span class="event__offer-title">dsdsddsds</span>
                           &plus;&euro;&nbsp;
                           <span class="event__offer-price">15</span>
                         </label>
@@ -160,12 +160,14 @@ function createAddPointTemplate(offers) {
 }
 
 export default class OffersView {
-  constructor({offers}) {
+  constructor({point, offers, destination}) {
+    this.point = point;
     this.offers = offers;
+    this.destination = destination;
   }
 
   getTemplate() {
-    return createAddPointTemplate(this.offers);
+    return createAddPointTemplate(this.point, this.offers, this.destination);
   }
 
   getElement() {
