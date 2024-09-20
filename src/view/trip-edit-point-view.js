@@ -1,8 +1,20 @@
 import {createElement} from '../render.js';
 
-function createAddPointTemplate(offer) {
-  const { point, offers, destination } = offer; //Необходимо деструктурировать!!
 
+
+function createAddPointTemplate(allOffers, allDestination) {
+  //const { point, offers, destination } = offer; //Необходимо деструктурировать!!
+ // console.log(allOffers);
+  const {offers} = allOffers;
+ // console.log(offers[0]);
+  const [{title, price}] = offers;
+ //console.log(offers[0].title);
+ // console.log(offers[1].title)
+  //const {type, basePrice} = point;
+  const [description] = allDestination;
+  console.log(description)
+  const {name} = description;
+  console.log(name)
   return (
     `<form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -67,9 +79,9 @@ function createAddPointTemplate(offer) {
 
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                      ${destination}
+                      ERRRRRRR
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
                     <datalist id="destination-list-1">
                       <option value="Amsterdam"></option>
                       <option value="Geneva"></option>
@@ -99,59 +111,28 @@ function createAddPointTemplate(offer) {
                     <span class="visually-hidden">Open event</span>
                   </button>
                 </header>
-                <section class="event__details">
-                  <section class="event__section  event__section--offers">
-                    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-                    <div class="event__available-offers">
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-                        <label class="event__offer-label" for="event-offer-luggage-1">
-                          <span class="event__offer-title">${point}</span>
-                          &plus;&euro;&nbsp;
-                          <span class="event__offer-price">50</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
-                        <label class="event__offer-label" for="event-offer-comfort-1">
-                          <span class="event__offer-title">${offers}</span>
-                          &plus;&euro;&nbsp;
-                          <span class="event__offer-price">80</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-                        <label class="event__offer-label" for="event-offer-meal-1">
-                          <span class="event__offer-title">dsdsddsds</span>
-                          &plus;&euro;&nbsp;
-                          <span class="event__offer-price">15</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-                        <label class="event__offer-label" for="event-offer-seats-1">
-                          <span class="event__offer-title">Choose seats</span>
-                          &plus;&euro;&nbsp;
-                          <span class="event__offer-price">5</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-                        <label class="event__offer-label" for="event-offer-train-1">
-                          <span class="event__offer-title">Travel by train</span>
-                          &plus;&euro;&nbsp;
-                          <span class="event__offer-price">40</span>
-                        </label>
-                      </div>
-                    </div>
-                  </section>
-
-                  <section class="event__section  event__section--destination">
+<section class="event__details">
+    <section class="event__section  event__section--offers">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      <div class="event__available-offers">
+        <div class="event__offer-selector">
+          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
+          <label class="event__offer-label" for="event-offer-luggage-1">
+            <span class="event__offer-title">${offers[0].title}</span>
+            &plus;&euro;&nbsp;
+            <span class="event__offer-price">${offers[0].price}</span>
+          </label>
+        </div>
+ <div class="event__offer-selector">
+          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
+          <label class="event__offer-label" for="event-offer-luggage-1">
+            <span class="event__offer-title">${offers[1].title}</span>
+            &plus;&euro;&nbsp;
+            <span class="event__offer-price">${offers[1].price}</span>
+          </label>
+        </div>
+             <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.</p>
                   </section>
@@ -160,14 +141,14 @@ function createAddPointTemplate(offer) {
 }
 
 export default class OffersView {
-  constructor({point, offers, destination}) {
-    this.point = point;
-    this.offers = offers;
-    this.destination = destination;
+  constructor({allOffers, allDestination}) {
+    //this.point = point;
+    this.allOffers = allOffers;
+    this.allDestination = allDestination;
   }
 
   getTemplate() {
-    return createAddPointTemplate(this.point, this.offers, this.destination);
+    return createAddPointTemplate(this.allOffers, this.allDestination);
   }
 
   getElement() {
