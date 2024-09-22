@@ -1,9 +1,11 @@
 import {createElement} from '../render.js';
 //import { getRandomInteger } from '../utils.js';
 
-function createListTemplate(point, offers, destination) {
+function createListTemplate(point, destination) {
   const {type, basePrice} = point;
  //const [{title, price}] = offers;
+ const {offers} = point;
+ console.log(offers)
   const {name} = destination;
 
   return (
@@ -49,14 +51,14 @@ function createListTemplate(point, offers, destination) {
 }
 
 export default class PointView {
-  constructor({point, offers, destination}) {
+  constructor({point, destination}) {
     this.point = point;
-    this.offers = offers;
+    //this.offers = offers;
     this.destination = destination;
   }
 
   getTemplate() {
-    return createListTemplate(this.point, this.offers, this.destination);
+    return createListTemplate(this.point, this.destination);
   }
 
   getElement() {
