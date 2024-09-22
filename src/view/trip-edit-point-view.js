@@ -16,19 +16,11 @@ function createOffersTemplate(offers) {
   }, '');
 }
 
-function createAddPointTemplate(allOffers, allDestination) {
-  //const { point, offers, destination } = offer; //Необходимо деструктурировать!!
- // console.log(allOffers);
+function createAddPointTemplate(point, allOffers, allDestination) {
   const {offers} = allOffers;
- // console.log(offers[0]);
-  //const [{title, price}] = offers;
- //console.log(offers[0].title);
- // console.log(offers[1].title)
-  //const {type, basePrice} = point;
-  const [description] = allDestination;
-  console.log(description)
-  const {name} = description;
-  console.log(name)
+  const {type, basePrice} = point;
+  const [{description, name}] = allDestination;
+  //const [{name}] = allDestination;
   return (
     `<form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -93,7 +85,7 @@ function createAddPointTemplate(allOffers, allDestination) {
 
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                      ERRRRRRR
+                      ${type}
                     </label>
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
                     <datalist id="destination-list-1">
@@ -116,7 +108,7 @@ function createAddPointTemplate(allOffers, allDestination) {
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="3000">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -133,21 +125,21 @@ function createAddPointTemplate(allOffers, allDestination) {
 ${createOffersTemplate(offers)}
              <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.</p>
+                    <p class="event__destination-description">${description}</p>
                   </section>
                 </section>
               </form>`);
 }
 
 export default class OffersView {
-  constructor({allOffers, allDestination}) {
-    //this.point = point;
+  constructor({point, allOffers, allDestination}) {
+    this.point = point;
     this.allOffers = allOffers;
     this.allDestination = allDestination;
   }
 
   getTemplate() {
-    return createAddPointTemplate(this.allOffers, this.allDestination);
+    return createAddPointTemplate(this.point, this.allOffers, this.allDestination);
   }
 
   getElement() {

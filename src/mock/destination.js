@@ -1,7 +1,7 @@
 const mockDestinations = [
   {
     'id': 'd9e9fc03-d3c9-4f60-baed-e5106dbfe007',
-    'description': '',
+    'description': 'Paris - is a wonderful city!',
     'name': 'Paris',
     'pictures': []
   },
