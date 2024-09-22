@@ -3,11 +3,9 @@ import { getRandomInteger } from '../utils.js';
 
 function createListTemplate(point, offers, destination) {
   const {type, basePrice} = point;
-  const [{title}] = offers;
-  console.log(title)
- // const {description} = destination;
-  //console.log(description)
-  //const {} = offers;
+ const [{title, price}] = offers;
+  const {name} = destination;
+
   return (
     `<ul class="trip-events__list">
             <li class="trip-events__item">
@@ -16,7 +14,7 @@ function createListTemplate(point, offers, destination) {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${type}</h3>
+                <h3 class="event__title">${type} ${name}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
@@ -33,7 +31,7 @@ function createListTemplate(point, offers, destination) {
                   <li class="event__offer">
                     <span class="event__offer-title">${title}</span>
                     &plus;&euro;&nbsp;
-                    <span class="event__offer-price">${getRandomInteger(10, 100)}</span>
+                    <span class="event__offer-price">${price}</span>
                   </li>
                 </ul>
                 <button class="event__favorite-btn event__favorite-btn--active" type="button">
