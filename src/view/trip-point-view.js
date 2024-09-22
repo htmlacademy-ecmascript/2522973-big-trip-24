@@ -1,9 +1,9 @@
 import {createElement} from '../render.js';
-import { getRandomInteger } from '../utils.js';
+//import { getRandomInteger } from '../utils.js';
 
 function createListTemplate(point, offers, destination) {
   const {type, basePrice} = point;
- const [{title, price}] = offers;
+ //const [{title, price}] = offers;
   const {name} = destination;
 
   return (
@@ -29,9 +29,9 @@ function createListTemplate(point, offers, destination) {
                 <h4 class="visually-hidden">Offers:</h4>
                 <ul class="event__selected-offers">
                   <li class="event__offer">
-                    <span class="event__offer-title">${title}</span>
+                    <span class="event__offer-title">Title</span>
                     &plus;&euro;&nbsp;
-                    <span class="event__offer-price">${price}</span>
+                    <span class="event__offer-price">price</span>
                   </li>
                 </ul>
                 <button class="event__favorite-btn event__favorite-btn--active" type="button">
