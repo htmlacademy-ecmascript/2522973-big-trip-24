@@ -1,26 +1,24 @@
 import {createElement} from '../render.js';
 
-function createOffersTemplate(offers) {
-  return offers.reduce((acc, {title, price}) => {
-    acc += `
-      <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-          <label class="event__offer-label" for="event-offer-luggage-1">
-            <span class="event__offer-title">${title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${price}</span>
-          </label>
-        </div>
-  `;
-    return acc;
-  }, '');
-}
-
 function createAddPointTemplate(point, allOffers, allDestination, pointDestination) {
   const {offers} = allOffers;
   const {type, basePrice} = point;
   const {description, name} = pointDestination;
-
+  function createOffersTemplate(offers) {
+    return offers.reduce((acc, {title, price}) => {
+      acc += `
+        <div class="event__offer-selector">
+            <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
+            <label class="event__offer-label" for="event-offer-luggage-1">
+              <span class="event__offer-title">${title}</span>
+              &plus;&euro;&nbsp;
+              <span class="event__offer-price">${price}</span>
+            </label>
+          </div>
+    `;
+      return acc;
+    }, '');
+  }
   return (
     `<form class="event event--edit" action="#" method="post">
                 <header class="event__header">

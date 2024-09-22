@@ -1,13 +1,12 @@
 import {createElement} from '../render.js';
 //import { getRandomInteger } from '../utils.js';
 
-function createListTemplate(point, destination) {
+function createListTemplate(point, destination, offers) {
   const {type, basePrice} = point;
- //const [{title, price}] = offers;
- const {offers} = point;
- console.log(offers)
-  const {name} = destination;
 
+  const [{title, price}] = offers;
+  const {name} = destination;
+  console.log(title)
   return (
     `<ul class="trip-events__list">
             <li class="trip-events__item">
@@ -30,10 +29,10 @@ function createListTemplate(point, destination) {
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
                 <ul class="event__selected-offers">
-                  <li class="event__offer">
-                    <span class="event__offer-title">Title</span>
+                <li class="event__offer">
+                    <span class="event__offer-title">${title}</span>
                     &plus;&euro;&nbsp;
-                    <span class="event__offer-price">price</span>
+                    <span class="event__offer-price">${price}</span>
                   </li>
                 </ul>
                 <button class="event__favorite-btn event__favorite-btn--active" type="button">
@@ -51,14 +50,14 @@ function createListTemplate(point, destination) {
 }
 
 export default class PointView {
-  constructor({point, destination}) {
+  constructor({point, destination, offers}) {
     this.point = point;
-    //this.offers = offers;
+    this.offers = offers;
     this.destination = destination;
   }
 
   getTemplate() {
-    return createListTemplate(this.point, this.destination);
+    return createListTemplate(this.point, this.destination, this.offers);
   }
 
   getElement() {
