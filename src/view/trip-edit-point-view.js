@@ -1,13 +1,27 @@
 import {createElement} from '../render.js';
 
-
+function createOffersTemplate(offers) {
+  return offers.reduce((acc, {title, price}) => {
+    acc += `
+      <div class="event__offer-selector">
+          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
+          <label class="event__offer-label" for="event-offer-luggage-1">
+            <span class="event__offer-title">${title}</span>
+            &plus;&euro;&nbsp;
+            <span class="event__offer-price">${price}</span>
+          </label>
+        </div>
+  `;
+    return acc;
+  }, '');
+}
 
 function createAddPointTemplate(allOffers, allDestination) {
   //const { point, offers, destination } = offer; //Необходимо деструктурировать!!
  // console.log(allOffers);
   const {offers} = allOffers;
  // console.log(offers[0]);
-  const [{title, price}] = offers;
+  //const [{title, price}] = offers;
  //console.log(offers[0].title);
  // console.log(offers[1].title)
   //const {type, basePrice} = point;
@@ -116,22 +130,7 @@ function createAddPointTemplate(allOffers, allDestination) {
     <section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
-        <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-          <label class="event__offer-label" for="event-offer-luggage-1">
-            <span class="event__offer-title">${offers[0].title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${offers[0].price}</span>
-          </label>
-        </div>
- <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-          <label class="event__offer-label" for="event-offer-luggage-1">
-            <span class="event__offer-title">${offers[1].title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${offers[1].price}</span>
-          </label>
-        </div>
+${createOffersTemplate(offers)}
              <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.</p>
