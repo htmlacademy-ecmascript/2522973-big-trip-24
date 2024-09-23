@@ -1,6 +1,5 @@
 import {createElement} from '../render.js';
 //import { getRandomInteger } from '../utils.js';
-
 const createListTemplate = (point, offers, destination) => {
   const { basePrice, type, isFavorite} = point;
   const typeName = type[0].toUpperCase() + type.slice(1, type.length);
