@@ -332,7 +332,9 @@ main {
 
 .trip-events__item {
   margin-bottom: 54px;
-  margin-left: auto; }
+  margin-left: auto;
+  list-style-type: none;
+}
 
 .trip-sort {
   display: -ms-flexbox;
