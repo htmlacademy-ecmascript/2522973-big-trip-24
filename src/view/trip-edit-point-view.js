@@ -2,12 +2,16 @@ import {createElement} from '../render.js';
 import { TYPES } from '../const.js';
 import { createOfferItemTemplate, createTypeGroupTemplate } from '../utils.js';
 
-
-
 function createAddPointTemplate(point, allOffers, allDestination, pointDestination) {
   const { basePrice, type } = point;
   const typeName = type[0].toUpperCase() + type.slice(1, type.length);
-  const { name, description, pictures: [{src}] } = pointDestination;
+  const { name, description, pictures } = pointDestination;
+  function asa() {
+    if(pictures.length !== 0) {
+      const [{src}] = pictures;
+      return src;
+    }
+  }
   //console.log(description, src)
   const createAllOffers = allOffers.offers
     .map((offer) => {
@@ -82,7 +86,7 @@ function createAddPointTemplate(point, allOffers, allDestination, pointDestinati
           <p class="event__destination-description">${description}</p>
              <div class="event__photos-container">
                           <div class="event__photos-tape">
-                            <img class="event__photo" src="${src}" alt="Event photo">
+                            <img class="event__photo" src="${asa()}" alt="Event photo">
                             <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
                             <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
                             <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
