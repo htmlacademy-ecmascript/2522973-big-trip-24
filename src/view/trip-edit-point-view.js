@@ -2,8 +2,10 @@ import {createElement} from '../render.js';
 
 function createAddPointTemplate(point, allOffers, allDestination, pointDestination) {
   const {offers} = allOffers;
+
   const {type, basePrice} = point;
   const {description, name} = pointDestination;
+
   function createOffersTemplate(offers) {
     return offers.reduce((acc, {title, price}) => {
       acc += `
@@ -18,6 +20,7 @@ function createAddPointTemplate(point, allOffers, allDestination, pointDestinati
     `;
       return acc;
     }, '');
+
   }
   return (
     `<form class="event event--edit" action="#" method="post">
