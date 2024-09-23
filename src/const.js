@@ -1,4 +1,4 @@
-const TYPE = [
+const TYPES = [
   'Taxi',
   'Bus',
   'Train',
@@ -30,4 +30,4 @@ const OFFERS = [
   'Book tickets',
   'Lunch in city',
 ];
-export { TYPE, CITIES, OFFERS };
+export { TYPES, CITIES, OFFERS };
