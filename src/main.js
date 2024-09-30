@@ -5,7 +5,7 @@ import TripSortView from './view/trip-event-view.js'; //Сортировка DAY
 
 import BoardPresenter from './presenter/board-presenter.js';
 import PointsModel from './model/point-model.js';
-import {render, renderBegin} from './render.js';
+import { render } from './framework/render.js';
 
 
 const siteMainElement = document.querySelector('.page-body');
@@ -21,7 +21,7 @@ const boardPresenter = new BoardPresenter({
   pointsModel
 });
 
-renderBegin(new TripInfoView(), siteTripInfo); // Отображение информации в шапке про маршрут
+render(new TripInfoView(), siteTripInfo); // Отображение информации в шапке про маршрут
 render(new TripFilterView(), siteFiltersElement); // Фильтры EVERYTHING, FUTURE, PAST и т.д
 render(new TripSortView(), siteEventsElement); // Сортировка DAY, EVENT, TIME, PRICE, OFFER
 

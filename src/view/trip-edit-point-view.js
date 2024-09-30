@@ -1,4 +1,5 @@
-import {createElement} from '../render.js';
+//import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { TYPES } from '../const.js';
 import { createOfferItemTemplate, createTypeGroupTemplate } from '../utils.js';
 
@@ -98,27 +99,21 @@ function createAddPointTemplate(point, allOffers, allDestination, pointDestinati
   </li>`
   );
 }
-export default class OffersView {
+export default class OffersView extends AbstractView {
+  #point = null;
+  #allOffers = null;
+  #allDestination = [];
+  #pointDestination = null;
+
   constructor({point, allOffers, allDestination, pointDestination}) {
-    this.point = point;
-    this.allOffers = allOffers;
-    this.allDestination = allDestination;
-    this.pointDestination = pointDestination;
+    super();
+    this.#point = point;
+    this.#allOffers = allOffers;
+    this.#allDestination = allDestination;
+    this.#pointDestination = pointDestination;
   }
 
   getTemplate() {
-    return createAddPointTemplate(this.point, this.allOffers, this.allDestination, this.pointDestination);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+    return createAddPointTemplate(this.#point, this.#allOffers, this.#allDestination, this.#pointDestination);
   }
 }
