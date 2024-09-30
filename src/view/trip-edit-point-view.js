@@ -99,21 +99,16 @@ function createAddPointTemplate(point, allOffers, allDestination, pointDestinati
   </li>`
   );
 }
-export default class OffersView extends AbstractView {
-  #point = null;
-  #allOffers = null;
-  #allDestination = [];
-  #pointDestination = null;
-
+export default class OffersView extends AbstractView{
   constructor({point, allOffers, allDestination, pointDestination}) {
     super();
-    this.#point = point;
-    this.#allOffers = allOffers;
-    this.#allDestination = allDestination;
-    this.#pointDestination = pointDestination;
+    this.point = point;
+    this.allOffers = allOffers;
+    this.allDestination = allDestination;
+    this.pointDestination = pointDestination;
   }
 
-  getTemplate() {
-    return createAddPointTemplate(this.#point, this.#allOffers, this.#allDestination, this.#pointDestination);
+  get template() {
+    return createAddPointTemplate(this.point, this.allOffers, this.allDestination, this.pointDestination);
   }
 }

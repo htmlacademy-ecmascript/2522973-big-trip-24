@@ -5,7 +5,8 @@ import TripSortView from './view/trip-event-view.js'; //Сортировка DAY
 
 import BoardPresenter from './presenter/board-presenter.js';
 import PointsModel from './model/point-model.js';
-import { render } from './framework/render.js';
+import {render} from './framework/render.js';
+//import {render, renderBegin} from './render.js';
 
 
 const siteMainElement = document.querySelector('.page-body');

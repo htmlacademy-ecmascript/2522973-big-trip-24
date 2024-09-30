@@ -1,4 +1,4 @@
-//import {createElement} from '../framework/render.js';
+//import {createElement} from '../render.js';
 import AbstractView from '../framework/view/abstract-view.js';
 //import { getRandomInteger } from '../utils.js';
 const createListTemplate = (point, offers, destination) => {
@@ -56,19 +56,15 @@ const createListTemplate = (point, offers, destination) => {
             </li>
   `);
 };
-export default class PointView extends AbstractView {
-
-  #point = null;
-  #offers = [];
-  #destination = null;
+export default class PointView extends AbstractView{
   constructor({point, offers, destination}) {
     super();
-    this.#point = point;
-    this.#offers = offers;
-    this.#destination = destination;
+    this.point = point;
+    this.offers = offers;
+    this.destination = destination;
   }
 
   get template() {
-    return createListTemplate(this.#point, this.#offers, this.#destination);
+    return createListTemplate(this.point, this.offers, this.destination);
   }
 }
