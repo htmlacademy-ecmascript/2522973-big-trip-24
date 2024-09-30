@@ -5,33 +5,34 @@ import {render} from '../framework/render.js';
 const siteMainElement = document.querySelector('.page-body');
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 export default class BoardPresenter {
-
+  #container = null;
+  #pointsModel = null;
   constructor({container, pointsModel}) {
-    this.container = container;
-    this.pointsModel = pointsModel;
+    this.#container = container;
+    this.#pointsModel = pointsModel;
   }
 
   init() {
 
     render(new TripInfoView(), siteTripInfo); // Отображение информации в шапке про маршрут
-    this.boardPoints = [...this.pointsModel.points];
+    this.boardPoints = [...this.#pointsModel.points];
 
-    this.boardOffers = [...this.pointsModel.offers];
+    this.boardOffers = [...this.#pointsModel.offers];
     const offersView = new OffersView({
       point: this.boardPoints[0],
-      allOffers: this.pointsModel.getOffersByType(this.boardPoints[0].type),
-      pointDestination: this.pointsModel.getDestinationsById(this.boardPoints[0].destination),
-      allDestination: this.pointsModel.destinations
+      allOffers: this.#pointsModel.getOffersByType(this.boardPoints[0].type),
+      pointDestination: this.#pointsModel.getDestinationsById(this.boardPoints[0].destination),
+      allDestination: this.#pointsModel.destinations
     });
-    render(offersView, this.container); //Отображение формы редактирования
+    render(offersView, this.#container); //Отображение формы редактирования
 
     for (let i = 0; i < this.boardPoints.length; i++) {
       const point = new PointView({
         point: this.boardPoints[i],
-        offers: [...this.pointsModel.getOffersById(this.boardPoints[i].type, this.boardPoints[i].offers)],
-        destination: this.pointsModel.getDestinationsById(this.boardPoints[i].destination)
+        offers: [...this.#pointsModel.getOffersById(this.boardPoints[i].type, this.boardPoints[i].offers)],
+        destination: this.#pointsModel.getDestinationsById(this.boardPoints[i].destination)
       });
-      render(point, this.container); //Отображение поинтов
+      render(point, this.#container); //Отображение поинтов
     }
   }
 }
