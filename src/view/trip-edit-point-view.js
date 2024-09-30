@@ -103,15 +103,41 @@ export default class OffersView extends AbstractView{
   #allOffers = [];
   #allDestination = [];
   #pointDestination = null;
-  constructor({point, allOffers, allDestination, pointDestination}) {
+  #onCloseEditButtonClick = null;
+  #onSubmitButtonClick = null;
+  constructor({point, allOffers, allDestination, pointDestination, onCloseEditButtonClick, onSubmitButtonClick}) {
     super();
     this.#point = point;
     this.#allOffers = allOffers;
     this.#allDestination = allDestination;
     this.#pointDestination = pointDestination;
+    this.#onCloseEditButtonClick = onCloseEditButtonClick;
+    this.#onSubmitButtonClick = onSubmitButtonClick;
+    this.#setEventListeners();
   }
 
   get template() {
     return createAddPointTemplate(this.#point, this.#allOffers, this.#allDestination, this.#pointDestination);
   }
+
+  #setEventListeners() {
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#closeEditButtonClickHandler);
+
+
+    this.element
+      .querySelector('.event__save-btn')
+      .addEventListener('submit', this.#submitButtonClickHandler);
+  }
+
+  #closeEditButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onCloseEditButtonClick();
+  };
+
+  #submitButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onSubmitButtonClick();
+  };
 }
