@@ -1,7 +1,7 @@
 import TripInfoView from '../view/trip-info-view.js'; //Инфо в шапке про маршрут
 import PointView from '../view/trip-point-view.js'; //Точка маршрута
 import OffersView from '../view/trip-edit-point-view.js';//Форма редактирования
-import {render} from '../framework/render.js';
+import { render, replace } from '../framework/render.js';
 const siteMainElement = document.querySelector('.page-body');
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 export default class BoardPresenter {
@@ -18,22 +18,55 @@ export default class BoardPresenter {
     this.boardPoints = [...this.#pointsModel.points];
 
     this.boardOffers = [...this.#pointsModel.offers];
-    const offersView = new OffersView({
-      point: this.boardPoints[0],
-      allOffers: this.#pointsModel.getOffersByType(this.boardPoints[0].type),
-      pointDestination: this.#pointsModel.getDestinationsById(this.boardPoints[0].destination),
-      allDestination: this.#pointsModel.destinations
-    });
-    render(offersView, this.#container); //Отображение формы редактирования
-
     for (let i = 0; i < this.boardPoints.length; i++) {
-      const point = new PointView({
-        point: this.boardPoints[i],
-        offers: [...this.#pointsModel.getOffersById(this.boardPoints[i].type, this.boardPoints[i].offers)],
-        destination: this.#pointsModel.getDestinationsById(this.boardPoints[i].destination)
-      });
-      render(point, this.#container); //Отображение поинтов
+      this.#renderPoints(this.boardPoints[i]);
     }
+  }
+
+  #renderPoints(point) { //Отображение точки маршрута с обработчиками, форма редактирования внутри!!!
+    const escKeyDownHandler = (evt) => {
+      if(evt.key === 'Escape') {
+        evt.preventDefault();
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    };
+    const onOpenEditButtonClick = () => {
+      replacePointToForm();
+      document.addEventListener('keydown', escKeyDownHandler);
+    };
+    const onCloseEditButtonClick = () => {
+      replaceFormToPoint();
+      document.removeEventListener('keydown', escKeyDownHandler);
+    };
+    const onSubmitButtonClick = () => {
+      replaceFormToPoint();
+      document.removeEventListener('keydown', escKeyDownHandler);
+    };
+    const pointComponent = new PointView({ //Точка маршрута
+      point,
+      offers: [...this.#pointsModel.getOffersById(point.type, point.offers)],
+      destination: this.#pointsModel.getDestinationsById(this.boardPoints[0].destination),
+      onOpenEditButtonClick
+    });
+
+    const editPointComponent = new OffersView({ //Форма редактирования
+      point,
+      allOffers: this.#pointsModel.getOffersByType(point.type),
+      pointDestination: this.#pointsModel.getDestinationsById(point.destination),
+      allDestination: this.#pointsModel.destinations,
+      onCloseEditButtonClick,
+      onSubmitButtonClick
+    });
+
+    function replacePointToForm() {
+      replace(editPointComponent, pointComponent);
+    }
+
+    function replaceFormToPoint() {
+      replace(pointComponent, editPointComponent);
+    }
+    render(pointComponent, this.#container);
   }
 }
 
