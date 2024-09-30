@@ -1,26 +1,28 @@
-//import {createElement} from '../render.js';
 import AbstractView from '../framework/view/abstract-view.js';
 import { TYPES } from '../const.js';
 import { createOfferItemTemplate, createTypeGroupTemplate } from '../utils.js';
+
+function createPicturesTemplate(photo) {
+  return photo.reduce((acc, {src}) => {
+    acc += `
+               <img class="event__photo" src="${src}" alt="Event photo">
+  `;
+    return acc;
+  }, '');
+}
 
 function createAddPointTemplate(point, allOffers, allDestination, pointDestination) {
   const { basePrice, type } = point;
   const typeName = type[0].toUpperCase() + type.slice(1, type.length);
   const { name, description, pictures } = pointDestination;
-  function asa() {
-    if(pictures.length !== 0) {
-      const [{src}] = pictures;
-      return src;
-    }
-  }
-  //console.log(description, src)
+
   const createAllOffers = allOffers.offers
     .map((offer) => {
       const checkedClassName = point.offers.includes(offer.id) ? 'checked' : '';
       return createOfferItemTemplate(allOffers.type, offer.title, offer.price, checkedClassName);
     }).join('');
 
-  const createDesinationTemplate = allDestination
+  const createDestinationTemplate = allDestination
     .map((item) => `<option value="${item.name}"></option>`).join('');
 
   const createTypeList = TYPES
@@ -52,7 +54,7 @@ function createAddPointTemplate(point, allOffers, allDestination, pointDestinati
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
           <datalist id="destination-list-1">
-            ${createDesinationTemplate}
+            ${createDestinationTemplate}
           </datalist>
         </div>
         <div class="event__field-group  event__field-group--time">
@@ -85,14 +87,11 @@ function createAddPointTemplate(point, allOffers, allDestination, pointDestinati
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
           <p class="event__destination-description">${description}</p>
-             <div class="event__photos-container">
-                          <div class="event__photos-tape">
-                            <img class="event__photo" src="${asa()}" alt="Event photo">
-                            <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
-                            <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
-                            <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
-                            <img class="event__photo" src="img/photos/5.jpg" alt="Event photo">
-                          </div>
+           <div class="event__photos-container">
+                        <div class="event__photos-tape">
+          ${createPicturesTemplate(pictures)}
+                        </div>
+
         </section>
       </section>
     </form>
@@ -100,15 +99,19 @@ function createAddPointTemplate(point, allOffers, allDestination, pointDestinati
   );
 }
 export default class OffersView extends AbstractView{
+  #point = null;
+  #allOffers = [];
+  #allDestination = [];
+  #pointDestination = null;
   constructor({point, allOffers, allDestination, pointDestination}) {
     super();
-    this.point = point;
-    this.allOffers = allOffers;
-    this.allDestination = allDestination;
-    this.pointDestination = pointDestination;
+    this.#point = point;
+    this.#allOffers = allOffers;
+    this.#allDestination = allDestination;
+    this.#pointDestination = pointDestination;
   }
 
   get template() {
-    return createAddPointTemplate(this.point, this.allOffers, this.allDestination, this.pointDestination);
+    return createAddPointTemplate(this.#point, this.#allOffers, this.#allDestination, this.#pointDestination);
   }
 }
