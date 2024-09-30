@@ -1,7 +1,9 @@
+import TripInfoView from '../view/trip-info-view.js'; //Инфо в шапке про маршрут
 import PointView from '../view/trip-point-view.js'; //Точка маршрута
 import OffersView from '../view/trip-edit-point-view.js';//Форма редактирования
-//import {render, RenderPosition} from '../render.js';
 import {render} from '../framework/render.js';
+const siteMainElement = document.querySelector('.page-body');
+const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 export default class BoardPresenter {
 
   constructor({container, pointsModel}) {
@@ -10,9 +12,11 @@ export default class BoardPresenter {
   }
 
   init() {
+
+    render(new TripInfoView(), siteTripInfo); // Отображение информации в шапке про маршрут
     this.boardPoints = [...this.pointsModel.points];
 
-    this.boardOffers = [...this.pointsModel.points];
+    this.boardOffers = [...this.pointsModel.offers];
     const offersView = new OffersView({
       point: this.boardPoints[0],
       allOffers: this.pointsModel.getOffersByType(this.boardPoints[0].type),
@@ -27,8 +31,7 @@ export default class BoardPresenter {
         offers: [...this.pointsModel.getOffersById(this.boardPoints[i].type, this.boardPoints[i].offers)],
         destination: this.pointsModel.getDestinationsById(this.boardPoints[i].destination)
       });
-      render(point, this.container);
-      // render(new PointView({points: this.boardPoints[i]}), this.container, RenderPosition.BEFOREEND); //Отображение Точки маршрута 3 раза
+      render(point, this.container); //Отображение поинтов
     }
   }
 }
