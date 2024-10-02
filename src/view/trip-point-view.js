@@ -1,5 +1,5 @@
-import {createElement} from '../render.js';
-//import { getRandomInteger } from '../utils.js';
+import AbstractView from '../framework/view/abstract-view.js';
+
 const createListTemplate = (point, offers, destination) => {
   const { basePrice, type, isFavorite} = point;
   const typeName = type[0].toUpperCase() + type.slice(1, type.length);
@@ -55,26 +55,32 @@ const createListTemplate = (point, offers, destination) => {
             </li>
   `);
 };
-export default class PointView {
-  constructor({point, offers, destination}) {
-    this.point = point;
-    this.offers = offers;
-    this.destination = destination;
+export default class PointView extends AbstractView{
+  #point = null;
+  #offers = null;
+  #destination = null;
+  #onOpenEditButtonClick = null;
+  constructor({point, offers, destination, onOpenEditButtonClick}) {
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#destination = destination;
+    this.#onOpenEditButtonClick = onOpenEditButtonClick;
+    this.#setEventListeners();
   }
 
-  getTemplate() {
-    return createListTemplate(this.point, this.offers, this.destination);
+  get template() {
+    return createListTemplate(this.#point, this.#offers, this.#destination);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
+  #setEventListeners() {
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#openEditButtonClickHandler);
   }
 
-  removeElement() {
-    this.element = null;
-  }
+  #openEditButtonClickHandler = (evt) => {
+    evt.preventDefault(evt);
+    this.#onOpenEditButtonClick();
+  };
 }
