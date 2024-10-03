@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { TYPES } from '../const.js';
+import { TYPES } from '../constant/const.js';
 import { createOfferItemTemplate, createTypeGroupTemplate } from '../utils.js';
 
 function createPicturesTemplate(photo) {

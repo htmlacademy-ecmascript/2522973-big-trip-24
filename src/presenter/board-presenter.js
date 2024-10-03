@@ -3,7 +3,7 @@ import PointView from '../view/trip-point-view.js'; //Точка маршрут�
 import OffersView from '../view/trip-edit-point-view.js';//Форма редактирования
 import { render, replace } from '../framework/render.js';
 import EmptyListView from '../view/list-message-view.js';//Пустой лист без поинтов
-import { EMPTY_LIST } from '../const.js';
+import { EMPTY_LIST } from '../constant/const.js';
 const siteMainElement = document.querySelector('.page-body');
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 export default class BoardPresenter {
@@ -18,7 +18,7 @@ export default class BoardPresenter {
   }
 
   init() {
-    this.#boardPoints = [];
+    this.#boardPoints = [...this.#pointsModel.points];
     this.#renderBoard();
   }
 
