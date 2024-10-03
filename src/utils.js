@@ -6,6 +6,10 @@ function getRandomInteger(min, max) {
   return Math.floor(rand);
 }
 
+function capitalizeFirstLetter(text){
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 const createOfferItemTemplate = (type, title, price, className) => `
   <div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}" ${className}>
@@ -24,4 +28,4 @@ const createTypeGroupTemplate = (group, className) => `
   </div>
 `;
 
-export { getRandomArrayElement, getRandomInteger, createOfferItemTemplate, createTypeGroupTemplate };
+export { getRandomArrayElement, getRandomInteger, capitalizeFirstLetter, createOfferItemTemplate, createTypeGroupTemplate };
