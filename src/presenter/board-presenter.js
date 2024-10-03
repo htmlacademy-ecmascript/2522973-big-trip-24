@@ -2,25 +2,24 @@ import TripInfoView from '../view/trip-info-view.js'; //Инфо в шапке �
 import PointView from '../view/trip-point-view.js'; //Точка маршрута
 import OffersView from '../view/trip-edit-point-view.js';//Форма редактирования
 import { render, replace } from '../framework/render.js';
+import EmptyListView from '../view/list-message-view.js';//Пустой лист без поинтов
+import { EMPTY_LIST } from '../const.js';
 const siteMainElement = document.querySelector('.page-body');
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 export default class BoardPresenter {
   #container = null;
   #pointsModel = null;
+  #boardPoints = [];
+  #emptyList = new EmptyListView({message: EMPTY_LIST.EVERYTHING});
+
   constructor({container, pointsModel}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
   }
 
   init() {
-
-    render(new TripInfoView(), siteTripInfo); // Отображение информации в шапке про маршрут
-    this.boardPoints = [...this.#pointsModel.points];
-
-    this.boardOffers = [...this.#pointsModel.offers];
-    for (let i = 0; i < this.boardPoints.length; i++) {
-      this.#renderPoints(this.boardPoints[i]);
-    }
+    this.#boardPoints = [];
+    this.#renderBoard();
   }
 
   #renderPoints(point) { //Отображение точки маршрута с обработчиками, форма редактирования внутри!!!
@@ -46,7 +45,7 @@ export default class BoardPresenter {
     const pointComponent = new PointView({ //Точка маршрута
       point,
       offers: [...this.#pointsModel.getOffersById(point.type, point.offers)],
-      destination: this.#pointsModel.getDestinationsById(this.boardPoints[0].destination),
+      destination: this.#pointsModel.getDestinationsById(this.#boardPoints[0].destination),
       onOpenEditButtonClick
     });
 
@@ -68,5 +67,18 @@ export default class BoardPresenter {
     }
     render(pointComponent, this.#container);
   }
+
+  #renderBoard() { //Отображение всех остальных компонентов
+    render(new TripInfoView(), siteTripInfo); // Отображение информации в шапке про маршрут
+    this.boardOffers = [...this.#pointsModel.offers];
+    for (let i = 0; i < this.#boardPoints.length; i++) {
+      this.#renderPoints(this.#boardPoints[i]);
+    }
+
+    if (this.#boardPoints.length === 0) {
+      render(this.#emptyList, this.#container);
+    }
+  }
 }
+
 

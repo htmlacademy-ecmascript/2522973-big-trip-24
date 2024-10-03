@@ -30,4 +30,10 @@ const OFFERS = [
   'Book tickets',
   'Lunch in city',
 ];
-export { TYPES, CITIES, OFFERS };
+
+const EMPTY_LIST = {
+  'EVERYTHING': 'Click New Event to create your first point',
+  'LOADING': 'Loading...',
+  'LOADING_ERROR': 'Failed to load latest route information'
+};
+export { TYPES, CITIES, OFFERS, EMPTY_LIST };
