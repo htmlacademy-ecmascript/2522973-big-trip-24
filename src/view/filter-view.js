@@ -15,7 +15,6 @@ const generateFilterButton = (filters) => filters.map((filter) => (`
                 >
                   <label class="trip-filters__filter-label" for="filter-everything">${capitalizeFirstLetter(filter.type)}</label>
                 </div>
-
   `)).join('');
 
 function createFilterTemplate(filters) {

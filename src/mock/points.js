@@ -132,8 +132,8 @@ const mockPoints = [
   {
     'id': 'e9cfcd4a-e4e2-4e66-805c-5fb9057b3f0b',
     'basePrice': 4321,
-    'dateFrom': '2024-09-30T17:50:09.239Z',
-    'dateTo': '2024-10-02T01:48:09.239Z',
+    'dateFrom': '2025-09-30T17:50:09.239Z',
+    'dateTo': '2025-10-02T01:48:09.239Z',
     'destination': 'd26b78f2-6da4-49a2-9e70-15646eb228e0',
     'isFavorite': false,
     'offers': [
@@ -145,8 +145,8 @@ const mockPoints = [
   {
     'id': 'e0061dbd-9844-4efb-91a5-d0610bab7a1f',
     'basePrice': 6414,
-    'dateFrom': '2024-10-02T10:01:09.239Z',
-    'dateTo': '2024-10-03T21:11:09.239Z',
+    'dateFrom': '2025-10-02T10:01:09.239Z',
+    'dateTo': '2025-10-03T21:11:09.239Z',
     'destination': '7e34b1b2-15ea-4f47-a0d1-e35a233774f2',
     'isFavorite': true,
     'offers': [
@@ -157,8 +157,8 @@ const mockPoints = [
   {
     'id': 'fa6d2b97-c59a-4fdc-818c-36954aa281a7',
     'basePrice': 7229,
-    'dateFrom': '2024-10-04T17:24:09.239Z',
-    'dateTo': '2024-10-05T11:45:09.239Z',
+    'dateFrom': '2025-10-04T17:24:09.239Z',
+    'dateTo': '2025-10-05T11:45:09.239Z',
     'destination': 'd9e9fc03-d3c9-4f60-baed-e5106dbfe007',
     'isFavorite': true,
     'offers': [
@@ -169,8 +169,8 @@ const mockPoints = [
   {
     'id': '6d4158a7-8664-4989-91f5-0da781f24811',
     'basePrice': 6182,
-    'dateFrom': '2024-10-07T10:53:09.239Z',
-    'dateTo': '2024-10-09T05:46:09.239Z',
+    'dateFrom': '2025-10-07T10:53:09.239Z',
+    'dateTo': '2025-10-09T05:46:09.239Z',
     'destination': 'a9670654-21d6-4ccf-bde9-e1fa264f46cb',
     'isFavorite': false,
     'offers': [],
@@ -179,8 +179,8 @@ const mockPoints = [
   {
     'id': 'fff6b6c9-1bce-4267-84eb-9afd49ae14b8',
     'basePrice': 9377,
-    'dateFrom': '2024-10-10T03:59:09.239Z',
-    'dateTo': '2024-10-11T21:10:09.239Z',
+    'dateFrom': '2025-10-10T03:59:09.239Z',
+    'dateTo': '2025-10-11T21:10:09.239Z',
     'destination': 'a9670654-21d6-4ccf-bde9-e1fa264f46cb',
     'isFavorite': true,
     'offers': [
@@ -193,8 +193,8 @@ const mockPoints = [
   {
     'id': 'eaf7cd69-399e-44bd-82da-2997fa3e0e7a',
     'basePrice': 7972,
-    'dateFrom': '2024-10-12T23:51:09.239Z',
-    'dateTo': '2024-10-13T23:01:09.239Z',
+    'dateFrom': '2025-10-12T23:51:09.239Z',
+    'dateTo': '2025-10-13T23:01:09.239Z',
     'destination': '68c7958d-37a6-41df-b563-38eb8d4cda75',
     'isFavorite': false,
     'offers': [
