@@ -14,12 +14,14 @@ export default class PointPresenter {
   #pointEditComponent = null;
   #point = null;
   #handleModeChange = null;
+  #handleDataChange = null;
   #mode = Mode.DEFAULT;
   //#pointsPresenter = new Map();
-  constructor({container, pointsModel, onModeChange}) {
+  constructor({container, pointsModel, onPointChange, onModeChange}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
     this.#handleModeChange = onModeChange;
+    this.#handleDataChange = onPointChange;
   }
 
   init(point) {
@@ -34,6 +36,7 @@ export default class PointPresenter {
       point: this.#point,
       offers: [...this.#pointsModel.getOffersById(point.type, point.offers)],
       destination: this.#pointsModel.getDestinationsById(this.#boardPoints[0].destination),
+      onFavoriteClick: this.#handleFavoriteClick,
       onOpenEditButtonClick: this.#onOpenEditButtonClick
     });
 
@@ -46,22 +49,6 @@ export default class PointPresenter {
       onSubmitButtonClick: this.#onSubmitButtonClick
     });
 
-    /*
-    if (this.#mode === Mode.DEFAULT) {
-      replace(this.#taskComponent, prevTaskComponent);
-    }
-
-    if (this.#mode === Mode.EDITING) {
-      replace(this.#taskEditComponent, prevTaskEditComponent);
-    }
-*/
-
-    /*
-    #handleDataChange = (updatedPoint) => {
-      this.points = updateItem(this.points, updatedPoint);
-      this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint);
-    };
-*/
     if (prevTaskComponent === null || prevTaskEditComponent === null) {
       render(this.#pointComponent, this.#container);
       return;
@@ -95,9 +82,27 @@ export default class PointPresenter {
     if(evt.key === 'Escape') {
       evt.preventDefault();
       this.#replaceFormToPoint();
-      document.removeEventListener('keydown', this.#escKeyDownHandler);
+      //document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   };
+
+  #pointEditHandler = () => {
+    this.#replacePointToForm();
+  };
+
+  #pointSubmitHandler = (point) => {
+    this.#handleDataChange(point);
+    this.#replaceFormToPoint();
+  };
+
+  #pointCloseHandler = () => {
+    this.#replaceFormToPoint();
+  };
+
+  #handleFavoriteClick = () => {
+    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+  };
+
 
   #onSubmitButtonClick = () => {
     this.#replaceFormToPoint();
@@ -116,12 +121,14 @@ export default class PointPresenter {
 
   #replacePointToForm = () => {
     replace(this.#pointEditComponent, this.#pointComponent);
+    //document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
   };
 
   #replaceFormToPoint = () => {
     replace(this.#pointComponent, this.#pointEditComponent);
+    document.removeEventListener('keydown', this.#escKeyDownHandler); // ЕСЛИ УБРАТЬ, ТО БУДЕТ ОДНА ФОРМА, НО С ОШИБКОЙ!!!!
     this.#mode = Mode.DEFAULT;
   };
 }
