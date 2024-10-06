@@ -10,7 +10,7 @@ const FiltersPoint = {
 };
 
 const filter = {
-  [FiltersPoint.EVERYTHING]: (points) => points,
+  [FiltersPoint.EVERYTHING]: (points) => [...points],
   [FiltersPoint.FUTURE]: (points) => points.filter((point) => isFutureEvent(point.dateFrom)),
   [FiltersPoint.PRESENT]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
   [FiltersPoint.PAST]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
