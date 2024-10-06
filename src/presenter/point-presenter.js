@@ -36,7 +36,7 @@ export default class PointPresenter {
       point: this.#point,
       offers: [...this.#pointsModel.getOffersById(point.type, point.offers)],
       destination: this.#pointsModel.getDestinationsById(this.#boardPoints[0].destination),
-      onFavoriteClick: this.#handleFavoriteClick,
+      onFavoriteClick: this.#onFavoriteClick,
       onOpenEditButtonClick: this.#onOpenEditButtonClick
     });
 
@@ -99,7 +99,7 @@ export default class PointPresenter {
     this.#replaceFormToPoint();
   };
 
-  #handleFavoriteClick = () => {
+  #onFavoriteClick = () => {
     this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
   };
 
