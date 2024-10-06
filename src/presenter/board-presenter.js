@@ -18,6 +18,7 @@ export default class BoardPresenter {
   #emptyList = new EmptyListView({message: EMPTY_LIST.EVERYTHING}); //Нет поинтов
   #sortView = new SortView(); //Приватное св-во Сортировки
   #infoView = new TripInfoView(); //Информация в шапке
+  #pointPresenters = new Map();
 
   constructor({container, pointsModel}) {
     this.#container = container;
@@ -28,6 +29,10 @@ export default class BoardPresenter {
     this.#boardPoints = [...this.#pointsModel.points];
     this.#renderBoard();
   }
+
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
 
   #renderInfo() {
     render(this.#infoView, siteTripInfo); // Отображение информации в шапке про маршрут
@@ -40,9 +45,11 @@ export default class BoardPresenter {
   #renderPoints(point) {
     const pointPresenter = new PointPresenter({
       container: this.#container,
-      pointsModel: this.#pointsModel
+      pointsModel: this.#pointsModel,
+      onModeChange: this.#handleModeChange
     });
     pointPresenter.init(point);
+    this.#pointPresenters.set(point.id, pointPresenter);
   }
 
   #renderBoard() { //Отображение всех остальных компонентов

@@ -1,6 +1,6 @@
 import PointView from '../view/trip-point-view.js'; //Точка маршрута
 import EditorPointView from '../view/trip-edit-point-view.js';//Форма редактирования
-import { render, replace } from '../framework/render.js';
+import { render, replace, remove } from '../framework/render.js';
 //import { updateItem } from '../utils.js';
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -25,6 +25,7 @@ export default class PointPresenter {
   init(point) {
     this.#point = point;
     this.#boardPoints = [...this.#pointsModel.points];
+
     const prevTaskComponent = this.#pointComponent;
     const prevTaskEditComponent = this.#pointEditComponent;
 
@@ -61,7 +62,30 @@ export default class PointPresenter {
       this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint);
     };
 */
+
+/*
+    if (this.#mode === Mode.DEFAULT) {
+      replace(this.#pointComponent, prevTaskComponent);
+    }
+*/
+    if (this.#mode === Mode.EDITING) {
+      replace(this.#pointEditComponent, prevTaskEditComponent);
+    }
+
+    remove(prevTaskComponent);
+    remove(prevTaskEditComponent);
     render(this.#pointComponent, this.#container);
+  }
+
+  destroy() {
+    remove(this.#pointComponent);
+    remove(this.#pointEditComponent);
+  }
+
+  resetView() {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#replaceFormToPoint();
+    }
   }
 
   #escKeyDownHandler = (evt) => {
@@ -89,9 +113,12 @@ export default class PointPresenter {
 
   #replacePointToForm = () => {
     replace(this.#pointEditComponent, this.#pointComponent);
+    this.#handleModeChange();
+    this.#mode = Mode.EDITING;
   };
 
   #replaceFormToPoint = () => {
     replace(this.#pointComponent, this.#pointEditComponent);
+    this.#mode = Mode.DEFAULT;
   };
 }
