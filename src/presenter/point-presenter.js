@@ -62,12 +62,15 @@ export default class PointPresenter {
       this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint);
     };
 */
+    if (prevTaskComponent === null || prevTaskEditComponent === null) {
+      render(this.#pointComponent, this.#container);
+      return;
+    }
 
-/*
     if (this.#mode === Mode.DEFAULT) {
       replace(this.#pointComponent, prevTaskComponent);
     }
-*/
+
     if (this.#mode === Mode.EDITING) {
       replace(this.#pointEditComponent, prevTaskEditComponent);
     }
