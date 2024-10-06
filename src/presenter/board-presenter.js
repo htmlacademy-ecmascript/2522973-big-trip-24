@@ -10,6 +10,7 @@ import { EMPTY_LIST } from '../constant/const.js';
 const siteMainElement = document.querySelector('.page-body');
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 const siteEventsElement = siteMainElement.querySelector('.trip-events');
+
 export default class BoardPresenter {
   #container = null;
   #pointsModel = null;

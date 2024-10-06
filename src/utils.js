@@ -28,4 +28,6 @@ const createTypeGroupTemplate = (group, className) => `
   </div>
 `;
 
-export { getRandomArrayElement, getRandomInteger, capitalizeFirstLetter, createOfferItemTemplate, createTypeGroupTemplate };
+const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
+
+export { updateItem, getRandomArrayElement, getRandomInteger, capitalizeFirstLetter, createOfferItemTemplate, createTypeGroupTemplate };
