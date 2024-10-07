@@ -32,4 +32,5 @@ function updateItem(items, update) {
   return items.map((item) => item.id === update.id ? update : item);
 }
 
+
 export { updateItem, getRandomArrayElement, getRandomInteger, capitalizeFirstLetter, createOfferItemTemplate, createTypeGroupTemplate };
