@@ -35,9 +35,9 @@ export default class PointPresenter {
     this.#pointComponent = new PointView({ //Точка маршрута
       point: this.#point,
       offers: [...this.#pointsModel.getOffersById(point.type, point.offers)],
-      destination: this.#pointsModel.getDestinationsById(this.#boardPoints[0].destination),
+      destination: this.#pointsModel.getDestinationsById(point.destination),
       onFavoriteClick: this.#onFavoriteClick,
-      onOpenEditButtonClick: this.#onOpenEditButtonClickHandler
+      onOpenEditButtonClick: this.#onOpenEditButtonClick
     });
 
     this. #pointEditComponent = new EditorPointView({ //Форма редактирования
@@ -109,7 +109,7 @@ export default class PointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #onOpenEditButtonClickHandler = () => {
+  #onOpenEditButtonClick = () => {
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
@@ -121,14 +121,14 @@ export default class PointPresenter {
 
   #replacePointToForm = () => {
     replace(this.#pointEditComponent, this.#pointComponent);
-    //document.addEventListener('keydown', this.#escKeyDownHandler);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
   };
 
   #replaceFormToPoint = () => {
     replace(this.#pointComponent, this.#pointEditComponent);
-    //document.removeEventListener('keydown', this.#escKeyDownHandler); // ЕСЛИ УБРАТЬ, ТО БУДЕТ ОДНА ФОРМА, НО С ОШИБКОЙ!!!!
+    document.removeEventListener('keydown', this.#escKeyDownHandler); // ЕСЛИ УБРАТЬ, ТО БУДЕТ ОДНА ФОРМА, НО С ОШИБКОЙ!!!!
     this.#mode = Mode.DEFAULT;
   };
 }
