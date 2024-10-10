@@ -98,7 +98,7 @@ function createAddPointTemplate(point, allOffers, allDestination, pointDestinati
   </li>`
   );
 }
-export default class OffersView extends AbstractView{
+export default class EditorPointView extends AbstractView{
   #point = null;
   #allOffers = [];
   #allDestination = [];
@@ -138,6 +138,6 @@ export default class OffersView extends AbstractView{
 
   #submitButtonClickHandler = (evt) => {
     evt.preventDefault();
-    this.#onSubmitButtonClick();
+    this.#onSubmitButtonClick(this.#point);
   };
 }

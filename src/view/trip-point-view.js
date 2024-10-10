@@ -3,7 +3,6 @@ import AbstractView from '../framework/view/abstract-view.js';
 const createListTemplate = (point, offers, destination) => {
   const { basePrice, type, isFavorite} = point;
   const typeName = type[0].toUpperCase() + type.slice(1, type.length);
-
   const createEventOfferTemplate = (title, price) => (`
     <li class="event__offer">
       <span class="event__offer-title">${title}</span>
@@ -60,13 +59,17 @@ export default class PointView extends AbstractView{
   #offers = null;
   #destination = null;
   #onOpenEditButtonClick = null;
-  constructor({point, offers, destination, onOpenEditButtonClick}) {
+  #onFavoriteClick = null;
+  constructor({point, offers, destination, onOpenEditButtonClick, onFavoriteClick}) {
     super();
     this.#point = point;
     this.#offers = offers;
     this.#destination = destination;
     this.#onOpenEditButtonClick = onOpenEditButtonClick;
     this.#setEventListeners();
+    this.#onFavoriteClick = onFavoriteClick;
+    this.element.querySelector('.event__favorite-btn').
+      addEventListener('click', this.#favoriteClickHandler);
   }
 
   get template() {
@@ -82,5 +85,10 @@ export default class PointView extends AbstractView{
   #openEditButtonClickHandler = (evt) => {
     evt.preventDefault(evt);
     this.#onOpenEditButtonClick();
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onFavoriteClick();
   };
 }

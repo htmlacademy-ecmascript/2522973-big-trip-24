@@ -33,6 +33,11 @@ const isEventToday = (dueDate) => dueDate && dayjs(dueDate).isSame(dayjs(), 'D')
 
 dayjs.extend(duration);
 
+const isFuturePoint = (point) => dayjs().isBefore(point.dateFrom, 'minute');
+
+const isExpiredPoint = (point) => dayjs(point.dateTo) && dayjs().isAfter(dayjs(point.dateTo), 'milliseconds');
+
+const isActualPoint = (point) => point.dateTo && (dayjs().isSame(dayjs(point.dateFrom), 'minute') || dayjs().isAfter(dayjs(point.dateFrom), 'minute')) && (dayjs().isSame(dayjs(point.dateTo), 'minute') || dayjs().isBefore(dayjs(point.dateTo), 'minute'));
 /**
  *Функция с использованием библиотеки dayjs для получения продолжительности нахождения в точке маршрута
  * @param {ISOString} dateFrom дата и время начала события в точке маршрута
@@ -84,4 +89,22 @@ const getDuration = (dateFrom, dateTo) => {
   }
 };
 
-export { humanizePointDueDate, getDuration, DateFormat, isEventOver, isFutureEvent, isEventToday};
+const getRandomInt = (min, max) => {
+  const lower = Math.ceil(Math.min(min, max));
+  const upper = Math.floor(Math.max(min, max));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
+
+const getRandomDate = () => {
+  const switcher = getRandomInt(1,2);
+  const dateNow = dayjs(new Date());
+  switch (switcher){
+    case 1:
+      return dateNow.add(getRandomInt(1,4), 'hour');
+    case 2:
+      return dateNow.subtract(getRandomInt(1,4), 'hour');
+  }
+};
+
+export { getRandomDate, isActualPoint, isExpiredPoint, isFuturePoint, humanizePointDueDate, getDuration, DateFormat, isEventOver, isFutureEvent, isEventToday};
