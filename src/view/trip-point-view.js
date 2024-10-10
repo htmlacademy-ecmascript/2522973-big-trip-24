@@ -3,7 +3,6 @@ import AbstractView from '../framework/view/abstract-view.js';
 const createListTemplate = (point, offers, destination) => {
   const { basePrice, type, isFavorite} = point;
   const typeName = type[0].toUpperCase() + type.slice(1, type.length);
-
   const createEventOfferTemplate = (title, price) => (`
     <li class="event__offer">
       <span class="event__offer-title">${title}</span>
