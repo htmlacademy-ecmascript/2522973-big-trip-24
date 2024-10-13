@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { TYPES } from '../constant/const.js';
-import { createOfferItemTemplate, createTypeGroupTemplate } from '../utils.js';
+import { TYPES } from '../utils-constant/constant.js';
+import { createOfferItemTemplate, createTypeGroupTemplate } from '../utils-constant/utils.js';
 
 function createPicturesTemplate(photo) {
   return photo.reduce((acc, {src}) => {

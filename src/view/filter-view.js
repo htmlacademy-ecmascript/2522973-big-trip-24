@@ -1,6 +1,6 @@
 import { FiltersPoint } from '../constant/filter-const.js';
 import AbstractView from '../framework/view/abstract-view';
-import { capitalizeFirstLetter } from '../utils';
+import { capitalizeFirstLetter } from '../utils-constant/utils.js';
 
 const generateFilterButton = (filters) => filters.map((filter) => (`
   <div class="trip-filters__filter">
