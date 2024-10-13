@@ -1,5 +1,4 @@
-//import TripFilterView from './view/trip-filter-view.js'; //Фильтры
-import TripSortView from './view/trip-event-view.js'; //Сортировка DAY, EVENT, PRICE
+
 import BoardPresenter from './presenter/board-presenter.js';
 import PointsModel from './model/point-model.js';
 import FilterView from './view/filter-view.js';
@@ -19,8 +18,6 @@ const boardPresenter = new BoardPresenter({
 });
 
 render(new FilterView({filters}), siteFiltersElement);
-//render(new TripFilterView(), siteFiltersElement); // Фильтры EVERYTHING, FUTURE, PAST и т.д
-render(new TripSortView(), siteEventsElement); // Сортировка DAY, EVENT, TIME, PRICE, OFFER
 
 boardPresenter.init(); //Вызов презентера и ОТРИСОВКА!!! информации про маршрут в шапке и 2=х вьюшек
 
