@@ -1,5 +1,5 @@
-import PointView from '../view/trip-point-view.js'; //Точка маршрута
-import EditorPointView from '../view/trip-edit-point-view.js';//Форма редактирования
+import PointView from '../view/point-view.js'; //Точка маршрута
+import EditorPointView from '../view/editor-point-view.js';//Форма редактирования
 import { render, replace, remove } from '../framework/render.js';
 //import { updateItem } from '../utils.js';
 const Mode = {

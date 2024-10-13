@@ -1,6 +1,6 @@
-import TripInfoView from '../view/trip-info-view.js'; //Инфо в шапке про маршрут
-import SortView from '../view/trip-event-view.js'; //Сортировка DAY, EVENT, PRICE
-import EmptyListView from '../view/list-message-view.js';//Пустой лист без поинтов
+import TripInfoView from '../view/info-view.js'; //Инфо в шапке про маршрут
+import SortView from '../view/sort-view.js'; //Сортировка DAY, EVENT, PRICE
+import EmptyListView from '../view/message-view.js';//Пустой лист без поинтов
 import PointPresenter from './point-presenter.js';
 import EventsList from '../view/events-list.js';
 import { render } from '../framework/render.js';
