@@ -5,7 +5,7 @@ import { render, replace } from '../framework/render.js';
 import EmptyListView from '../view/list-message-view.js';//Пустой лист без поинтов
 import { EMPTY_LIST } from '../constant/const.js';
 const siteMainElement = document.querySelector('.page-body');
-const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
+const siteTripInfo = siteMainElement.querySelector('.trip-info'); //Инфо в шапке про маршрут
 export default class BoardPresenter {
   #container = null;
   #pointsModel = null;
