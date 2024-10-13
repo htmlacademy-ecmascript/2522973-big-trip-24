@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-view.js';
 import { TYPES } from '../utils-constant/constant.js';
 import { createOfferItemTemplate, createTypeGroupTemplate } from '../utils-constant/utils.js';
 
@@ -98,7 +98,7 @@ function createAddPointTemplate(point, allOffers, allDestination, pointDestinati
   </li>`
   );
 }
-export default class EditorPointView extends AbstractView{
+export default class EditorPointView extends AbstractStatefulView{
   #point = null;
   #allOffers = [];
   #allDestination = [];
@@ -140,4 +140,17 @@ export default class EditorPointView extends AbstractView{
     evt.preventDefault();
     this.#onSubmitButtonClick(this.#point);
   };
+
+  static parsePointToState(point, pointDestination, typeOffers) {
+    return {
+      ...point,
+      destination: pointDestination,
+      typeOffers
+    };
+  }
+
+  static parseStateToPoint(state) {
+    const point = {...state};
+    return point;
+  }
 }
