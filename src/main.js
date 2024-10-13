@@ -3,7 +3,7 @@ import BoardPresenter from './presenter/board-presenter.js';
 import PointsModel from './model/point-model.js';
 import FilterView from './view/filter-view.js';
 import { render } from './framework/render.js';
-import { generateFilters } from './mock/filters-mock.js';
+import { generateFilters } from './utils-constant/utils.js';
 
 const siteMainElement = document.querySelector('.page-body');
 const siteTripInfoElement = siteMainElement.querySelector('.trip-main'); // шапка
