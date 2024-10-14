@@ -1,13 +1,11 @@
-import TripInfoView from '../view/trip-info-view.js'; //Инфо в шапке про маршрут
-import SortView from '../view/trip-event-view.js'; //Сортировка DAY, EVENT, PRICE
-//import PointView from '../view/trip-point-view.js'; //Точка маршрута
-//import EditorPointView from '../view/trip-edit-point-view.js';//Форма редактирования
-import EmptyListView from '../view/list-message-view.js';//Пустой лист без поинтов
+import TripInfoView from '../view/info-view.js'; //Инфо в шапке про маршрут
+import SortView from '../view/sort-view.js'; //Сортировка DAY, EVENT, PRICE
+import EmptyListView from '../view/message-view.js';//Пустой лист без поинтов
 import PointPresenter from './point-presenter.js';
 import EventsList from '../view/events-list.js';
 import { render } from '../framework/render.js';
-import { EMPTY_LIST } from '../constant/const.js';
-import { updateItem } from '../utils.js';
+import { EMPTY_LIST } from '../utils-constant/constant.js';
+import { updateItem } from '../utils-constant/utils.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
 import { SortType } from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');

@@ -1,5 +1,5 @@
-import PointView from '../view/trip-point-view.js'; //Точка маршрута
-import EditorPointView from '../view/trip-edit-point-view.js';//Форма редактирования
+import PointView from '../view/point-view.js'; //Точка маршрута
+import EditorPointView from '../view/editor-point-view.js';//Форма редактирования
 import { render, replace, remove } from '../framework/render.js';
 //import { updateItem } from '../utils.js';
 const Mode = {
@@ -42,7 +42,8 @@ export default class PointPresenter {
 
     this. #pointEditComponent = new EditorPointView({ //Форма редактирования
       point: this.#point,
-      allOffers: this.#pointsModel.getOffersByType(point.type),
+      typeOffers: this.#pointsModel.getOffersByType(point.type),
+      allOffers: this.#pointsModel.offers,
       pointDestination: this.#pointsModel.getDestinationsById(point.destination),
       allDestination: this.#pointsModel.destinations,
       onCloseEditButtonClick: this.#onCloseEditButtonClick,
