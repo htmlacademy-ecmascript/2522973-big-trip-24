@@ -1,4 +1,4 @@
-import PointView from '../view/point-view.js'; //Точка маршрута
+import PointView from '../view/point-view.js'; // Точка маршрута
 import EditorPointView from '../view/editor-point-view.js';//Форма редактирования
 import { render, replace, remove } from '../framework/render.js';
 //import { updateItem } from '../utils.js';
@@ -46,6 +46,8 @@ export default class PointPresenter {
       allOffers: this.#pointsModel.offers,
       pointDestination: this.#pointsModel.getDestinationsById(point.destination),
       allDestination: this.#pointsModel.destinations,
+      onFormSubmit: this.#handleFormClick,
+      onEditRollUp: this.#handleFormClick,
       onCloseEditButtonClick: this.#onCloseEditButtonClick,
       onSubmitButtonClick: this.#onSubmitButtonClick
     });
@@ -85,6 +87,11 @@ export default class PointPresenter {
       this.#replaceFormToPoint();
       //document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
+  };
+
+  #handleFormClick = (point) => {
+    this.#handleDataChange(point);
+    this.#replaceFormToPoint();
   };
 
   #pointEditHandler = () => {

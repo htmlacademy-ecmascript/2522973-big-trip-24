@@ -120,7 +120,7 @@ export default class BoardPresenter {
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
-  #renderBoard() { //Отображение всех остальных компонентов
+  #renderBoard() { // Отображение всех остальных компонентов
     this.#renderInfo();
     this.#renderSort();
     this.boardOffers = [...this.#pointsModel.offers];
