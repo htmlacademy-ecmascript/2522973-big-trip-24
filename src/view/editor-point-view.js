@@ -24,6 +24,17 @@ function createAddPointTemplate(state, allDestination) {
       return createOfferItemTemplate(type, offer.title, offer.price, offer.id, checkedClassName);
     }).join('');
 
+  const createSectionOffers = typeOffers.offers.length > 0
+    ? `<section class="event__section  event__section--offers">
+        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
+        <div class="event__available-offers">
+          ${createAllOffers}
+        </div>
+      </section>
+    `
+    : '';
+
   const createDestinationTemplate = allDestination
     .map((item) => `<option value="${item.name}"></option>`).join('');
 
@@ -83,7 +94,7 @@ function createAddPointTemplate(state, allDestination) {
         <section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
           <div class="event__available-offers">
-            ${createAllOffers}
+            ${createSectionOffers}
           </div>
         </section>
         <section class="event__section  event__section--destination">
@@ -101,21 +112,23 @@ function createAddPointTemplate(state, allDestination) {
   );
 }
 export default class EditorPointView extends AbstractStatefulView{
-  #point = null;
+  #initialpoint = null;
   #allOffers = null;
   #allDestination = [];
-  #pointDestination = null;
-  #onCloseEditButtonClick = null;
-  #onSubmitButtonClick = null;
+  //#pointDestination = null;
+  //#onCloseEditButtonClick = null;
+  //#onSubmitButtonClick = null;
   #handleFormSubmit = null;
   #handleEditRollUp = null;
-  constructor({point, typeOffers, allOffers, pointDestination, allDestination, onCloseEditButtonClick, onSubmitButtonClick}) {
+  constructor({point, typeOffers, allOffers, pointDestination, allDestination, onFormSubmit, onEditRollup}) {
     super();
-    this.#point = point;
+    this.#initialpoint = point;
     this.#allOffers = allOffers;
     this.#allDestination = allDestination;
-    this.#pointDestination = pointDestination;
-    this.#onCloseEditButtonClick = onCloseEditButtonClick;
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleEditRollUp = onEditRollup;
+    //this.#pointDestination = pointDestination;
+    //this.#onCloseEditButtonClick = onCloseEditButtonClick;
     this._setState(EditorPointView.parsePointToState(point, pointDestination.id, typeOffers));
     this._restoreHandlers();
   }
@@ -142,8 +155,8 @@ export default class EditorPointView extends AbstractStatefulView{
 
   reset() {
     this.updateElement({
-      ...this.#point,
-      typeOffers: this.#allOffers.find((offer) => offer.type === this.#point.type),
+      ...this.#initialpoint,
+      typeOffers: this.#allOffers.find((offer) => offer.type === this.#initialpoint.type),
     });
   }
 
@@ -169,12 +182,12 @@ export default class EditorPointView extends AbstractStatefulView{
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(EditorPointView.parseStateToPoint(this.#point));
+    this.#handleFormSubmit(EditorPointView.parseStateToPoint(this.#initialpoint));
   };
 
   #editRollUpHandler = (evt) => {
     evt.preventDefault();
-    this.#handleEditRollUp(EditorPointView.parseStateToPoint(this.#point));
+    this.#handleEditRollUp(EditorPointView.parseStateToPoint(this.#initialpoint));
   };
 
   #dateFromChangeHandler = ([userDate]) => {
