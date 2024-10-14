@@ -107,13 +107,13 @@ export default class EditorPointView extends AbstractStatefulView{
   #allOffers = null;
   #allDestination = [];
   #pointDestination = null;
-  //#onCloseEditButtonClick = null;
-  //#onSubmitButtonClick = null;
+  #onCloseEditButtonClick = null;
+  #onSubmitButtonClick = null;
   #handleFormSubmit = null;
   #handleEditRollUp = null;
   #datepickerStart = null;
   #datepickerEnd = null;
-  constructor({point, typeOffers, allOffers, pointDestination, allDestination, onFormSubmit, onEditRollup}) {
+  constructor({point, typeOffers, allOffers, pointDestination, allDestination, onFormSubmit, onEditRollup, onCloseEditButtonClick}) {
     super();
     this.#point = point;
     this.#allOffers = allOffers;
@@ -121,7 +121,7 @@ export default class EditorPointView extends AbstractStatefulView{
     this.#pointDestination = pointDestination;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleEditRollUp = onEditRollup;
-    //this.#onCloseEditButtonClick = onCloseEditButtonClick;
+    this.#onCloseEditButtonClick = onCloseEditButtonClick;
     this._setState(EditorPointView.parsePointToState(point, pointDestination.id, typeOffers));
     this._restoreHandlers();
   }
