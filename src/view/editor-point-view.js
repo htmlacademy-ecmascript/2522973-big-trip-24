@@ -12,8 +12,8 @@ function createPicturesTemplate(photo) {
 }
 
 function createAddPointTemplate(state, allDestination) {
+
   const { basePrice, type, offers, typeOffers, destination } = state;
-  // { basePrice, type } = point;
   const typeName = type[0].toUpperCase() + type.slice(1, type.length);
   const pointDestination = allDestination.find((item) => item.id === destination);
   const { name, description, pictures } = pointDestination;
@@ -104,7 +104,6 @@ function createAddPointTemplate(state, allDestination) {
                         <div class="event__photos-tape">
           ${createPicturesTemplate(pictures)}
                         </div>
-
         </section>
       </section>
     </form>
@@ -112,14 +111,13 @@ function createAddPointTemplate(state, allDestination) {
   );
 }
 export default class EditorPointView extends AbstractStatefulView{
+
   #initialpoint = null;
   #allOffers = null;
   #allDestination = [];
-  //#pointDestination = null;
-  //#onCloseEditButtonClick = null;
-  //#onSubmitButtonClick = null;
   #handleFormSubmit = null;
   #handleEditRollUp = null;
+
   constructor({point, typeOffers, allOffers, pointDestination, allDestination, onFormSubmit, onEditRollup}) {
     super();
     this.#initialpoint = point;
@@ -127,8 +125,6 @@ export default class EditorPointView extends AbstractStatefulView{
     this.#allDestination = allDestination;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleEditRollUp = onEditRollup;
-    //this.#pointDestination = pointDestination;
-    //this.#onCloseEditButtonClick = onCloseEditButtonClick;
     this._setState(EditorPointView.parsePointToState(point, pointDestination.id, typeOffers));
     this._restoreHandlers();
   }
@@ -176,7 +172,7 @@ export default class EditorPointView extends AbstractStatefulView{
     this.element.querySelector('.event__input--price')
       .addEventListener('input', this.#priceChangeHandler);
 
-    //this.#setDatepickerStart();
+    // this.#setDatepickerStart();
     //this.#setDatepickerEnd();
   }
 
