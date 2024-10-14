@@ -113,7 +113,6 @@ export default class EditorPointView extends AbstractStatefulView{
   #handleEditRollUp = null;
   #datepickerStart = null;
   #datepickerEnd = null;
-
   constructor({point, typeOffers, allOffers, pointDestination, allDestination, onCloseEditButtonClick, onSubmitButtonClick}) {
     super();
     this.#point = point;
