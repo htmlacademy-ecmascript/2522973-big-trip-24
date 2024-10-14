@@ -11,15 +11,17 @@ function createPicturesTemplate(photo) {
   }, '');
 }
 
-function createAddPointTemplate(point, allOffers, allDestination, pointDestination) {
-  const { basePrice, type } = point;
+function createAddPointTemplate(state, allDestination) {
+  const { basePrice, type, offers, typeOffers, destination } = state;
+  // { basePrice, type } = point;
   const typeName = type[0].toUpperCase() + type.slice(1, type.length);
+  const pointDestination = allDestination.find((item) => item.id === destination);
   const { name, description, pictures } = pointDestination;
 
-  const createAllOffers = allOffers.offers
+  const createAllOffers = typeOffers.offers
     .map((offer) => {
-      const checkedClassName = point.offers.includes(offer.id) ? 'checked' : '';
-      return createOfferItemTemplate(allOffers.type, offer.title, offer.price, checkedClassName);
+      const checkedClassName = offers.includes(offer.id) ? 'checked' : '';
+      return createOfferItemTemplate(type, offer.title, offer.price, offer.id, checkedClassName);
     }).join('');
 
   const createDestinationTemplate = allDestination
@@ -100,24 +102,25 @@ function createAddPointTemplate(point, allOffers, allDestination, pointDestinati
 }
 export default class EditorPointView extends AbstractStatefulView{
   #point = null;
-  #allOffers = [];
+  #allOffers = null;
   #allDestination = [];
   #pointDestination = null;
   #onCloseEditButtonClick = null;
   #onSubmitButtonClick = null;
-  constructor({point, allOffers, allDestination, pointDestination, onCloseEditButtonClick, onSubmitButtonClick}) {
+  constructor({point, typeOffers, allOffers, pointDestination, allDestination, onCloseEditButtonClick, onSubmitButtonClick}) {
     super();
     this.#point = point;
     this.#allOffers = allOffers;
     this.#allDestination = allDestination;
-    this.#pointDestination = pointDestination;
+    //this.#pointDestination = pointDestination;
     this.#onCloseEditButtonClick = onCloseEditButtonClick;
+    this._setState(EditorPointView.parsePointToState(point, pointDestination.id, typeOffers));
     this.#onSubmitButtonClick = onSubmitButtonClick;
     this.#setEventListeners();
   }
 
   get template() {
-    return createAddPointTemplate(this.#point, this.#allOffers, this.#allDestination, this.#pointDestination);
+    return createAddPointTemplate(this._state, this.#allDestination);
   }
 
   #setEventListeners() {
@@ -140,4 +143,17 @@ export default class EditorPointView extends AbstractStatefulView{
     evt.preventDefault();
     this.#onSubmitButtonClick(this.#point);
   };
+
+  static parsePointToState(point, pointDestination, typeOffers) {
+    return {
+      ...point,
+      destination: pointDestination,
+      typeOffers
+    };
+  }
+
+  static parseStateToPoint(state) {
+    const point = {...state};
+    return point;
+  }
 }

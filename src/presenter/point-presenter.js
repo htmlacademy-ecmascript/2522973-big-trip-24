@@ -42,7 +42,8 @@ export default class PointPresenter {
 
     this. #pointEditComponent = new EditorPointView({ //Форма редактирования
       point: this.#point,
-      allOffers: this.#pointsModel.getOffersByType(point.type),
+      typeOffers: this.#pointsModel.getOffersByType(point.type),
+      allOffers: this.#pointsModel.offers,
       pointDestination: this.#pointsModel.getDestinationsById(point.destination),
       allDestination: this.#pointsModel.destinations,
       onCloseEditButtonClick: this.#onCloseEditButtonClick,
