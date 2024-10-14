@@ -46,8 +46,10 @@ export default class PointPresenter {
       allOffers: this.#pointsModel.offers,
       pointDestination: this.#pointsModel.getDestinationsById(point.destination),
       allDestination: this.#pointsModel.destinations,
-      onCloseEditButtonClick: this.#onCloseEditButtonClick,
-      onSubmitButtonClick: this.#onSubmitButtonClick
+      onFormSubmit: this.#handleFormClick,
+      onEditRollUp: this.#handleFormClick,
+      //onCloseEditButtonClick: this.#onCloseEditButtonClick,
+      //onSubmitButtonClick: this.#onSubmitButtonClick
     });
 
     if (prevTaskComponent === null || prevTaskEditComponent === null) {
@@ -85,6 +87,11 @@ export default class PointPresenter {
       this.#replaceFormToPoint();
       //document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
+  };
+
+  #handleFormClick = (point) => {
+    this.#handleDataChange(point);
+    this.#replaceFormToPoint();
   };
 
   #pointEditHandler = () => {
