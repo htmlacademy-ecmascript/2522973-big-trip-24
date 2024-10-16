@@ -2,7 +2,6 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import { TYPES } from '../utils-constant/constant.js';
-//import { createTypeGroupTemplate } from '../utils-constant/utils.js';
 
 function createPicturesTemplate(photo) {
   return photo.reduce((acc, {src}) => {
@@ -27,21 +26,21 @@ function createAddPointTemplate(state, allDestination) {
   const pointDestination = allDestination.find((item) => item.id === destination);
   const { name, description, pictures } = pointDestination;
 
-  const createOfferItemTemplate = (offerItem, isCheckedOfferItem) =>
+  const createOfferTemplate = (offer, isCheckOffer) =>
     `
       <div class="event__offer-selector">
-        <input class="event__offer-checkbox visually-hidden" id="event-offer-${offerItem.id}-1" type="checkbox" name="event-offer-${type.toLowerCase()}" value="${offerItem.id}" ${isCheckedOfferItem ? 'checked' : ''}>
-        <label class="event__offer-label" for="event-offer-${offerItem.id}-1">
-          <span class="event__offer-title">${offerItem.title}</span>
+        <input class="event__offer-checkbox visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" name="event-offer-${type.toLowerCase()}" value="${offer.id}" ${isCheckOffer ? 'checked' : ''}>
+        <label class="event__offer-label" for="event-offer-${offer.id}-1">
+          <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;
-          <span class="event__offer-price">${offerItem.price}</span>
+          <span class="event__offer-price">${offer.price}</span>
         </label>
       </div>
     `;
 
   const createAllOffersTemplate = typeOffers.offers.map((offerItem) => {
     const isCheckedOfferItem = offers.includes(offerItem.id);
-    return createOfferItemTemplate(offerItem, isCheckedOfferItem);
+    return createOfferTemplate(offerItem, isCheckedOfferItem);
   }).join('');
 
   const createDestinationTemplate = allDestination
