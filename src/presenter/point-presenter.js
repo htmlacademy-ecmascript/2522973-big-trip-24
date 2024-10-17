@@ -47,9 +47,8 @@ export default class PointPresenter {
       pointDestination: this.#pointsModel.getDestinationsById(point.destination),
       allDestination: this.#pointsModel.destinations,
       onFormSubmit: this.#handleFormClick,
-      onEditRollUp: this.#handleFormClick,
       onCloseEditButtonClick: this.#onCloseEditButtonClick,
-      onSubmitButtonClick: this.#onSubmitButtonClick
+      //onSubmitButtonClick: this.#onSubmitButtonClick
     });
 
     if (prevTaskComponent === null || prevTaskEditComponent === null) {

@@ -127,17 +127,15 @@ export default class EditorPointView extends AbstractStatefulView{
   #onCloseEditButtonClick = null;
   #onSubmitButtonClick = null;
   #handleFormSubmit = null;
-  #handleEditRollUp = null;
   #datepickerStart = null;
   #datepickerEnd = null;
-  constructor({point, typeOffers, allOffers, pointDestination, allDestination, onFormSubmit, onCloseEditButtonClick}) {
+  constructor({point, typeOffers, allOffers, pointDestination, onFormSubmit, allDestination, onCloseEditButtonClick}) {
     super();
     this.#point = point;
     this.#allOffers = allOffers;
     this.#allDestination = allDestination;
     this.#pointDestination = pointDestination;
     this.#handleFormSubmit = onFormSubmit;
-    //this.#handleEditRollUp = onEditRollup;
     this.#onCloseEditButtonClick = onCloseEditButtonClick;
     this._setState(EditorPointView.parsePointToState(point, pointDestination.id, typeOffers));
     this._restoreHandlers();
@@ -173,7 +171,7 @@ export default class EditorPointView extends AbstractStatefulView{
       .addEventListener('submit', this.#formSubmitHandler);
 
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#editRollUpHandler);
+      .addEventListener('click', this.#closeEditButtonClickHandler);
 
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#typeListChangeHandler);
@@ -184,6 +182,10 @@ export default class EditorPointView extends AbstractStatefulView{
     this.element.querySelector('.event__input--price')
       .addEventListener('input', this.#priceChangeHandler);
 
+    this.element
+      .querySelector('.event__save-btn')
+      .addEventListener('submit', this.#formSubmitHandler);
+
     this.#setDatepickerStart();
     this.#setDatepickerEnd();
   }
@@ -191,11 +193,6 @@ export default class EditorPointView extends AbstractStatefulView{
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit(EditorPointView.parseStateToPoint(this.#point));
-  };
-
-  #editRollUpHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleEditRollUp(EditorPointView.parseStateToPoint(this.#point));
   };
 
   #dateFromChangeHandler = ([userDate]) => {
@@ -207,11 +204,6 @@ export default class EditorPointView extends AbstractStatefulView{
   #closeEditButtonClickHandler = (evt) => {
     evt.preventDefault();
     this.#onCloseEditButtonClick();
-  };
-
-  #submitButtonClickHandler = (evt) => {
-    evt.preventDefault();
-    this.#onSubmitButtonClick(this.#point);
   };
 
   #dateToChangeHandler = ([userDate]) => {
