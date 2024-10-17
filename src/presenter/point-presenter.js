@@ -1,7 +1,7 @@
 import PointView from '../view/point-view.js'; // Точка маршрута
 import EditorPointView from '../view/editor-point-view.js';//Форма редактирования
 import { render, replace, remove } from '../framework/render.js';
-//import { updateItem } from '../utils.js';
+
 const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING',
@@ -48,7 +48,6 @@ export default class PointPresenter {
       allDestination: this.#pointsModel.destinations,
       onFormSubmit: this.#handleFormClick,
       onCloseEditButtonClick: this.#onCloseEditButtonClick,
-      //onSubmitButtonClick: this.#onSubmitButtonClick
     });
 
     if (prevTaskComponent === null || prevTaskEditComponent === null) {
@@ -84,7 +83,7 @@ export default class PointPresenter {
     if(evt.key === 'Escape') {
       evt.preventDefault();
       this.#replaceFormToPoint();
-      //document.removeEventListener('keydown', this.#escKeyDownHandler);
+      document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   };
 
@@ -95,12 +94,6 @@ export default class PointPresenter {
 
   #onFavoriteClick = () => {
     this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
-  };
-
-
-  #onSubmitButtonClick = () => {
-    this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #onOpenEditButtonClick = () => {

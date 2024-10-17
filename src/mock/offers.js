@@ -1,5 +1,3 @@
-//import { getRandomArrayElement } from '../utils.js';
-//import { TYPE, OFFERS } from '../const.js';
 
 const mockOffers = [
   {

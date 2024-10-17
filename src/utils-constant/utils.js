@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
-import { filter } from '../constant/filter-const.js';
-
+import { filter } from './constant.js';
 const getTimeDifference = ({dateFrom, dateTo}) => dayjs(dateTo).diff(dayjs(dateFrom));
 const sortByPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
 const sortByTime = (pointA, pointB) => getTimeDifference(pointB) - getTimeDifference(pointA);

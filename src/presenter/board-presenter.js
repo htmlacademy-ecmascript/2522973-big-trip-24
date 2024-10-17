@@ -4,10 +4,8 @@ import EmptyListView from '../view/message-view.js';//Пустой лист бе
 import PointPresenter from './point-presenter.js';
 import EventsList from '../view/events-list.js';
 import { render } from '../framework/render.js';
-import { EMPTY_LIST } from '../utils-constant/constant.js';
-import { updateItem } from '../utils-constant/utils.js';
-import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
-import { SortType } from '../utils-constant/constant.js';
+import { sortByPrice, sortByTime, sortByDay, updateItem } from '../utils-constant/utils.js';
+import { SortType, EMPTY_LIST } from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
 
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
