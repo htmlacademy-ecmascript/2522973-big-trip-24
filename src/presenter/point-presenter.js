@@ -94,19 +94,6 @@ export default class PointPresenter {
     this.#replaceFormToPoint();
   };
 
-  #pointEditHandler = () => {
-    this.#replacePointToForm();
-  };
-
-  #pointSubmitHandler = (point) => {
-    this.#handleDataChange(point);
-    this.#replaceFormToPoint();
-  };
-
-  #pointCloseHandler = () => {
-    this.#replaceFormToPoint();
-  };
-
   #onFavoriteClick = () => {
     this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
   };
