@@ -1,3 +1,5 @@
+import { isEventOver, isFutureEvent } from '../utils-constant/date-time.js';
+
 const TYPES = [
   'Taxi',
   'Bus',
@@ -46,10 +48,26 @@ const SortType = {
   OFFERS: 'Offers'
 };
 
+const FiltersPoint = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past'
+};
+
+const filter = {
+  [FiltersPoint.EVERYTHING]: (points) => [...points],
+  [FiltersPoint.FUTURE]: (points) => points.filter((point) => isFutureEvent(point.dateFrom)),
+  [FiltersPoint.PRESENT]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
+  [FiltersPoint.PAST]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
+};
+
 export {
   SortType,
   TYPES,
   CITIES,
   OFFERS,
-  EMPTY_LIST
+  EMPTY_LIST,
+  FiltersPoint,
+  filter
 };

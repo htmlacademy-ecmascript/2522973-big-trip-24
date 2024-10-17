@@ -2,7 +2,6 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import { TYPES } from '../utils-constant/constant.js';
-import { createOfferItemTemplate, createTypeGroupTemplate } from '../utils-constant/utils.js';
 
 function createPicturesTemplate(photo) {
   return photo.reduce((acc, {src}) => {
@@ -13,6 +12,13 @@ function createPicturesTemplate(photo) {
   }, '');
 }
 
+const createTypeGroupTemplate = (group, className) => `
+  <div class="event__type-item">
+    <input id="event-type-${group.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${group.toLowerCase()}" ${className}>
+    <label class="event__type-label  event__type-label--${group.toLowerCase()}" for="event-type-${group.toLowerCase()}-1">${group}</label>
+  </div>
+`;
+
 function createAddPointTemplate(state, allDestination) {
   const { basePrice, type, offers, typeOffers, destination } = state;
   // { basePrice, type } = point;
@@ -20,11 +26,22 @@ function createAddPointTemplate(state, allDestination) {
   const pointDestination = allDestination.find((item) => item.id === destination);
   const { name, description, pictures } = pointDestination;
 
-  const createAllOffers = typeOffers.offers
-    .map((offer) => {
-      const checkedClassName = offers.includes(offer.id) ? 'checked' : '';
-      return createOfferItemTemplate(type, offer.title, offer.price, offer.id, checkedClassName);
-    }).join('');
+  const createOfferTemplate = (offer, isCheckOffer) =>
+    `
+      <div class="event__offer-selector">
+        <input class="event__offer-checkbox visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" name="event-offer-${type.toLowerCase()}" value="${offer.id}" ${isCheckOffer ? 'checked' : ''}>
+        <label class="event__offer-label" for="event-offer-${offer.id}-1">
+          <span class="event__offer-title">${offer.title}</span>
+          &plus;&euro;&nbsp;
+          <span class="event__offer-price">${offer.price}</span>
+        </label>
+      </div>
+    `;
+
+  const createAllOffersTemplate = typeOffers.offers.map((offerItem) => {
+    const isCheckedOfferItem = offers.includes(offerItem.id);
+    return createOfferTemplate(offerItem, isCheckedOfferItem);
+  }).join('');
 
   const createDestinationTemplate = allDestination
     .map((item) => `<option value="${item.name}"></option>`).join('');
@@ -85,7 +102,7 @@ function createAddPointTemplate(state, allDestination) {
         <section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
           <div class="event__available-offers">
-            ${createAllOffers}
+            ${createAllOffersTemplate}
           </div>
         </section>
         <section class="event__section  event__section--destination">
@@ -110,17 +127,15 @@ export default class EditorPointView extends AbstractStatefulView{
   #onCloseEditButtonClick = null;
   #onSubmitButtonClick = null;
   #handleFormSubmit = null;
-  #handleEditRollUp = null;
   #datepickerStart = null;
   #datepickerEnd = null;
-  constructor({point, typeOffers, allOffers, pointDestination, allDestination, onFormSubmit, onEditRollup, onCloseEditButtonClick}) {
+  constructor({point, typeOffers, allOffers, pointDestination, onFormSubmit, allDestination, onCloseEditButtonClick}) {
     super();
     this.#point = point;
     this.#allOffers = allOffers;
     this.#allDestination = allDestination;
     this.#pointDestination = pointDestination;
     this.#handleFormSubmit = onFormSubmit;
-    this.#handleEditRollUp = onEditRollup;
     this.#onCloseEditButtonClick = onCloseEditButtonClick;
     this._setState(EditorPointView.parsePointToState(point, pointDestination.id, typeOffers));
     this._restoreHandlers();
@@ -156,7 +171,7 @@ export default class EditorPointView extends AbstractStatefulView{
       .addEventListener('submit', this.#formSubmitHandler);
 
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#editRollUpHandler);
+      .addEventListener('click', this.#closeEditButtonClickHandler);
 
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#typeListChangeHandler);
@@ -167,6 +182,10 @@ export default class EditorPointView extends AbstractStatefulView{
     this.element.querySelector('.event__input--price')
       .addEventListener('input', this.#priceChangeHandler);
 
+    this.element
+      .querySelector('.event__save-btn')
+      .addEventListener('submit', this.#formSubmitHandler);
+
     this.#setDatepickerStart();
     this.#setDatepickerEnd();
   }
@@ -176,15 +195,15 @@ export default class EditorPointView extends AbstractStatefulView{
     this.#handleFormSubmit(EditorPointView.parseStateToPoint(this.#point));
   };
 
-  #editRollUpHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleEditRollUp(EditorPointView.parseStateToPoint(this.#point));
-  };
-
   #dateFromChangeHandler = ([userDate]) => {
     this._setState({
       dateFrom: userDate,
     });
+  };
+
+  #closeEditButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onCloseEditButtonClick();
   };
 
   #dateToChangeHandler = ([userDate]) => {

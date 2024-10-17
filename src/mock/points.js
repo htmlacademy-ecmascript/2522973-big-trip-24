@@ -1,5 +1,4 @@
 import { getRandomArrayElement } from '../utils-constant/utils.js';
-//import { TYPE, CITIES, OFFERS } from '../const.js';
 
 const mockPoints = [
   {
