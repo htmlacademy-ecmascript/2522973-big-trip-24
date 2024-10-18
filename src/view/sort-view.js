@@ -25,18 +25,20 @@ const createSortingTemplate = (checkedSortType) => `
 `;
 
 export default class SortView extends AbstractView {
+  #currentSortType = null;
   #handleSortTypeChange = null;
   #checkedSortType = null;
 
-  constructor({checkedSortType, onSortTypeChange}) {
+  constructor({currentSortType, checkedSortType, onSortTypeChange}) {
     super();
     this.#checkedSortType = checkedSortType;
+    this.#currentSortType = currentSortType;
     this.#handleSortTypeChange = onSortTypeChange;
     this.element.addEventListener('click', this.#sortTypeChangeHandler);
   }
 
   get template() {
-    return createSortingTemplate(this.#checkedSortType);
+    return createSortingTemplate(this.#currentSortType);
   }
 
   #sortTypeChangeHandler = (evt) => {

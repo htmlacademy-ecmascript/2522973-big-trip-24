@@ -62,6 +62,18 @@ const filter = {
   [FiltersPoint.PAST]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
 };
 
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
 export {
   SortType,
   TYPES,
@@ -69,5 +81,7 @@ export {
   OFFERS,
   EMPTY_LIST,
   FiltersPoint,
-  filter
+  filter,
+  UserAction,
+  UpdateType
 };
