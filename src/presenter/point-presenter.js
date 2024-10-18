@@ -1,6 +1,7 @@
 import PointView from '../view/point-view.js'; // Точка маршрута
 import EditorPointView from '../view/editor-point-view.js';//Форма редактирования
 import { render, replace, remove } from '../framework/render.js';
+import { UserAction, UpdateType } from '../utils-constant/constant.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -16,7 +17,7 @@ export default class PointPresenter {
   #handleModeChange = null;
   #handleDataChange = null;
   #mode = Mode.DEFAULT;
-  //#pointsPresenter = new Map();
+  #pointsPresenter = new Map();
   constructor({container, pointsModel, onPointChange, onModeChange}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
@@ -40,7 +41,7 @@ export default class PointPresenter {
       onOpenEditButtonClick: this.#onOpenEditButtonClick
     });
 
-    this. #pointEditComponent = new EditorPointView({ //Форма редактирования
+    this. #pointEditComponent = new EditorPointView({ //Форма редактирования!!!
       point: this.#point,
       typeOffers: this.#pointsModel.getOffersByType(point.type),
       allOffers: this.#pointsModel.offers,
@@ -88,12 +89,20 @@ export default class PointPresenter {
   };
 
   #handleFormClick = (point) => {
-    this.#handleDataChange(point);
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
     this.#replaceFormToPoint();
   };
 
   #onFavoriteClick = () => {
-    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 
   #onOpenEditButtonClick = () => {
