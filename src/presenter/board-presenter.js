@@ -11,7 +11,7 @@ const siteMainElement = document.querySelector('.page-body');
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 const siteEventsElement = siteMainElement.querySelector('.trip-events');
 
-const POINT_COUNT_PER_STEP = 8;
+const POINT_COUNT_PER_STEP = 6;
 
 export default class BoardPresenter {
   #container = null;
