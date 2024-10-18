@@ -16,7 +16,7 @@ export default class PointPresenter {
   #handleModeChange = null;
   #handleDataChange = null;
   #mode = Mode.DEFAULT;
-  //#pointsPresenter = new Map();
+  #pointsPresenter = new Map();
   constructor({container, pointsModel, onPointChange, onModeChange}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
