@@ -40,7 +40,7 @@ export default class PointPresenter {
       onOpenEditButtonClick: this.#onOpenEditButtonClick
     });
 
-    this. #pointEditComponent = new EditorPointView({ //Форма редактирования
+    this. #pointEditComponent = new EditorPointView({ //Форма редактирования!!!
       point: this.#point,
       typeOffers: this.#pointsModel.getOffersByType(point.type),
       allOffers: this.#pointsModel.offers,
