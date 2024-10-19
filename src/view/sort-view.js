@@ -23,13 +23,12 @@ function createSortItemTemplate(type, checkedSortType){
   `;
 }
 
-function createSortListTemplate(checkedSortType) {
+function createSortingTemplate(checkedSortType) {
   return (`
     <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${Object.values(SortType).map((type)=>createSortItemTemplate(type, checkedSortType))
-      .join('')}
-
-    </form>`);
+    ${Object.values(SortType).map((type) => createSortItemTemplate(type, checkedSortType)).join('')}
+    </form>
+    `);
 }
 export default class SortView extends AbstractView {
   #handleSortTypeChange = null;
@@ -43,7 +42,7 @@ export default class SortView extends AbstractView {
   }
 
   get template() {
-    return createSortListTemplate(this.#checkedSortType);
+    return createSortingTemplate(this.#checkedSortType);
   }
 
   #sortTypeChangeHandler = (evt) => {
