@@ -3,9 +3,6 @@ import BoardPresenter from './presenter/board-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/point-model.js';
 import FilterModel from './model/filter-model.js';
-//import FilterView from './view/filter-view.js';
-//import { render } from './framework/render.js';
-//import { generateFilters } from './utils-constant/utils.js';
 
 const siteMainElement = document.querySelector('.page-body');
 const siteTripInfoElement = siteMainElement.querySelector('.trip-main'); // шапка
@@ -13,11 +10,12 @@ const filtersContainer = siteTripInfoElement.querySelector('.trip-controls__filt
 const siteEventsElement = siteMainElement.querySelector('.trip-events'); // Сортировка DAY, EVENT, TIME итд., Форма создания и Точка маршрута
 const filterModel = new FilterModel();
 const pointsModel = new PointsModel(); //Создаем инстанс класса из модели
-//const filters = generateFilters(pointsModel.points);
+
 
 const boardPresenter = new BoardPresenter({
   container: siteEventsElement,
-  pointsModel
+  pointsModel,
+  filterModel
 });
 
 
@@ -30,5 +28,5 @@ const filterPresenter = new FilterPresenter({ //!!!!!!!!!!!!!!!!
 //render(new FilterView({filters}), filtersContainer);
 
 boardPresenter.init();
-filterPresenter.init(); //Вызов презентера и ОТРИСОВКА!!! информации про маршрут в шапке и 2=х вьюшек
+filterPresenter.init();
 

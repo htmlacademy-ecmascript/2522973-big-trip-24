@@ -5,7 +5,7 @@ import PointPresenter from './point-presenter.js';
 import EventsList from '../view/events-list.js';
 import { render, remove } from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay} from '../utils-constant/utils.js';
-import { SortType, EMPTY_LIST, UpdateType, UserAction, POINT_COUNT_PER_STEP } from '../utils-constant/constant.js';
+import { SortType, EMPTY_LIST, UpdateType, UserAction, POINT_COUNT_PER_STEP, filter } from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
 
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
@@ -24,28 +24,34 @@ export default class BoardPresenter {
   #pointPresenters = new Map();
   #points = [];
   #renderedPointCount = POINT_COUNT_PER_STEP;
+  #filterType = null;
 
   #currentSortType = SortType.DAY;
   //#sourcedBoardTasks = []; //!!!!!!!!!!!!!
 
-  constructor({container, pointsModel}) {
+  constructor({container, pointsModel, filterModel}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
-    //this.#filterModel = filterModel;
+    this.#filterModel = filterModel;
     this.#pointsModel.addObserver(this.#handleModelEvent);
-    //this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() { //!!!!!!!!!!!!!!
-    switch (this.#currentSortType) { //!!!!!!!!!!!
-      case SortType.TIME:
-        return [...this.#pointsModel.points].sort(sortByTime); //!!!!!!
-      case SortType.PRICE:
-        return [...this.#pointsModel.points].sort(sortByPrice); //!!!!!
+    this.#filterType = this.#filterModel.filter;
+    const points = this.#pointsModel.points;
+    const filteredPoints = filter[this.#filterType](points);
+
+    switch(this.#currentSortType) {
       case SortType.DAY:
-        return [...this.#pointsModel.points].sort(sortByDay); //!!!!!!!!
+        return filteredPoints.sort(sortByDay);
+      case SortType.PRICE:
+        return filteredPoints.sort(sortByPrice);
+      case SortType.TIME:
+        return filteredPoints.sort(sortByTime);
     }
-    return this.#pointsModel.points;
+
+    return filteredPoints;
   }
 
   init() {

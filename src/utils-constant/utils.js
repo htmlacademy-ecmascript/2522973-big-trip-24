@@ -30,6 +30,9 @@ function updateItem(items, update) {
   return items.map((item) => item.id === update.id ? update : item);
 }
 
+const dateAdapter = (date) => date['$d'] ? dayjs(date['$d']) : dayjs(date);
+const isDatesEqual = (point, updatePoint) => (dateAdapter(point.dateFrom).isSame(dateAdapter(updatePoint.dateFrom)) && dateAdapter(point.dateTo).isSame(dateAdapter(updatePoint.dateTo)));
+
 export {
   sortByPrice,
   sortByTime,
@@ -39,4 +42,5 @@ export {
   getRandomElement,
   getRandomInteger,
   capitalizeFirstLetter,
+  isDatesEqual
 };
