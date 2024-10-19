@@ -7,7 +7,7 @@ function capitalizeText(text){
 
 const DISABLED_SORT_TYPES = [SortType.OFFERS, SortType.EVENT];
 
-function createSortItemTemplate(type, checkedSortType){
+function createSortItemTemplate(type, currentSortType){
   return `
       <div class="trip-sort__item  trip-sort__item--${type}">
         <input id="sort-${type}"
@@ -17,32 +17,32 @@ function createSortItemTemplate(type, checkedSortType){
         name="trip-sort"
         value="sort-${type}"
         ${DISABLED_SORT_TYPES.includes(type) ? 'disabled' : ''}
-        ${type === checkedSortType ? 'checked' : ''}>
+        ${type === currentSortType ? 'checked' : ''}>
         <label class="trip-sort__btn" for="sort-${type}" >${capitalizeText(type)}</label>
       </div>
   `;
 }
 
-function createSortingTemplate(checkedSortType) {
+function createSortingTemplate(currentSortType) {
   return (`
     <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${Object.values(SortType).map((type) => createSortItemTemplate(type, checkedSortType)).join('')}
+    ${Object.values(SortType).map((type) => createSortItemTemplate(type, currentSortType)).join('')}
     </form>
     `);
 }
 export default class SortView extends AbstractView {
   #handleSortTypeChange = null;
-  #checkedSortType = null;
+  #currentSortType = null;
 
-  constructor({checkedSortType, onSortTypeChange}) {
+  constructor({currentSortType, onSortTypeChange}) {
     super();
-    this.#checkedSortType = checkedSortType;
+    this.#currentSortType = currentSortType;
     this.#handleSortTypeChange = onSortTypeChange;
     this.element.addEventListener('click', this.#sortTypeChangeHandler);
   }
 
   get template() {
-    return createSortingTemplate(this.#checkedSortType);
+    return createSortingTemplate(this.#currentSortType);
   }
 
   #sortTypeChangeHandler = (evt) => {
