@@ -99,13 +99,12 @@ export default class BoardPresenter {
     render(this.#infoView, siteTripInfo); // Отображение информации в шапке про маршрут
   }
 
-  #onSortButtonClick = (sortType) => {
+  #handleSortTypeChange = (sortType) => { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (this.#currentSortType === sortType) {
       return;
     }
-
-    this.#clearBoard({resetRenderedPointCount: true});
     this.#currentSortType = sortType;
+    this.#clearBoard({resetRenderedPointCount: true});
     this.#renderBoard();
   };
 
@@ -121,8 +120,8 @@ export default class BoardPresenter {
 
   #renderSort() {
     this.#sortComponent = new SortView({
-      currentSortType: this.#currentSortType,
-      onSortButtonClick: this.#onSortButtonClick,
+      checkedSortType: this.#currentSortType,
+      onSortTypeChange: this.#handleSortTypeChange
     });
 
     render(this.#sortComponent, siteEventsElement); //Сортировка Day, Price...

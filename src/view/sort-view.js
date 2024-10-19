@@ -1,59 +1,56 @@
-//import {createElement} from '../render.js';
 import AbstractView from '../framework/view/abstract-view.js';
-import { SortType } from '../utils-constant/constant.js';
+import {SortType} from '../utils-constant/constant.js';
 
-const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+function capitalizeText(text){
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
 
-const getSortType = (currentSortType) => Object.values(SortType).map((type) => (`
-  <div class="trip-sort__item  trip-sort__item--${type}">
-    <input id="sort-${type}"
-    class="trip-sort__input visually-hidden"
-    type="radio"
-    name="trip-sort"
-    value="sort-${type}"
-    data-sort-type = ${type}
-    ${(type === SortType.EVENT || type === SortType.OFFERS) ? 'disabled' : ''}
-    ${type === currentSortType ? 'checked' : ''}
-    >
-    <label class="trip-sort__btn"
-    for="sort-${type}"
-    >
-      ${capitalizeFirstLetter(type)}
-    </label>
-  </div>
-`)
-).join('');
+const DISABLED_SORT_TYPES = [SortType.OFFERS, SortType.EVENT];
 
-const createSortTemplate = (currentSortType) => (
-  `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${getSortType(currentSortType)}
-  </form>`
-);
+function createSortItemTemplate(type, checkedSortType){
+  return `
+      <div class="trip-sort__item  trip-sort__item--${type}">
+        <input id="sort-${type}"
+        class="trip-sort__input visually-hidden"
+        data-sort-type="${type}"
+        type="radio"
+        name="trip-sort"
+        value="sort-${type}"
+        ${DISABLED_SORT_TYPES.includes(type) ? 'disabled' : ''}
+        ${type === checkedSortType ? 'checked' : ''}>
+        <label class="trip-sort__btn" for="sort-${type}" >${capitalizeText(type)}</label>
+      </div>
+  `;
+}
 
-export default class SortView extends AbstractView{
+function createSortListTemplate(checkedSortType) {
+  return (`
+    <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+    ${Object.values(SortType).map((type)=>createSortItemTemplate(type, checkedSortType))
+      .join('')}
 
-  #onSortButtonClick = null;
-  #currentSortType = SortType.DAY;
+    </form>`);
+}
+export default class SortView extends AbstractView {
+  #handleSortTypeChange = null;
+  #checkedSortType = null;
 
-  constructor({onSortButtonClick, currentSortType}){
+  constructor({checkedSortType, onSortTypeChange}) {
     super();
-    this.#onSortButtonClick = onSortButtonClick;
-    this.#currentSortType = currentSortType;
-    this.#setEventListeners();
+    this.#checkedSortType = checkedSortType;
+    this.#handleSortTypeChange = onSortTypeChange;
+    this.element.addEventListener('click', this.#sortTypeChangeHandler);
   }
 
   get template() {
-    return createSortTemplate(this.#currentSortType);
+    return createSortListTemplate(this.#checkedSortType);
   }
 
-  #sortButtonClickHandler = (evt) => {
-    if(evt.target.classList.contains('trip-sort__input')){
-      this.#onSortButtonClick(evt.target.dataset.sortType);
+  #sortTypeChangeHandler = (evt) => {
+    if (!evt.target.matches('input[name="trip-sort"]')) {
+      return;
     }
+    this.#handleSortTypeChange(evt.target.dataset.sortType);
   };
 
-  #setEventListeners = () => {
-    this.element
-      .addEventListener('click', this.#sortButtonClickHandler);
-  };
 }
