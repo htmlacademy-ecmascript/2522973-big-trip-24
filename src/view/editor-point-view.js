@@ -125,17 +125,19 @@ export default class EditorPointView extends AbstractStatefulView{
   #allDestination = [];
   #pointDestination = null;
   #onCloseEditButtonClick = null;
-  #onSubmitButtonClick = null;
+  //#onSubmitButtonClick = null;
   #handleFormSubmit = null;
   #datepickerStart = null;
   #datepickerEnd = null;
-  constructor({point, typeOffers, allOffers, pointDestination, onFormSubmit, allDestination, onCloseEditButtonClick}) {
+  #handleDeleteClick = null;
+  constructor({point, typeOffers, allOffers, pointDestination, onFormSubmit, allDestination, onDeleteClick, onCloseEditButtonClick}) {
     super();
     this.#point = point;
     this.#allOffers = allOffers;
     this.#allDestination = allDestination;
     this.#pointDestination = pointDestination;
     this.#handleFormSubmit = onFormSubmit;
+    this.#handleDeleteClick = onDeleteClick;
     this.#onCloseEditButtonClick = onCloseEditButtonClick;
     this._setState(EditorPointView.parsePointToState(point, pointDestination.id, typeOffers));
     this._restoreHandlers();
@@ -173,6 +175,9 @@ export default class EditorPointView extends AbstractStatefulView{
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#closeEditButtonClickHandler);
 
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('input', this.#formDeleteClickHandler);
+
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#typeListChangeHandler);
 
@@ -181,6 +186,7 @@ export default class EditorPointView extends AbstractStatefulView{
 
     this.element.querySelector('.event__input--price')
       .addEventListener('input', this.#priceChangeHandler);
+
 
     this.element
       .querySelector('.event__save-btn')
@@ -204,6 +210,11 @@ export default class EditorPointView extends AbstractStatefulView{
   #closeEditButtonClickHandler = (evt) => {
     evt.preventDefault();
     this.#onCloseEditButtonClick();
+  };
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(EditorPointView.parseStateToPoint(this._state));
   };
 
   #dateToChangeHandler = ([userDate]) => {

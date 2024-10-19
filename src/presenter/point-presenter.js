@@ -49,6 +49,7 @@ export default class PointPresenter {
       allDestination: this.#pointsModel.destinations,
       onFormSubmit: this.#handleFormClick,
       onCloseEditButtonClick: this.#onCloseEditButtonClick,
+      onDeleteClick: this.#handleDeleteClick
     });
 
     if (prevTaskComponent === null || prevTaskEditComponent === null) {
@@ -95,6 +96,14 @@ export default class PointPresenter {
       point,
     );
     this.#replaceFormToPoint();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
   };
 
   #onFavoriteClick = () => {

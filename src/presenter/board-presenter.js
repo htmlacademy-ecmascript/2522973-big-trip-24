@@ -32,6 +32,7 @@ export default class BoardPresenter {
     this.#container = container;
     this.#pointsModel = pointsModel;
     this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
   get points() { //!!!!!!!!!!!!!!
@@ -108,16 +109,6 @@ export default class BoardPresenter {
     this.#renderBoard();
   };
 
-  #clearPointsList() {
-    this.#pointPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointPresenters.clear();
-  }
-
-  #renderPointsList() {
-    render(this.#eventsListComponent, this.#container);
-    this.#renderPoints();
-  }
-
   #renderSort() {
     this.#sortComponent = new SortView({
       currentSortType: this.#currentSortType,
@@ -164,14 +155,6 @@ export default class BoardPresenter {
     });
     pointPresenter.init(point);
     this.#pointPresenters.set(point.id, pointPresenter);
-  }
-
-  #renderPointList() {
-    const pointCount = this.points.length;
-    const points = this.points.slice(0, Math.min(pointCount, POINT_COUNT_PER_STEP));
-
-    render(this.#eventsListComponent);
-    this.#renderPoints(points);
   }
 
   #renderBoard() { // Отображение всех остальных компонентов
