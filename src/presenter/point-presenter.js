@@ -98,12 +98,13 @@ export default class PointPresenter {
     this.#replaceFormToPoint();
   };
 
-  #handleDeleteClick = (point) => {
+  #handleDeleteClick = (point) => { //Удаление только первого эл-та
     this.#handleDataChange(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,
       point,
     );
+    //this.#replaceFormToPoint(); //Можно и удалить
   };
 
   #onFavoriteClick = () => {

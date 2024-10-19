@@ -16,7 +16,7 @@ const siteEventsElement = siteMainElement.querySelector('.trip-events');
 export default class BoardPresenter {
   #container = null;
   #pointsModel = null;
-  //#boardPoints = []; //!!!!!!!
+  #filterModel = null;
   #eventsListComponent = new EventsList();
   #emptyList = new EmptyListView({message: EMPTY_LIST.EVERYTHING}); //Нет поинтов
   #sortComponent = null; //Приватное св-во Сортировки
@@ -31,8 +31,9 @@ export default class BoardPresenter {
   constructor({container, pointsModel}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
+    //this.#filterModel = filterModel;
     this.#pointsModel.addObserver(this.#handleModelEvent);
-    this.#pointsModel.addObserver(this.#handleModelEvent);
+    //this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() { //!!!!!!!!!!!!!!

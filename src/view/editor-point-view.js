@@ -125,7 +125,7 @@ export default class EditorPointView extends AbstractStatefulView{
   #allDestination = [];
   #pointDestination = null;
   #onCloseEditButtonClick = null;
-  //#onSubmitButtonClick = null;
+  //#onDeleteButtonClick = null;
   #handleFormSubmit = null;
   #datepickerStart = null;
   #datepickerEnd = null;
@@ -176,7 +176,7 @@ export default class EditorPointView extends AbstractStatefulView{
       .addEventListener('click', this.#closeEditButtonClickHandler);
 
     this.element.querySelector('.event__reset-btn')
-      .addEventListener('input', this.#formDeleteClickHandler);
+      .addEventListener('click', this.#formDeleteClickHandler);
 
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#typeListChangeHandler);
@@ -214,7 +214,7 @@ export default class EditorPointView extends AbstractStatefulView{
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(EditorPointView.parseStateToPoint(this._state));
+    this.#handleDeleteClick(EditorPointView.parseStateToPoint(this.#point));
   };
 
   #dateToChangeHandler = ([userDate]) => {
