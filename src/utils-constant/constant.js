@@ -74,6 +74,8 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
+const POINT_COUNT_PER_STEP = 6;
+
 export {
   SortType,
   TYPES,
@@ -83,5 +85,6 @@ export {
   FiltersPoint,
   filter,
   UserAction,
-  UpdateType
+  UpdateType,
+  POINT_COUNT_PER_STEP
 };

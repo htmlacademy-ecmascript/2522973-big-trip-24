@@ -2,47 +2,58 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { SortType } from '../utils-constant/constant.js';
 
-const DISABLED_SORT_TYPES = [SortType.OFFERS, SortType.EVENT];
+const capitalizeFirstLetter = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
-const createSortingItemTemplate = (type, checkedSortType) => `
+const getSortType = (currentSortType) => Object.values(SortType).map((type) => (`
   <div class="trip-sort__item  trip-sort__item--${type}">
     <input id="sort-${type}"
-    class="trip-sort__input  visually-hidden"
+    class="trip-sort__input visually-hidden"
     type="radio"
-    data-sort-type=${type}
-    name="trip-sort" value="sort-${type}"
-    ${DISABLED_SORT_TYPES.includes(type) ? 'disabled' : ''}
-    ${type === checkedSortType ? 'checked' : ''}
+    name="trip-sort"
+    value="sort-${type}"
+    data-sort-type = ${type}
+    ${(type === SortType.EVENT || type === SortType.OFFERS) ? 'disabled' : ''}
+    ${type === currentSortType ? 'checked' : ''}
     >
-    <label class="trip-sort__btn" for="sort-${type}">${type}</label>
+    <label class="trip-sort__btn"
+    for="sort-${type}"
+    >
+      ${capitalizeFirstLetter(type)}
+    </label>
   </div>
-`;
+`)
+).join('');
 
-const createSortingTemplate = (checkedSortType) => `
-    <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${Object.values(SortType).map((type) => createSortingItemTemplate(type, checkedSortType)).join('').toLowerCase()}
-    </form>
-`;
+const createSortTemplate = (currentSortType) => (
+  `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+    ${getSortType(currentSortType)}
+  </form>`
+);
 
-export default class SortView extends AbstractView {
-  #handleSortTypeChange = null;
-  #checkedSortType = null;
+export default class SortView extends AbstractView{
 
-  constructor({checkedSortType, onSortTypeChange}) {
+  #onSortButtonClick = null;
+  #currentSortType = SortType.DAY;
+
+  constructor({onSortButtonClick, currentSortType}){
     super();
-    this.#checkedSortType = checkedSortType;
-    this.#handleSortTypeChange = onSortTypeChange;
-    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+    this.#onSortButtonClick = onSortButtonClick;
+    this.#currentSortType = currentSortType;
+    this.#setEventListeners();
   }
 
   get template() {
-    return createSortingTemplate(this.#checkedSortType);
+    return createSortTemplate(this.#currentSortType);
   }
 
-  #sortTypeChangeHandler = (evt) => {
-    if (!evt.target.matches('input[name="trip-sort"]')) {
-      return;
+  #sortButtonClickHandler = (evt) => {
+    if(evt.target.classList.contains('trip-sort__input')){
+      this.#onSortButtonClick(evt.target.dataset.sortType);
     }
-    this.#handleSortTypeChange(evt.target.dataset.sortType);
+  };
+
+  #setEventListeners = () => {
+    this.element
+      .addEventListener('click', this.#sortButtonClickHandler);
   };
 }

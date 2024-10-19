@@ -9,9 +9,13 @@ const generateFilters = (points) => Object.entries(filter).map(([filterType, fil
   coont: filterPatternByType(points).length
 }));
 
-function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
+
+const getRandomElement = (items) => {
+  const startFrom = Math.floor(Math.random() * items.length - 5);
+  const endTo = items.length;
+  return items.slice(startFrom, endTo);
+};
+
 function getRandomInteger(min, max) {
   const rand = Math.floor(min + Math.random() * (max + 1 - min));
   return Math.floor(rand);
@@ -32,7 +36,7 @@ export {
   sortByDay,
   generateFilters,
   updateItem,
-  getRandomArrayElement,
+  getRandomElement,
   getRandomInteger,
   capitalizeFirstLetter,
 };

@@ -2,10 +2,8 @@ import Observable from '../framework/observable.js';
 import { getRandomPoint } from '../mock/points.js';
 import { mockOffers } from '../mock/offers.js';
 import { mockDestinations } from '../mock/destination.js';
-const RENDERING_POINT_COUNT = 20; //Количество поинтов (сколько раз отрисуется поинт getRandomPoint)
-
 export default class PointsModel extends Observable {
-  #points = Array.from({length: RENDERING_POINT_COUNT}, getRandomPoint); //Записываем в points массив поинтов
+  #points = getRandomPoint;
   #offers = mockOffers;
   #destination = mockDestinations;
 

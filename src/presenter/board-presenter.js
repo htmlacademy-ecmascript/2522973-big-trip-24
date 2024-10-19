@@ -5,13 +5,13 @@ import PointPresenter from './point-presenter.js';
 import EventsList from '../view/events-list.js';
 import { render, remove } from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay} from '../utils-constant/utils.js';
-import { SortType, EMPTY_LIST, UpdateType, UserAction } from '../utils-constant/constant.js';
+import { SortType, EMPTY_LIST, UpdateType, UserAction, POINT_COUNT_PER_STEP } from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
 
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 const siteEventsElement = siteMainElement.querySelector('.trip-events');
 
-const POINT_COUNT_PER_STEP = 6;
+//const POINT_COUNT_PER_STEP = 6;
 
 export default class BoardPresenter {
   #container = null;
@@ -99,13 +99,13 @@ export default class BoardPresenter {
     render(this.#infoView, siteTripInfo); // Отображение информации в шапке про маршрут
   }
 
-  #handleSortTypeChange = (sortType) => {
+  #onSortButtonClick = (sortType) => {
     if (this.#currentSortType === sortType) {
       return;
     }
 
-    this.#currentSortType = sortType;
     this.#clearBoard({resetRenderedPointCount: true});
+    this.#currentSortType = sortType;
     this.#renderBoard();
   };
 
@@ -122,7 +122,7 @@ export default class BoardPresenter {
   #renderSort() {
     this.#sortComponent = new SortView({
       currentSortType: this.#currentSortType,
-      onSortTypeChange: this.#handleSortTypeChange
+      onSortButtonClick: this.#onSortButtonClick,
     });
 
     render(this.#sortComponent, siteEventsElement); //Сортировка Day, Price...
