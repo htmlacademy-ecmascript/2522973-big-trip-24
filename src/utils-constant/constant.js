@@ -62,6 +62,13 @@ const filter = {
   [FiltersPoint.PAST]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
 };
 
+const NO_POINT_TEXT = {
+  [FiltersPoint.EVERYTHING]: 'Click New Event to create your first point',
+  [FiltersPoint.FUTURE]: 'There are no future events now',
+  [FiltersPoint.PAST]: 'There are no past events now',
+  [FiltersPoint.PRESENT]: 'There are no present events now',
+};
+
 const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
   ADD_POINT: 'ADD_POINT',
@@ -86,5 +93,6 @@ export {
   filter,
   UserAction,
   UpdateType,
-  POINT_COUNT_PER_STEP
+  POINT_COUNT_PER_STEP,
+  NO_POINT_TEXT
 };
