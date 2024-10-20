@@ -133,43 +133,29 @@ export default class BoardPresenter {
     this.#renderBoard();
   };
 
-  #renderSort() {
+  #renderSort() { //Сортировка
     this.#sortComponent = new SortView({
       currentSortType: this.#currentSortType,
       onSortTypeChange: this.#handleSortTypeChange
     });
 
-    render(this.#sortComponent, siteEventsElement); //Сортировка Day, Price...
+    render(this.#sortComponent, siteEventsElement);
   }
 
-  #clearBoard({resetSortType = false} = {}) {
+  #clearBoard({resetSortType = false} = {}) { //Очитска доски
     this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
     remove(this.#sortComponent);
-
     if (resetSortType) {
       this.#currentSortType = SortType.DAY;
     }
-
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
     }
-
-    const pointCount = this.points.length;
-
-    this.#pointPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointPresenters.clear();
-
-    remove(this.#sortComponent);
-    remove(this.#emptyList);
-
-    if (resetSortType) {
-      this.#currentSortType = SortType.DEFAULT;
-    }
   }
 
-  #renderPoints(points) {
+  #renderPointsList(points) {
     points.forEach((point) => this.#renderPoint(point));
   }
 
@@ -186,19 +172,13 @@ export default class BoardPresenter {
 
   #renderBoard() { // Отображение всех остальных компонентов
     this.#renderInfo();
-    //this.#renderSort();
+    this.#renderSort();
     const points = this.points;
     const pointCount = points.length;
     if (pointCount === 0) {
       this.#renderNoPoint();
       return;
     }
-
-    //this.boardOffers = [...this.#pointsModel.offers];
-
-    this.#renderSort();
-    //this.#renderPointList();
-    //render(this.#eventsListComponent);
-    this.#renderPoints(points.slice(0, Math.min(pointCount, this.#renderedPointCount)));
+    this.#renderPointsList(points.slice(0, Math.min(pointCount, this.#renderedPointCount)));
   }
 }
