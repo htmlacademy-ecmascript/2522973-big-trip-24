@@ -20,14 +20,13 @@ export default class BoardPresenter {
   #sortComponent = null; //Приватное св-во Сортировки
   #infoView = new TripInfoView(); //Информация в шапке
   #pointPresenters = new Map();
-  //#points = [];
   #renderedPointCount = POINT_COUNT_PER_STEP; //Поинты беруться отсюда
   #currentSortType = SortType.DAY;
   #noPointComponent = null;
   #newPointPresenter = null;
   #filterType = FiltersPoint.EVERYTHING;
 
-  constructor({container, pointsModel, filterModel}) {
+  constructor({container, pointsModel, filterModel, onNewPointDestroy}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
@@ -39,7 +38,7 @@ export default class BoardPresenter {
       allDestinations: this.destinations,
       pointListContainer: this.#listContainer.element,
       onDataChange: this.#handleViewAction,
-      //onDestroy: onNewPointDestroy
+      onDestroy: onNewPointDestroy
     });
   }
 
