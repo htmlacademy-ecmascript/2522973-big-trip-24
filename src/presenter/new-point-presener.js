@@ -1,5 +1,5 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
-import EditorPointView from '../view/editor-point-view.js';
+import FormPointView from '../view/add-point-view.js';
 import {nanoid} from 'nanoid';
 import {UserAction, UpdateType} from '../utils-constant/constant.js';
 
@@ -23,7 +23,7 @@ export default class NewPointPresenter {
       return;
     }
 
-    this.#pointEditComponent = new EditorPointView({
+    this.#pointEditComponent = new FormPointView({
       allOffers: this.allOffers,
       allDestination: this.allDestination,
       onFormSubmit: this.#handleFormSubmit,
