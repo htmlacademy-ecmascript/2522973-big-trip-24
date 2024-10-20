@@ -52,7 +52,7 @@ function createDetailsTemplate(type, offers, destinationPoint, allOffers) {
     details.push (`
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        ${destinationPoint.description.trim() === 0 ? '' : `<p class="event__destination-description">${destinationPoint.description}</p>`}
+        ${destinationPoint.description.trim() === 0 ? '' : `<p class="event__destination-description">${he.encode(destinationPoint.description)}</p>`}
         ${destinationPoint.picture.length > 0 ?
     `<div class="event__photos-container">
             <div class="event__photos-tape">
@@ -90,7 +90,7 @@ function createEventTemplate(point = BLANK_POINT, allOffers, allDestinations, ed
 
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
-              ${type}
+              ${he.encode(type)}
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destinationPoint ? `${destinationPoint.name}` : '')}" list="destination-list-1" required>
             <datalist id="destination-list-1">
