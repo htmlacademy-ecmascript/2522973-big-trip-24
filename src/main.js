@@ -3,6 +3,8 @@ import BoardPresenter from './presenter/board-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/point-model.js';
 import FilterModel from './model/filter-model.js';
+import EditPointButton from './view/new-point-button-view.js';
+import { render, RenderPosition } from './framework/render.js';
 
 const siteMainElement = document.querySelector('.page-body');
 const siteTripInfoElement = siteMainElement.querySelector('.trip-main'); // шапка
@@ -15,7 +17,8 @@ const pointsModel = new PointsModel(); //Создаем инстанс клас�
 const boardPresenter = new BoardPresenter({
   container: siteEventsElement,
   pointsModel,
-  filterModel
+  filterModel,
+  onNewPointDestroy: handleEditNewPointClose
 });
 
 
@@ -25,7 +28,21 @@ const filterPresenter = new FilterPresenter({ //!!!!!!!!!!!!!!!!
   pointsModel: pointsModel
 });
 
-//render(new FilterView({filters}), filtersContainer);
+
+const newPointButton = new EditPointButton({
+  onClick: handleNewPointButtonClick
+});
+
+function handleNewPointButtonClick() {
+  boardPresenter.createPoint();
+  newPointButton.element.disables = true;
+}
+
+function handleEditNewPointClose() {
+  newPointButton.element.disabled = false;
+}
+
+render(newPointButton, siteTripInfoElement, RenderPosition.BEFOREEND);
 
 boardPresenter.init();
 filterPresenter.init();

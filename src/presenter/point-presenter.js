@@ -90,12 +90,15 @@ export default class PointPresenter {
     }
   };
 
-  #handleFormClick = (state) => {
-    const isMinorUpdate = !isDatesEqual(this.#point, state);
+  #handleFormClick = (update) => {
+    const isMinorUpdate = !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
+    !isDatesEqual(this.#point.dateTo, update.dateTo) ||
+    this.#point.basePrice !== update.basePrice;
+
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
-      state
+      update,
     );
     this.#replaceFormToPoint();
   };

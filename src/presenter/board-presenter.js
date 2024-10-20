@@ -70,13 +70,13 @@ export default class BoardPresenter {
     this.#renderBoard();
   }
 
-  /*
+
   createPoint() {
     this.#currentSortType = SortType.DEFAULT;
     this.#filterModel.setFilter(UpdateType.MAJOR, FiltersPoint.EVERYTHING);
     this.#newPointPresenter.init();
   }
-    */
+
 
   #renderNoPoint() {
     this.#noPointComponent = new EmptyListView({filterType: this.#filterType});
