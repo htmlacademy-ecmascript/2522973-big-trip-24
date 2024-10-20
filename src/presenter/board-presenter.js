@@ -6,30 +6,26 @@ import NewPointPresenter from './new-point-presener.js';
 import ListPoint from '../view/list-point-view.js';
 import { render, remove } from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
-import { SortType, EMPTY_LIST, UpdateType, UserAction, POINT_COUNT_PER_STEP, FiltersPoint, filter} from '../utils-constant/constant.js';
+import { SortType, UpdateType, UserAction, POINT_COUNT_PER_STEP, FiltersPoint, filter} from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
 
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 const siteEventsElement = siteMainElement.querySelector('.trip-events');
-
-//const POINT_COUNT_PER_STEP = 6;
 
 export default class BoardPresenter {
   #container = null;
   #pointsModel = null;
   #filterModel = null;
   #listContainer = new ListPoint();
-  #emptyList = new EmptyListView({message: EMPTY_LIST.EVERYTHING}); //Нет поинтов
   #sortComponent = null; //Приватное св-во Сортировки
   #infoView = new TripInfoView(); //Информация в шапке
   #pointPresenters = new Map();
-  #points = [];
-  #renderedPointCount = POINT_COUNT_PER_STEP;
+  //#points = [];
+  #renderedPointCount = POINT_COUNT_PER_STEP; //Поинты беруться отсюда
   #currentSortType = SortType.DAY;
   #noPointComponent = null;
   #newPointPresenter = null;
   #filterType = FiltersPoint.EVERYTHING;
-  //#sourcedBoardTasks = []; //!!!!!!!!!!!!!
 
   constructor({container, pointsModel, filterModel}) {
     this.#container = container;
@@ -74,11 +70,13 @@ export default class BoardPresenter {
     this.#renderBoard();
   }
 
+  /*
   createPoint() {
     this.#currentSortType = SortType.DEFAULT;
     this.#filterModel.setFilter(UpdateType.MAJOR, FiltersPoint.EVERYTHING);
     this.#newPointPresenter.init();
   }
+    */
 
   #renderNoPoint() {
     this.#noPointComponent = new EmptyListView({filterType: this.#filterType});
