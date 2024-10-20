@@ -41,11 +41,11 @@ const EMPTY_LIST = {
 export { };
 
 const SortType = {
-  DAY: 'Day',
-  EVENT: 'Event',
-  TIME: 'Time',
-  PRICE: 'Price',
-  OFFERS: 'Offers'
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers'
 };
 
 const FiltersPoint = {
