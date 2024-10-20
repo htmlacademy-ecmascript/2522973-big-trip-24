@@ -48,7 +48,7 @@ function createDetailsTemplate(type, offers, destinationPoint, allOffers) {
     </section>`);
   }
 
-  if (destinationPoint !== '' && (destinationPoint.picture.length > 0 || destinationPoint.description.trim() > 0)) {
+  if (destinationPoint !== '' && (destinationPoint.description.trim() > 0)) {
     details.push (`
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
