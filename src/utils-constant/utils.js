@@ -34,6 +34,24 @@ const isDatesEqual = function isDatesEqual(dateA, dateB) {
   return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
 };
 
+const FORMATS = {
+  DATE: 'D MMM',
+  TIME: 'HH:mm',
+  FORM: 'DD/MM/YY HH:mm'
+};
+
+function humanizePointDate(date, format = FORMATS.DATE) {
+  return date ? dayjs(date).format(format) : '';
+}
+
+function toggleOffers(offers, id) {
+  if (offers.includes(id)) {
+    return offers.filter((offer) => offer !== id);
+  }
+  return [...offers, id];
+}
+
+
 export {
   sortByPrice,
   sortByTime,
@@ -43,5 +61,8 @@ export {
   getRandomElement,
   getRandomInteger,
   capitalizeFirstLetter,
-  isDatesEqual
+  isDatesEqual,
+  FORMATS,
+  humanizePointDate,
+  toggleOffers
 };
