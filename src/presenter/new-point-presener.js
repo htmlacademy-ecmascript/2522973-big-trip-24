@@ -7,7 +7,6 @@ export default class NewPointPresenter {
   #pointListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
-
   #pointEditComponent = null;
 
   constructor({allOffers, allDestinations, pointListContainer, onDataChange, onDestroy}) {
@@ -36,7 +35,6 @@ export default class NewPointPresenter {
     this.#handleDestroy();
     remove(this.#pointEditComponent);
     this.#pointEditComponent = null;
-
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 

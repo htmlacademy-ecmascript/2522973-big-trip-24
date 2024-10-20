@@ -20,6 +20,7 @@ export default class BoardPresenter {
   #sortComponent = null; //Приватное св-во Сортировки
   #infoView = new TripInfoView(); //Информация в шапке
   #pointPresenters = new Map();
+
   #renderedPointCount = POINT_COUNT_PER_STEP; //Поинты беруться отсюда
   #currentSortType = SortType.DAY;
   #noPointComponent = null;
@@ -36,7 +37,8 @@ export default class BoardPresenter {
     this.#newPointPresenter = new NewPointPresenter({
       allOffers: this.offers,
       allDestinations: this.destinations,
-      pointListContainer: this.#listContainer.element,
+      pointListContainer: this.#container,
+      //pointListContainer: this.#listContainer.element, // ЗДЕСЬ БЫЛА ОШИБКА!!!!
       onDataChange: this.#handleViewAction,
       onDestroy: onNewPointDestroy
     });
