@@ -142,7 +142,20 @@ export default class BoardPresenter {
     render(this.#sortComponent, siteEventsElement); //Сортировка Day, Price...
   }
 
-  #clearBoard({resetRenderedPointCount = false, resetSortType = false} = {}) {
+  #clearBoard({resetSortType = false} = {}) {
+    this.#newPointPresenter.destroy();
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+    remove(this.#sortComponent);
+
+    if (resetSortType) {
+      this.#currentSortType = SortType.DAY;
+    }
+
+    if (this.#noPointComponent) {
+      remove(this.#noPointComponent);
+    }
+
     const pointCount = this.points.length;
 
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
@@ -150,16 +163,6 @@ export default class BoardPresenter {
 
     remove(this.#sortComponent);
     remove(this.#emptyList);
-    //remove(this.#loadMoreButtonComponent);
-
-    if (resetRenderedPointCount) {
-      this.#renderedPointCount = POINT_COUNT_PER_STEP;
-    } else {
-      // На случай, если перерисовка доски вызвана
-      // уменьшением количества задач (например, удаление или перенос в архив)
-      // нужно скорректировать число показанных задач
-      this.#renderedPointCount = Math.min(pointCount, this.#renderedPointCount);
-    }
 
     if (resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
@@ -191,7 +194,7 @@ export default class BoardPresenter {
       return;
     }
 
-    this.boardOffers = [...this.#pointsModel.offers];
+    //this.boardOffers = [...this.#pointsModel.offers];
 
     this.#renderSort();
     //this.#renderPointList();
