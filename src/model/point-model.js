@@ -2,6 +2,9 @@ import Observable from '../framework/observable.js';
 import { getRandomPoint } from '../mock/points.js';
 import { mockOffers } from '../mock/offers.js';
 import { mockDestinations } from '../mock/destination.js';
+
+const POINT_COUNT = 3;
+getRandomPoint.length = POINT_COUNT;
 export default class PointsModel extends Observable {
   #points = getRandomPoint;
   #offers = mockOffers;
