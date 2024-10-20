@@ -1,6 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { FORMATS, humanizePointDate, toggleOffers } from '../utils/points.js';
-import { capitalizeFirstLetter } from '../utils/common.js';
+import { FORMATS, humanizePointDate, toggleOffers, capitalizeFirstLetter } from '../utils-constant/utils.js';
+//import { capitalizeFirstLetter } from '../utils/common.js';
 import he from 'he';
 import flatpickr from 'flatpickr';
 
