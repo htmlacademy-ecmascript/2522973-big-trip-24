@@ -109,19 +109,23 @@ export default class BoardPresenter {
     switch (updateType) {
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data, this.offers, this.destinations);
+        remove(this.#sortComponent);
         break;
       case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderBoard();
+        remove(this.#sortComponent);
         break;
       case UpdateType.MAJOR:
         this.#clearBoard({resetSortType: true});
         this.#renderBoard();
+        remove(this.#sortComponent);
         break;
       case UpdateType.INIT:
         //this.#isLoading = false;
         //remove(this.#loadingComponent);
         this.#renderBoard();
+        remove(this.#sortComponent); //НАШЕЛ ОШИБКУ!!!!!!!!!
         break;
     }
   };
@@ -141,6 +145,7 @@ export default class BoardPresenter {
     this.#currentSortType = sortType;
     this.#clearBoard({resetRenderedPointCount: true});
     this.#renderBoard();
+    remove(this.#sortComponent);
   };
 
   #renderSort() { //Сортировка
