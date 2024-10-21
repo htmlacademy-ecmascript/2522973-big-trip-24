@@ -51,4 +51,5 @@ render(newPointButton, siteTripInfoElement, RenderPosition.BEFOREEND);
 
 boardPresenter.init();
 filterPresenter.init();
+pointsModel.init(); //Serv
 
