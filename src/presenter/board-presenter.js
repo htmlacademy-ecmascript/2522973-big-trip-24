@@ -183,20 +183,23 @@ export default class BoardPresenter {
   }
 
   #renderBoard() { // Отображение всех остальных компонентов
-  /*
+    this.#renderSort();
+    /*
     if (this.#isLoading) { //Прелоадер, отстутвует надпись , что нет точек на доске
       this.#renderPreloader();
       return;
     }
       */
     this.#renderInfo();
-    this.#renderSort();
+
     const points = this.points;
     const pointCount = points.length;
-    if (pointCount === 0) {
+    /*
+    if (pointCount === 0) { // Рисуется отображение без поинтов, хотя поинты есть!!!
       this.#renderNoPoint();
       return;
     }
+*/
     this.#renderPointsList(points.slice(0, Math.min(pointCount, this.#renderedPointCount)));
   }
 }
