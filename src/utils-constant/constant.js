@@ -82,7 +82,7 @@ const UpdateType = {
   INIT: 'INIT',
 };
 
-const POINT_COUNT_PER_STEP = 6;
+const POINT_COUNT_PER_STEP = 4;
 
 export {
   SortType,

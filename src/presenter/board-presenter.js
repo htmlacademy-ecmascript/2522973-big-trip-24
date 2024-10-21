@@ -4,7 +4,8 @@ import EmptyListView from '../view/message-view.js';//Пустой лист бе
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presener.js';
 import ListPoint from '../view/list-point-view.js';
-import { render, remove } from '../framework/render.js';
+//import PreloaderView from '../view/preloader.js';
+import { render, remove} from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
 import { SortType, UpdateType, UserAction, POINT_COUNT_PER_STEP, FiltersPoint, filter} from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
@@ -20,12 +21,13 @@ export default class BoardPresenter {
   #sortComponent = null; //Приватное св-во Сортировки
   #infoView = new TripInfoView(); //Информация в шапке
   #pointPresenters = new Map();
-
+  //#loadingComponent = new PreloaderView(); //Serv ПРЕЛОАДЕР
   #renderedPointCount = POINT_COUNT_PER_STEP; //Поинты беруться отсюда
   #currentSortType = SortType.DAY;
   #noPointComponent = null;
   #newPointPresenter = null;
   #filterType = FiltersPoint.EVERYTHING;
+  #isLoading = true;
 
   constructor({container, pointsModel, filterModel, onNewPointDestroy}) {
     this.#container = container;
@@ -84,6 +86,11 @@ export default class BoardPresenter {
     render(this.#noPointComponent, this.#container);
   }
 
+  /*
+  #renderPreloader() { //Прелоадер
+    render(this.#loadingComponent, this.#container, RenderPosition.AFTERBEGIN);
+  }
+*/
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
@@ -110,6 +117,11 @@ export default class BoardPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearBoard({resetSortType: true});
+        this.#renderBoard();
+        break;
+      case UpdateType.INIT:
+        //this.#isLoading = false;
+        //remove(this.#loadingComponent);
         this.#renderBoard();
         break;
     }
@@ -152,6 +164,7 @@ export default class BoardPresenter {
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
     }
+    //remove(this.#loadingComponent);
   }
 
   #renderPointsList(points) {
@@ -170,6 +183,12 @@ export default class BoardPresenter {
   }
 
   #renderBoard() { // Отображение всех остальных компонентов
+  /*
+    if (this.#isLoading) { //Прелоадер, отстутвует надпись , что нет точек на доске
+      this.#renderPreloader();
+      return;
+    }
+      */
     this.#renderInfo();
     this.#renderSort();
     const points = this.points;
