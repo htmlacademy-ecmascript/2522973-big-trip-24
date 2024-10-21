@@ -2,46 +2,117 @@ import TripInfoView from '../view/info-view.js'; //Инфо в шапке про
 import SortView from '../view/sort-view.js'; //Сортировка DAY, EVENT, PRICE
 import EmptyListView from '../view/message-view.js';//Пустой лист без поинтов
 import PointPresenter from './point-presenter.js';
-import EventsList from '../view/events-list.js';
-import { render } from '../framework/render.js';
-import { sortByPrice, sortByTime, sortByDay, updateItem } from '../utils-constant/utils.js';
-import { SortType, EMPTY_LIST } from '../utils-constant/constant.js';
+import NewPointPresenter from './new-point-presener.js';
+import ListPoint from '../view/list-point-view.js';
+import { render, remove } from '../framework/render.js';
+import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
+import { SortType, UpdateType, UserAction, POINT_COUNT_PER_STEP, FiltersPoint, filter} from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
 
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
 const siteEventsElement = siteMainElement.querySelector('.trip-events');
 
-//const TASK_COUNT_PER_STEP = 8;
-
 export default class BoardPresenter {
   #container = null;
   #pointsModel = null;
-  #boardPoints = [];
-  #eventsListComponent = new EventsList(); //!!!!!!!!!!!!!!
-  #emptyList = new EmptyListView({message: EMPTY_LIST.EVERYTHING}); //Нет поинтов
-  #sortView = null; //Приватное св-во Сортировки
+  #filterModel = null;
+  #listContainer = new ListPoint();
+  #sortComponent = null; //Приватное св-во Сортировки
   #infoView = new TripInfoView(); //Информация в шапке
   #pointPresenters = new Map();
-  #points = [];
 
-  #currentSortType = SortType.DAY; //!!!!!!!!!!!!!!!!!!!!!!!!!!
-  #sourcedBoardTasks = []; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  #renderedPointCount = POINT_COUNT_PER_STEP; //Поинты беруться отсюда
+  #currentSortType = SortType.DAY;
+  #noPointComponent = null;
+  #newPointPresenter = null;
+  #filterType = FiltersPoint.EVERYTHING;
 
-  constructor({container, pointsModel}) {
+  constructor({container, pointsModel, filterModel, onNewPointDestroy}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
+    this.#filterModel = filterModel;
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
+
+    this.#newPointPresenter = new NewPointPresenter({
+      allOffers: this.offers,
+      allDestinations: this.destinations,
+      pointListContainer: this.#container,
+      //pointListContainer: this.#listContainer.element, // ЗДЕСЬ БЫЛА ОШИБКА!!!!
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy
+    });
+  }
+
+  get points() { //!!!!!!!!!!!!!!
+    this.#filterType = this.#filterModel.filter;
+    const points = this.#pointsModel.points;
+
+    const filteredPoints = filter[this.#filterType](points);
+
+    switch (this.#currentSortType) {
+      case SortType.TIME:
+        return filteredPoints.sort(sortByTime);
+      case SortType.PRICE:
+        return filteredPoints.sort(sortByPrice);
+    }
+    return filteredPoints.sort(sortByDay);
+  }
+
+  get destinations() {
+    return this.#pointsModel.destinations;
+  }
+
+  get offers() {
+    return this.#pointsModel.offers;
   }
 
   init() {
-    this.#boardPoints = [...this.#pointsModel.points].sort(sortByDay);
-    this.#sourcedBoardTasks = [...this.#pointsModel.points];
     this.#renderBoard();
   }
 
-  #handleDataChange = (updatedPoint) => {
-    this.#points = updateItem(this.#points, updatedPoint);
-    this.#sourcedBoardTasks = updateItem(this.#sourcedBoardTasks, updatedPoint); //!!!!!!!!!!!!!!!!!!!!!!
-    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+
+  createPoint() {
+    this.#currentSortType = SortType.DEFAULT;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FiltersPoint.EVERYTHING);
+    this.#newPointPresenter.init();
+  }
+
+
+  #renderNoPoint() {
+    this.#noPointComponent = new EmptyListView({filterType: this.#filterType});
+    render(this.#noPointComponent, this.#container);
+  }
+
+  #handleViewAction = (actionType, updateType, update) => {
+    switch (actionType) {
+      case UserAction.UPDATE_POINT:
+        this.#pointsModel.updatePoint(updateType, update);
+        break;
+      case UserAction.ADD_POINT:
+        this.#pointsModel.addPoint(updateType, update);
+        break;
+      case UserAction.DELETE_POINT:
+        this.#pointsModel.deletePoint(updateType, update);
+        break;
+    }
+  };
+
+
+  #handleModelEvent = (updateType, data) => {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#pointPresenters.get(data.id).init(data, this.offers, this.destinations);
+        break;
+      case UpdateType.MINOR:
+        this.#clearBoard();
+        this.#renderBoard();
+        break;
+      case UpdateType.MAJOR:
+        this.#clearBoard({resetSortType: true});
+        this.#renderBoard();
+        break;
+    }
   };
 
   #handleModeChange = () => {
@@ -52,66 +123,46 @@ export default class BoardPresenter {
     render(this.#infoView, siteTripInfo); // Отображение информации в шапке про маршрут
   }
 
-  #sortPoints(sortType) { //!!!!!!!!!!!!!!!!!!!!!!
-    // 2. Этот исходный массив задач необходим,
-    // потому что для сортировки мы будем мутировать
-    // массив в свойстве _boardTasks
-    switch (sortType) {
-      case 'time':
-        this.#boardPoints.sort(sortByTime);
-        break;
-      case 'price':
-        this.#boardPoints.sort(sortByPrice);
-        break;
-      default:
-        // 3.  А когда пользователь захочет "вернуть всё, как было",
-        // мы просто запишем в _boardTasks исходный массив
-        this.#boardPoints = [...this.#sourcedBoardTasks].sort(sortByDay);
-    }
-
-    this.#currentSortType = sortType;
-  }
-
   #handleSortTypeChange = (sortType) => { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (this.#currentSortType === sortType) {
       return;
     }
-
-    this.#sortPoints(sortType);
-    this.#clearPoints(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    this.#renderEventsList(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //console.log(this.#clearPoints)
+    this.#currentSortType = sortType;
+    this.#clearBoard({resetRenderedPointCount: true});
+    this.#renderBoard();
   };
 
-  #clearPoints() { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  #renderSort() { //Сортировка
+    this.#sortComponent = new SortView({
+      currentSortType: this.#currentSortType,
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+
+    render(this.#sortComponent, siteEventsElement);
+  }
+
+  #clearBoard({resetSortType = false} = {}) { //Очитска доски
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
+    remove(this.#sortComponent);
+    if (resetSortType) {
+      this.#currentSortType = SortType.DAY;
+    }
+    if (this.#noPointComponent) {
+      remove(this.#noPointComponent);
+    }
   }
 
-  #renderEventsList() {
-    render(this.#eventsListComponent, this.#container);
-    this.#renderPoints();
-  }
-
-  #renderSort() {
-    this.#sortView = new SortView({
-      onSortTypeChange: this.#handleSortTypeChange //!!!!!!!!!!!!!!!!!!!!!!!!
-    });
-
-    render(this.#sortView, siteEventsElement); //Сортировка Day, Price...
-  }
-
-  #renderPoints() {
-    this.#boardPoints.forEach((point) => {
-      this.#renderPoint(point);
-    });
+  #renderPointsList(points) {
+    points.forEach((point) => this.#renderPoint(point));
   }
 
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       container: this.#container,
       pointsModel: this.#pointsModel,
-      onPointChange: this.#handleDataChange,
+      onPointChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange
     });
     pointPresenter.init(point);
@@ -121,13 +172,12 @@ export default class BoardPresenter {
   #renderBoard() { // Отображение всех остальных компонентов
     this.#renderInfo();
     this.#renderSort();
-    this.boardOffers = [...this.#pointsModel.offers];
-    for (let i = 0; i < this.#boardPoints.length; i++) {
-      this.#renderPoint(this.#boardPoints[i]);
+    const points = this.points;
+    const pointCount = points.length;
+    if (pointCount === 0) {
+      this.#renderNoPoint();
+      return;
     }
-
-    if (this.#boardPoints.length === 0) {
-      render(this.#emptyList, this.#container);
-    }
+    this.#renderPointsList(points.slice(0, Math.min(pointCount, this.#renderedPointCount)));
   }
 }

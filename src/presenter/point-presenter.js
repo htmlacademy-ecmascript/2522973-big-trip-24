@@ -1,6 +1,8 @@
 import PointView from '../view/point-view.js'; // Точка маршрута
 import EditorPointView from '../view/editor-point-view.js';//Форма редактирования
 import { render, replace, remove } from '../framework/render.js';
+import { UserAction, UpdateType } from '../utils-constant/constant.js';
+import { isDatesEqual } from '../utils-constant/utils.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -16,7 +18,7 @@ export default class PointPresenter {
   #handleModeChange = null;
   #handleDataChange = null;
   #mode = Mode.DEFAULT;
-  //#pointsPresenter = new Map();
+  #pointsPresenter = new Map();
   constructor({container, pointsModel, onPointChange, onModeChange}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
@@ -40,7 +42,7 @@ export default class PointPresenter {
       onOpenEditButtonClick: this.#onOpenEditButtonClick
     });
 
-    this. #pointEditComponent = new EditorPointView({ //Форма редактирования
+    this. #pointEditComponent = new EditorPointView({ //Форма редактирования!!!
       point: this.#point,
       typeOffers: this.#pointsModel.getOffersByType(point.type),
       allOffers: this.#pointsModel.offers,
@@ -48,6 +50,7 @@ export default class PointPresenter {
       allDestination: this.#pointsModel.destinations,
       onFormSubmit: this.#handleFormClick,
       onCloseEditButtonClick: this.#onCloseEditButtonClick,
+      onDeleteClick: this.#handleDeleteClick
     });
 
     if (prevTaskComponent === null || prevTaskEditComponent === null) {
@@ -87,13 +90,34 @@ export default class PointPresenter {
     }
   };
 
-  #handleFormClick = (point) => {
-    this.#handleDataChange(point);
+  #handleFormClick = (update) => {
+    const isMinorUpdate = !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
+    !isDatesEqual(this.#point.dateTo, update.dateTo) ||
+    this.#point.basePrice !== update.basePrice;
+
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update,
+    );
     this.#replaceFormToPoint();
   };
 
+  #handleDeleteClick = (point) => { //Удаление только первого эл-та
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
+    //this.#replaceFormToPoint(); //Можно и удалить
+  };
+
   #onFavoriteClick = () => {
-    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 
   #onOpenEditButtonClick = () => {

@@ -9,9 +9,13 @@ const generateFilters = (points) => Object.entries(filter).map(([filterType, fil
   coont: filterPatternByType(points).length
 }));
 
-function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
+
+const getRandomElement = (items) => {
+  const startFrom = Math.floor(Math.random() * items.length - 5);
+  const endTo = items.length;
+  return items.slice(startFrom, endTo);
+};
+
 function getRandomInteger(min, max) {
   const rand = Math.floor(min + Math.random() * (max + 1 - min));
   return Math.floor(rand);
@@ -26,13 +30,39 @@ function updateItem(items, update) {
   return items.map((item) => item.id === update.id ? update : item);
 }
 
+const isDatesEqual = function isDatesEqual(dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+};
+
+const FORMATS = {
+  DATE: 'D MMM',
+  TIME: 'HH:mm',
+  FORM: 'DD/MM/YY HH:mm'
+};
+
+function humanizePointDate(date, format = FORMATS.DATE) {
+  return date ? dayjs(date).format(format) : '';
+}
+
+function toggleOffers(offers, id) {
+  if (offers.includes(id)) {
+    return offers.filter((offer) => offer !== id);
+  }
+  return [...offers, id];
+}
+
+
 export {
   sortByPrice,
   sortByTime,
   sortByDay,
   generateFilters,
   updateItem,
-  getRandomArrayElement,
+  getRandomElement,
   getRandomInteger,
   capitalizeFirstLetter,
+  isDatesEqual,
+  FORMATS,
+  humanizePointDate,
+  toggleOffers
 };

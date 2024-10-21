@@ -41,11 +41,11 @@ const EMPTY_LIST = {
 export { };
 
 const SortType = {
-  DAY: 'Day',
-  EVENT: 'Event',
-  TIME: 'Time',
-  PRICE: 'Price',
-  OFFERS: 'Offers'
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers'
 };
 
 const FiltersPoint = {
@@ -62,6 +62,27 @@ const filter = {
   [FiltersPoint.PAST]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
 };
 
+const NO_POINT_TEXT = {
+  [FiltersPoint.EVERYTHING]: 'Click New Event to create your first point',
+  [FiltersPoint.FUTURE]: 'There are no future events now',
+  [FiltersPoint.PAST]: 'There are no past events now',
+  [FiltersPoint.PRESENT]: 'There are no present events now',
+};
+
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+const POINT_COUNT_PER_STEP = 6;
+
 export {
   SortType,
   TYPES,
@@ -69,5 +90,9 @@ export {
   OFFERS,
   EMPTY_LIST,
   FiltersPoint,
-  filter
+  filter,
+  UserAction,
+  UpdateType,
+  POINT_COUNT_PER_STEP,
+  NO_POINT_TEXT
 };

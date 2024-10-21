@@ -1,4 +1,4 @@
-import { getRandomArrayElement } from '../utils-constant/utils.js';
+import { getRandomElement } from '../utils-constant/utils.js';
 
 const mockPoints = [
   {
@@ -309,8 +309,7 @@ const mockPoints = [
   }
 ];
 
-function getRandomPoint() {
-  return getRandomArrayElement(mockPoints); //Функция-обертка, возвращающая getRandomArrayElement ОДНОГО ПОИНТА!!!
-}
+const getRandomPoint = getRandomElement(mockPoints); //Функция-обертка, возвращающая getRandomArrayElement ОДНОГО ПОИНТА!!!
+
 export {getRandomPoint};
 

@@ -1,5 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
+import he from 'he';
 import 'flatpickr/dist/flatpickr.min.css';
 import { TYPES } from '../utils-constant/constant.js';
 
@@ -44,7 +45,7 @@ function createAddPointTemplate(state, allDestination) {
   }).join('');
 
   const createDestinationTemplate = allDestination
-    .map((item) => `<option value="${item.name}"></option>`).join('');
+    .map((item) => `<option value="${he.encode(item.name)}"></option>`).join('');
 
   const createTypeList = TYPES
     .map((group) => {
@@ -71,7 +72,7 @@ function createAddPointTemplate(state, allDestination) {
         </div>
         <div class="event__field-group  event__field-group--destination">
           <label class="event__label  event__type-output" for="event-destination-1">
-            ${typeName}
+            ${he.encode(typeName)}
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
           <datalist id="destination-list-1">
@@ -107,7 +108,7 @@ function createAddPointTemplate(state, allDestination) {
         </section>
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${description}</p>
+          <p class="event__destination-description">${he.encode(description)}</p>
            <div class="event__photos-container">
                         <div class="event__photos-tape">
           ${createPicturesTemplate(pictures)}
@@ -125,17 +126,19 @@ export default class EditorPointView extends AbstractStatefulView{
   #allDestination = [];
   #pointDestination = null;
   #onCloseEditButtonClick = null;
-  #onSubmitButtonClick = null;
+  //#onDeleteButtonClick = null;
   #handleFormSubmit = null;
   #datepickerStart = null;
   #datepickerEnd = null;
-  constructor({point, typeOffers, allOffers, pointDestination, onFormSubmit, allDestination, onCloseEditButtonClick}) {
+  #handleDeleteClick = null;
+  constructor({point, typeOffers, allOffers, pointDestination, onFormSubmit, allDestination, onDeleteClick, onCloseEditButtonClick}) {
     super();
     this.#point = point;
     this.#allOffers = allOffers;
     this.#allDestination = allDestination;
     this.#pointDestination = pointDestination;
     this.#handleFormSubmit = onFormSubmit;
+    this.#handleDeleteClick = onDeleteClick;
     this.#onCloseEditButtonClick = onCloseEditButtonClick;
     this._setState(EditorPointView.parsePointToState(point, pointDestination.id, typeOffers));
     this._restoreHandlers();
@@ -173,6 +176,9 @@ export default class EditorPointView extends AbstractStatefulView{
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#closeEditButtonClickHandler);
 
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#formDeleteClickHandler);
+
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#typeListChangeHandler);
 
@@ -181,6 +187,7 @@ export default class EditorPointView extends AbstractStatefulView{
 
     this.element.querySelector('.event__input--price')
       .addEventListener('input', this.#priceChangeHandler);
+
 
     this.element
       .querySelector('.event__save-btn')
@@ -204,6 +211,11 @@ export default class EditorPointView extends AbstractStatefulView{
   #closeEditButtonClickHandler = (evt) => {
     evt.preventDefault();
     this.#onCloseEditButtonClick();
+  };
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(EditorPointView.parseStateToPoint(this.#point));
   };
 
   #dateToChangeHandler = ([userDate]) => {
