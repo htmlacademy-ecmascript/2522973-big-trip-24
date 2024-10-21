@@ -64,7 +64,7 @@ export default class PointsModel extends Observable {
     this._notify(updateType);
   }
 
-  #adaptToClient(point) { //Serv Паттерн Адаптер!!!
+  #adaptToClient(point) { //Serv Паттерн Адаптер, форматирование структур данных из сервера для клиента!!!
     const adaptedPoint = {...point,
       dateFrom: point['date_from'] !== null ? new Date(point['date_from']) : point['date_from'], // На клиенте дата хранится как экземпляр Date
       dateTo: point['date_to'] !== null ? new Date(point['date_to']) : point['date_to'],
