@@ -9,6 +9,16 @@ export default class PointsModel extends Observable {
   #points = getRandomPoint;
   #offers = mockOffers;
   #destination = mockDestinations;
+  #pointsApiService = null;//Serv
+
+  constructor({pointsApiService}) { //Serv
+    super();
+    this.#pointsApiService = pointsApiService; //Serv
+
+    this.#pointsApiService.points.then((points) => { //Serv
+      console.log(points);
+    });
+  }
 
   get points() {
     return this.#points;
