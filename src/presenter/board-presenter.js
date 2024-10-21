@@ -9,9 +9,8 @@ import { render, remove} from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
 import { SortType, UpdateType, UserAction, POINT_COUNT_PER_STEP, FiltersPoint, filter} from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
-
+//const siteEventsElement = siteMainElement.querySelector('.trip-events');
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
-const siteEventsElement = siteMainElement.querySelector('.trip-events');
 
 export default class BoardPresenter {
   #container = null;
@@ -150,7 +149,7 @@ export default class BoardPresenter {
       onSortTypeChange: this.#handleSortTypeChange
     });
 
-    render(this.#sortComponent, siteEventsElement);
+    render(this.#sortComponent, this.#container);
   }
 
   #clearBoard({resetSortType = false} = {}) { //Очитска доски
