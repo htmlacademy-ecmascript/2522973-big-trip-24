@@ -13,7 +13,7 @@ export default class PointsModel extends Observable {
   #pointsApiService = null;//Serv
   #points = [];
   #offers = [];
-  #destination = [];
+  #destinations = [];
 
   constructor({pointsApiService}) { //Serv
     super();
@@ -24,19 +24,27 @@ export default class PointsModel extends Observable {
     return this.#points;
   }
 
+  get offers() {
+    return this.#offers;
+  }
+
+  get destinations() {
+    return this.#destinations;
+  }
+
   async init() { //Serv
     try {
       const points = await this.#pointsApiService.points;
-      const offers = await this.#pointsApiService.offers;
-      const destination = await this.#pointsApiService.destination;
+      this.#offers = await this.#pointsApiService.offers;
+      this.#destinations = await this.#pointsApiService.destination;
       this.#points = points.map(this.#adaptToClient);
-      this.#offers = offers.map(this.#adaptToClient);
-      this.#destination = destination.map(this.#adaptToClient);
-      //console.log(this.#destination);
+      //this.#offers = offers.map(this.#adaptToClient);
+      //this.#destinations = destinations.map(this.#adaptToClient);
+      //console.log(this.#destinations);
     } catch(err) {
       this.#points = [];
       this.#offers = [];
-      this.#destination = [];
+      this.#destinations = [];
     }
     this._notify(UpdateType.INIT);
   }
@@ -97,14 +105,6 @@ export default class PointsModel extends Observable {
 
 
     return adaptedPoint;
-  }
-
-  get offers() {
-    return this.#offers;
-  }
-
-  get destinations() {
-    return this.#destination;
   }
 
   getDestinationsById(id) {
