@@ -26,7 +26,7 @@ export default class BoardPresenter {
   #noPointComponent = null;
   #newPointPresenter = null;
   #filterType = FiltersPoint.EVERYTHING;
-  #isLoading = true;
+  //#isLoading = true;
 
   constructor({container, pointsModel, filterModel, onNewPointDestroy}) {
     this.#container = container;
@@ -190,7 +190,6 @@ export default class BoardPresenter {
     }
       */
     this.#renderInfo();
-
     const points = this.points;
     const pointCount = points.length;
     /*
