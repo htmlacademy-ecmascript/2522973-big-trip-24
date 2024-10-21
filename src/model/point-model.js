@@ -1,4 +1,5 @@
 import Observable from '../framework/observable.js';
+import { UpdateType } from '../utils-constant/constant.js';
 //import { getRandomPoint } from '../mock/points.js';
 //import { mockOffers } from '../mock/offers.js';
 //import { mockDestinations } from '../mock/destination.js';
@@ -34,6 +35,7 @@ export default class PointsModel extends Observable {
     } catch(err) {
       this.#points = [];
     }
+    this._notify(UpdateType.INIT);
   }
 
   updatePoint(updateType, update) {
