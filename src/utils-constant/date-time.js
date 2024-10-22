@@ -107,4 +107,8 @@ const getRandomDate = () => {
   }
 };
 
-export { getRandomDate, isActualPoint, isExpiredPoint, isFuturePoint, humanizePointDueDate, getDuration, DateFormat, isEventOver, isFutureEvent, isEventToday};
+function isDatesSame(dateToCheck1, dateToCheck2){
+  return (dateToCheck1 === null && dateToCheck2 === null) || dayjs(dateToCheck1).isSame(dateToCheck2, 'D');
+}
+
+export { getRandomDate, isDatesSame, isActualPoint, isExpiredPoint, isFuturePoint, humanizePointDueDate, getDuration, DateFormat, isEventOver, isFutureEvent, isEventToday};

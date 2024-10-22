@@ -2,7 +2,8 @@ import PointView from '../view/point-view.js'; // Точка маршрута
 import EditorPointView from '../view/editor-point-view.js';//Форма редактирования
 import { render, replace, remove } from '../framework/render.js';
 import { UserAction, UpdateType } from '../utils-constant/constant.js';
-import { isDatesEqual } from '../utils-constant/utils.js';
+import { isDatesSame } from '../utils-constant/date-time.js';
+
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -43,14 +44,14 @@ export default class PointPresenter {
     });
 
     this. #pointEditComponent = new EditorPointView({ //Форма редактирования!!!
-      point: this.#point,
-      typeOffers: this.#pointsModel.getOffersByType(point.type),
+      routePoint: this.#point,
+      destinationRoutePoint: this.#pointsModel.getDestinationsById(this.#point.destination),
+      typeOffers: this.#pointsModel.getOffersByType(this.#point.type),
+      allDestinations: this.#pointsModel.destinations,
       allOffers: this.#pointsModel.offers,
-      pointDestination: this.#pointsModel.getDestinationsById(point.destination),
-      allDestination: this.#pointsModel.destinations,
-      onFormSubmit: this.#handleFormClick,
-      onCloseEditButtonClick: this.#onCloseEditButtonClick,
-      onDeleteClick: this.#handleDeleteClick
+      onFormSubmit: this.#handleFormSubmit,
+      onEditRollUp: this.#handleEditRollUp,
+      onDeleteClick: this.#handleDeleteClick,
     });
 
     if (prevTaskComponent === null || prevTaskEditComponent === null) {
@@ -90,9 +91,18 @@ export default class PointPresenter {
     }
   };
 
+  #handleFormSubmit = (update) => {
+    const isPatchUpdate = isDatesSame(this.#point.dateFrom, update.dateFrom) && isDatesSame(this.#point.dateTo, update.dateTo) && (parseInt(this.#point.basePrice, 10) === parseInt(update.basePrice, 10));
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      isPatchUpdate ? UpdateType.PATCH : UpdateType.MINOR,
+      update
+    );
+  };
+
   #handleFormClick = (update) => {
-    const isMinorUpdate = !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
-    !isDatesEqual(this.#point.dateTo, update.dateTo) ||
+    const isMinorUpdate = !isDatesSame(this.#point.dateFrom, update.dateFrom) ||
+    !isDatesSame(this.#point.dateTo, update.dateTo) ||
     this.#point.basePrice !== update.basePrice;
 
     this.#handleDataChange(
@@ -128,6 +138,10 @@ export default class PointPresenter {
   #onCloseEditButtonClick = () => {
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
+  };
+
+  #handleEditRollUp = () => {
+    this.#replaceFormToPoint();
   };
 
   #replacePointToForm = () => {
