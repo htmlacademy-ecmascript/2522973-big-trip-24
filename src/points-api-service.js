@@ -3,6 +3,8 @@ import ApiService from './framework/api-service.js';
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
 };
 
 export default class PointsApiService extends ApiService {
@@ -16,22 +18,39 @@ export default class PointsApiService extends ApiService {
       .then(ApiService.parseResponse);
   }
 
-  get destination() {
+  get destinations() {
     return this._load({url: 'destinations'})
       .then(ApiService.parseResponse);
   }
 
-  async updatePoint(point) {
+  async updatePoint(points) {
     const response = await this._load({
-      url: `points/${point.id}`,
+      url: `points/${points.id}`,
       method: Method.PUT,
-      body: JSON.stringify(this.#adaptToServer(point)), //Исользование Адаптера
+      body: JSON.stringify(this.#adaptToServer(points)), //Исользование Адаптера
       headers: new Headers({'Content-Type': 'application/json'}),
     });
-
     const parsedResponse = await ApiService.parseResponse(response);
-
     return parsedResponse;
+  }
+
+  async addPoint(points) {
+    const response = await this._load({
+      url: 'points',
+      method: Method.POST,
+      body: JSON.stringify(this.#adaptToServer(points)),
+      headers: new Headers({'Content-Type': 'application/json'}),
+    });
+    const parsedResponse = await ApiService.parseResponse(response);
+    return parsedResponse;
+  }
+
+  async deletePoint(points) {
+    const response = await this._load({
+      url: `points/${points.id}`,
+      method: Method.DELETE,
+    });
+    return response;
   }
 
   #adaptToServer(point) { //Сервер Адаптер для форматирования данных из клиента НА СЕРВЕР!!!

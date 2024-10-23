@@ -47,9 +47,9 @@ function handleEditNewPointClose() {
   newPointButton.element.disabled = false;
 }
 
-boardPresenter.init();
 filterPresenter.init();
+boardPresenter.init();
 pointsModel.init() .finally(() => {
   render(newPointButton, siteTripInfoElement, RenderPosition.BEFOREEND);
-}); //Serv
+});
 

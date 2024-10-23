@@ -1,19 +1,12 @@
 import Observable from '../framework/observable.js';
 import { UpdateType } from '../utils-constant/constant.js';
-//import { getRandomPoint } from '../mock/points.js';
-//import { mockOffers } from '../mock/offers.js';
-//import { mockDestinations } from '../mock/destination.js';
-
-//const POINT_COUNT = 3;
-//getRandomPoint.length = POINT_COUNT;
 export default class PointsModel extends Observable {
-  //#points = getRandomPoint;
-  //#offers = mockOffers;
-  //#destination = mockDestinations;
+
   #pointsApiService = null;//Serv
   #points = [];
   #offers = [];
   #destinations = [];
+  #isLoadingError = false;
 
   constructor({pointsApiService}) { //Serv
     super();
@@ -32,21 +25,39 @@ export default class PointsModel extends Observable {
     return this.#destinations;
   }
 
+  get error() {
+    return this.#isLoadingError;
+  }
+
   async init() { //Serv
     try {
       const points = await this.#pointsApiService.points;
       this.#offers = await this.#pointsApiService.offers;
-      this.#destinations = await this.#pointsApiService.destination;
+      this.#destinations = await this.#pointsApiService.destinations;
       this.#points = points.map(this.#adaptToClient);
-      //this.#offers = offers.map(this.#adaptToClient);
-      //this.#destinations = destinations.map(this.#adaptToClient);
-      //console.log(this.#destinations);
+      //console.log(this.#offers);
     } catch(err) {
       this.#points = [];
       this.#offers = [];
       this.#destinations = [];
+      this.#isLoadingError = true;
     }
     this._notify(UpdateType.INIT);
+  }
+
+  getDestinationsById(id) {
+    const allDestinations = this.destinations;
+    return allDestinations.find((item) => item.id === id);
+  }
+
+  getOffersByType(type = 'flight') {
+    const allOffers = this.offers;
+    return allOffers.find((item) => item.type === type);
+  }
+
+  getOffersById(type, offersId) {
+    const offersType = this.getOffersByType(type.toLowerCase());
+    return offersType.offers.filter((item)=>offersId.includes(item.id));
   }
 
   async updatePoint(updateType, update) {
@@ -55,16 +66,7 @@ export default class PointsModel extends Observable {
     if (index === -1) {
       throw new Error('Can\'t update unexisting task');
     }
-    /*
-    this.#points = [
-      ...this.#points.slice(0, index),
-      update,
-      ...this.#points.slice(index + 1),
-    ];
 
-    this._notify(updateType, update);
-  }
-*/
     try {
       const response = await this.#pointsApiService.updatePoint(update);
       const updatedPoint = this.#adaptToClient(response);
@@ -79,28 +81,34 @@ export default class PointsModel extends Observable {
     }
   }
 
-  addPoint(updateType, update) {
-    this.#points = [
-      update,
-      ...this.#points,
-    ];
-
-    this._notify(updateType, update);
+  async addPoint(updateType, update) {
+    try {
+      const response = await this.#pointsApiService.addPoint(update);
+      const newPoint = this.#adaptToClient(response);
+      this.#points = [newPoint, ...this.#points];
+      this._notify(updateType, newPoint);
+    } catch(err) {
+      throw new Error('Can\'t add point');
+    }
   }
 
-  deletePoint(updateType, update) {
+  async deletePoint(updateType, update) {
     const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t delete unexisting task');
     }
 
-    this.#points = [
-      ...this.#points.slice(0, index),
-      ...this.#points.slice(index + 1),
-    ];
-
-    this._notify(updateType);
+    try {
+      await this.#pointsApiService.deletePoint(update);
+      this.#points = [
+        ...this.#points.slice(0, index),
+        ...this.#points.slice(index + 1),
+      ];
+      this._notify(updateType);
+    } catch(err) {
+      throw new Error('Can\'t delete point');
+    }
   }
 
   #adaptToClient(point) { //Serv Паттерн Адаптер, форматирование структур данных из сервера для клиента!!!
@@ -119,21 +127,6 @@ export default class PointsModel extends Observable {
 
 
     return adaptedPoint;
-  }
-
-  getDestinationsById(id) {
-    const allDestinations = this.destinations;
-    return allDestinations.find((item) => item.id === id);
-  }
-
-  getOffersByType(type) {
-    const allOffers = this.offers;
-    return allOffers.find((item) => item.type === type);
-  }
-
-  getOffersById(type, itemsId) {
-    const offersType = this.getOffersByType(type);
-    return offersType.offers.filter((item) => itemsId.find((id) => item.id === id));
   }
 }
 

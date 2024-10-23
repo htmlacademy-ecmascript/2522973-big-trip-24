@@ -1,14 +1,9 @@
 import dayjs from 'dayjs';
-import { filter } from './constant.js';
+//import { filter } from './constant.js';
 const getTimeDifference = ({dateFrom, dateTo}) => dayjs(dateTo).diff(dayjs(dateFrom));
 const sortByPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
 const sortByTime = (pointA, pointB) => getTimeDifference(pointB) - getTimeDifference(pointA);
 const sortByDay = (pointA, pointB) => dayjs(pointA.dateFrom) - dayjs(pointB.dateFrom);
-const generateFilters = (points) => Object.entries(filter).map(([filterType, filterPatternByType]) => ({
-  type: filterType,
-  coont: filterPatternByType(points).length
-}));
-
 
 const getRandomElement = (items) => {
   const startFrom = Math.floor(Math.random() * items.length - 5);
@@ -56,7 +51,7 @@ export {
   sortByPrice,
   sortByTime,
   sortByDay,
-  generateFilters,
+  //generateFilters,
   updateItem,
   getRandomElement,
   getRandomInteger,
