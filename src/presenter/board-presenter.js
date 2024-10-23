@@ -36,12 +36,11 @@ export default class BoardPresenter {
     this.#filterModel.addObserver(this.#handleModelEvent);
 
     this.#newPointPresenter = new NewPointPresenter({
-      allOffers: this.offers,
-      allDestinations: this.destinations,
-      pointListContainer: this.#container,
-      //pointListContainer: this.#listContainer.element, // ЗДЕСЬ БЫЛА ОШИБКА!!!!
+      pointListComponent: this.#container,
+      pointsModel: this.#pointsModel,
       onDataChange: this.#handleViewAction,
-      onDestroy: onNewPointDestroy
+      onDestroy: onNewPointDestroy,
+      onReset: this.#handleFormReset
     });
   }
 
@@ -156,6 +155,13 @@ export default class BoardPresenter {
 
     render(this.#sortComponent, this.#container);
   }
+
+  #handleFormReset = () => {
+    if (this.points.length === 0) {
+      remove(this.#sortComponent);
+      this.#renderNoPoint();
+    }
+  };
 
   #clearBoard({resetSortType = false} = {}) { //Очитска доски
     this.#newPointPresenter.destroy();

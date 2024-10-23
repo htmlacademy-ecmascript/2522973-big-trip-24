@@ -1,6 +1,5 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
-import FormPointView from '../view/add-point-view.js';
-//import {nanoid} from 'nanoid';
+import EditorPointView from '../view/editor-point-view.js';
 import {UserAction, UpdateType, BLANK_POINT} from '../utils-constant/constant.js';
 
 export default class NewPointPresenter {
@@ -25,7 +24,7 @@ export default class NewPointPresenter {
     if (this.#pointEditComponent !== null) {
       return;
     }
-    this.#pointEditComponent = new FormPointView({
+    this.#pointEditComponent = new EditorPointView({
       point: this.#point,
       destinationPoint: this.#pointsModel.getDestinationsById(this.#point.destination),
       typeOffers: this.#pointsModel.getOffersByType(),
@@ -33,11 +32,11 @@ export default class NewPointPresenter {
       allOffers: this.#pointsModel.offers,
       onFormSubmit: this.#handleFormSubmit,
       onEditRollUp: this.#handleDeleteClick,
-      onDeleteClick: this.#handleDeleteClick
+      onDeleteClick: this.#handleDeleteClick,
     });
     render(this.#pointEditComponent, this.#pointListComponent, RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#escKeyDownHandler);
-    console.log(this.#point)
+
   }
 
   destroy() {
@@ -45,18 +44,36 @@ export default class NewPointPresenter {
       return;
     }
     this.#handleDestroy();
+    this.#handleReset();
     remove(this.#pointEditComponent);
     this.#pointEditComponent = null;
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
+  setSaving() {
+    this.#pointEditComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    this.#pointEditComponent.shake(resetFormState);
+  }
+
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
       UserAction.ADD_POINT,
-      UpdateType.MINOR,
+      UpdateType.MAJOR,
       point,
     );
-    this.destroy();
   };
 
   #handleDeleteClick = () => {
