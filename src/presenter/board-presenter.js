@@ -3,7 +3,6 @@ import SortView from '../view/sort-view.js'; //Сортировка DAY, EVENT, 
 import EmptyListView from '../view/message-view.js';//Пустой лист без поинтов
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presener.js';
-import ListPoint from '../view/list-point-view.js';
 //import PreloaderView from '../view/preloader.js';
 import { render, remove} from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
@@ -16,7 +15,6 @@ export default class BoardPresenter {
   #container = null;
   #pointsModel = null;
   #filterModel = null;
-  #listContainer = new ListPoint();
   #sortComponent = null; //Приватное св-во Сортировки
   #infoView = new TripInfoView(); //Информация в шапке
   #pointPresenters = new Map();
