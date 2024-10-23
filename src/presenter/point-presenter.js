@@ -44,8 +44,8 @@ export default class PointPresenter {
     });
 
     this. #pointEditComponent = new EditorPointView({ //Форма редактирования!!!
-      routePoint: this.#point,
-      destinationRoutePoint: this.#pointsModel.getDestinationsById(this.#point.destination),
+      point: this.#point,
+      destinationPoint: this.#pointsModel.getDestinationsById(this.#point.destination),
       typeOffers: this.#pointsModel.getOffersByType(this.#point.type),
       allDestinations: this.#pointsModel.destinations,
       allOffers: this.#pointsModel.offers,

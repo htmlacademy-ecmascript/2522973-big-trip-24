@@ -82,6 +82,16 @@ const UpdateType = {
   INIT: 'INIT',
 };
 
+const BLANK_POINT = {
+  type: 'flight',
+  basePrice: 0,
+  destination: null,
+  dateFrom: null,
+  dateTo: null,
+  isFavorite: false,
+  offers:[],
+};
+
 const POINT_COUNT_PER_STEP = 20;
 
 export {
@@ -95,5 +105,6 @@ export {
   UserAction,
   UpdateType,
   POINT_COUNT_PER_STEP,
-  NO_POINT_TEXT
+  NO_POINT_TEXT,
+  BLANK_POINT
 };

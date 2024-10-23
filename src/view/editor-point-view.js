@@ -2,18 +2,8 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import 'flatpickr/dist/flatpickr.min.css';
-import { TYPES } from '../utils-constant/constant.js';
+import { TYPES, BLANK_POINT } from '../utils-constant/constant.js';
 import { capitalizeFirstLetter, humanizePointDate } from '../utils-constant/utils.js';
-const DEFAULT_TYPE = 'flight';
-const BlankPoint = {
-  type: DEFAULT_TYPE,
-  basePrice: 0,
-  destination: null,
-  dateFrom: null,
-  dateTo: null,
-  isFavorite: false,
-  offers:[],
-};
 
 const ValidationStyle = {
   FOR_BORDER: 'border: 1px solid red; border-radius: 3px',
@@ -164,15 +154,15 @@ export default class EditorPointView extends AbstractStatefulView{
 
   #handleFormSubmit = null;
   #handleEditRollUp = null;
-  #initialRoutePoint = null;
+  #initialPoint = null;
   #datepickerStart = null;
   #datepickerEnd = null;
   #handleDeleteClick = null;
 
-  constructor({ routePoint = BlankPoint, destinationRoutePoint = {}, typeOffers, allDestinations, allOffers, onFormSubmit, onEditRollUp, onDeleteClick}) {
+  constructor({ point = BLANK_POINT, destinationPoint = {}, typeOffers, allDestinations, allOffers, onFormSubmit, onEditRollUp, onDeleteClick}) {
     super();
-    this.#initialRoutePoint = routePoint;
-    this._setState(EditorPointView.parseRoutePointToState(routePoint, destinationRoutePoint.id, typeOffers));
+    this.#initialPoint = point;
+    this._setState(EditorPointView.parsePointToState(point, destinationPoint.id, typeOffers));
     this.#allDestinations = allDestinations;
     this.#allOffers = allOffers;
     this.#handleFormSubmit = onFormSubmit;
@@ -212,8 +202,8 @@ export default class EditorPointView extends AbstractStatefulView{
 
   reset() {
     this.updateElement({
-      ...this.#initialRoutePoint,
-      typeOffers: this.#allOffers.find((offer) => offer.type === this.#initialRoutePoint.type),
+      ...this.#initialPoint,
+      typeOffers: this.#allOffers.find((offer) => offer.type === this.#initialPoint.type),
     });
   }
 
@@ -235,12 +225,12 @@ export default class EditorPointView extends AbstractStatefulView{
       this.element.querySelector('#event-destination-1').setAttribute('style', ValidationStyle.FOR_BORDER);
       return;
     }
-    this.#handleFormSubmit(EditorPointView.parseStateToRoutePoint(this._state));
+    this.#handleFormSubmit(EditorPointView.parseStateToPoint(this._state));
   };
 
   #rollUpButtonClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleEditRollUp(EditorPointView.parseStateToRoutePoint(this.#initialRoutePoint));
+    this.#handleEditRollUp(EditorPointView.parseStateToPoint(this.#initialPoint));
   };
 
   #dateFromChangeHandler = ([userDate]) => {
@@ -325,13 +315,13 @@ export default class EditorPointView extends AbstractStatefulView{
 
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(EditorPointView.parseStateToRoutePoint(this.#initialRoutePoint));
+    this.#handleDeleteClick(EditorPointView.parseStateToPoint(this.#initialPoint));
   };
 
-  static parseRoutePointToState(routePoint, destinationRoutePoint, typeOffers) {
+  static parsePointToState(point, destinationPoint, typeOffers) {
     return {
-      ...routePoint,
-      destination: destinationRoutePoint,
+      ...point,
+      destination: destinationPoint,
       typeOffers,
       isDisabled: false,
       isSaving: false,
@@ -339,14 +329,14 @@ export default class EditorPointView extends AbstractStatefulView{
     };
   }
 
-  static parseStateToRoutePoint(state) {
-    const routePoint = {...state};
-    if (routePoint.typeOffers) {
-      delete routePoint.typeOffers;
+  static parseStateToPoint(state) {
+    const point = {...state};
+    if (point.typeOffers) {
+      delete point.typeOffers;
     }
-    delete routePoint.isDisabled;
-    delete routePoint.isSaving;
-    delete routePoint.isDeleting;
-    return routePoint;
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+    return point;
   }
 }
