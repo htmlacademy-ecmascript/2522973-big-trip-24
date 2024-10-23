@@ -12,8 +12,8 @@ export default class FilterPresenter {
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
     this.#pointsModel = pointsModel;
-    this.#pointsModel.addObserver(this.#modelChangeHandler);
-    this.#filterModel.addObserver(this.#modelChangeHandler);
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get filters() {
@@ -55,7 +55,6 @@ export default class FilterPresenter {
       filters,
       currentFilterType: this.#filterModel.filter,
       onFilterTypeChange: this.#filterTypeChangeHandler
-      //onFilterTypeChange: this.#handleFilterTypeChange
     });
 
     if (prevFilterComponent === null) {
@@ -67,7 +66,7 @@ export default class FilterPresenter {
     remove(prevFilterComponent);
   }
 
-  #modelChangeHandler = () => {
+  #handleModelEvent = () => {
     this.init();
   };
 

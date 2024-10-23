@@ -1,25 +1,19 @@
-import PointView from '../view/point-view.js'; // Точка маршрута
-import EditorPointView from '../view/editor-point-view.js';//Форма редактирования
+import PointView from '../view/point-view.js';
+import EditorPointView from '../view/editor-point-view.js';
 import { render, replace, remove } from '../framework/render.js';
-import { UserAction, UpdateType } from '../utils-constant/constant.js';
+import { UserAction, UpdateType, MODE_TYPE } from '../utils-constant/constant.js';
 import { isDatesSame } from '../utils-constant/date-time.js';
 
-
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
-};
 export default class PointPresenter {
   #container = null;
-  #boardPoints = [];
   #pointsModel = null;
+  #point = null;
   #pointComponent = null;
   #pointEditComponent = null;
-  #point = null;
   #handleModeChange = null;
   #handleDataChange = null;
-  #mode = Mode.DEFAULT;
-  #pointsPresenter = new Map();
+  #mode = MODE_TYPE.DEFAULT;
+
   constructor({container, pointsModel, onPointChange, onModeChange}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
@@ -29,47 +23,44 @@ export default class PointPresenter {
 
   init(point) {
     this.#point = point;
-    this.#boardPoints = [...this.#pointsModel.points];
+    const prevPointComponent = this.#pointComponent;
+    const prevPointEditComponent = this.#pointEditComponent;
 
-    const prevTaskComponent = this.#pointComponent;
-    const prevTaskEditComponent = this.#pointEditComponent;
-
-
-    this.#pointComponent = new PointView({ //Точка маршрута
+    this.#pointComponent = new PointView({
       point: this.#point,
       offers: [...this.#pointsModel.getOffersById(point.type, point.offers)],
       destination: this.#pointsModel.getDestinationsById(point.destination),
-      onFavoriteClick: this.#onFavoriteClick,
-      onOpenEditButtonClick: this.#onOpenEditButtonClick
+      onFavoriteClick: this.#handleFavoriteClick,
+      onOpenEditButtonClick: this.#handleOpenFormClick
     });
 
-    this. #pointEditComponent = new EditorPointView({ //Форма редактирования!!!
+    this. #pointEditComponent = new EditorPointView({
       point: this.#point,
       destinationPoint: this.#pointsModel.getDestinationsById(this.#point.destination),
       typeOffers: this.#pointsModel.getOffersByType(this.#point.type),
       allDestinations: this.#pointsModel.destinations,
       allOffers: this.#pointsModel.offers,
-      onFormSubmit: this.#handleFormSubmit,
+      onFormSubmit: this.#handleFormSubmitClick,
       onEditRollUp: this.#handleEditRollUp,
       onDeleteClick: this.#handleDeleteClick,
     });
 
-    if (prevTaskComponent === null || prevTaskEditComponent === null) {
+    if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this.#pointComponent, this.#container);
       return;
     }
 
-    if (this.#mode === Mode.DEFAULT) {
-      replace(this.#pointComponent, prevTaskComponent);
+    if (this.#mode === MODE_TYPE.DEFAULT) {
+      replace(this.#pointComponent, prevPointComponent);
     }
 
-    if (this.#mode === Mode.EDITING) {
-      replace(this.#pointEditComponent, prevTaskEditComponent);
+    if (this.#mode === MODE_TYPE.EDITING) {
+      replace(this.#pointComponent, prevPointEditComponent);
+      this.#mode = MODE_TYPE.DEFAULT;
     }
 
-    remove(prevTaskComponent);
-    remove(prevTaskEditComponent);
-    render(this.#pointComponent, this.#container);
+    remove(prevPointComponent);
+    remove(prevPointEditComponent);
   }
 
   destroy() {
@@ -77,8 +68,42 @@ export default class PointPresenter {
     remove(this.#pointEditComponent);
   }
 
+  setSaving() {
+    if (this.#mode === MODE_TYPE.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === MODE_TYPE.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === MODE_TYPE.DEFAULT) {
+      this.#pointComponent.shake();
+      return;
+    }
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    this.#pointEditComponent.shake(resetFormState);
+  }
+
   resetView() {
-    if (this.#mode !== Mode.DEFAULT) {
+    if (this.#mode !== MODE_TYPE.DEFAULT) {
+      this.#pointEditComponent.reset();
       this.#replaceFormToPoint();
     }
   }
@@ -86,21 +111,13 @@ export default class PointPresenter {
   #escKeyDownHandler = (evt) => {
     if(evt.key === 'Escape') {
       evt.preventDefault();
+      this.#pointEditComponent.reset();
       this.#replaceFormToPoint();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   };
 
-  #handleFormSubmit = (update) => {
-    const isPatchUpdate = isDatesSame(this.#point.dateFrom, update.dateFrom) && isDatesSame(this.#point.dateTo, update.dateTo) && (parseInt(this.#point.basePrice, 10) === parseInt(update.basePrice, 10));
-    this.#handleDataChange(
-      UserAction.UPDATE_POINT,
-      isPatchUpdate ? UpdateType.PATCH : UpdateType.MINOR,
-      update
-    );
-  };
-
-  #handleFormClick = (update) => {
+  #handleFormSubmitClick = (update) => {
     const isMinorUpdate = !isDatesSame(this.#point.dateFrom, update.dateFrom) ||
     !isDatesSame(this.#point.dateTo, update.dateTo) ||
     this.#point.basePrice !== update.basePrice;
@@ -113,16 +130,15 @@ export default class PointPresenter {
     this.#replaceFormToPoint();
   };
 
-  #handleDeleteClick = (point) => { //Удаление только первого эл-та
+  #handleDeleteClick = (point) => {
     this.#handleDataChange(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,
       point,
     );
-    //this.#replaceFormToPoint(); //Можно и удалить
   };
 
-  #onFavoriteClick = () => {
+  #handleFavoriteClick = () => {
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
@@ -130,14 +146,8 @@ export default class PointPresenter {
     );
   };
 
-  #onOpenEditButtonClick = () => {
+  #handleOpenFormClick = () => {
     this.#replacePointToForm();
-    document.addEventListener('keydown', this.#escKeyDownHandler);
-  };
-
-  #onCloseEditButtonClick = () => {
-    this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #handleEditRollUp = () => {
@@ -148,12 +158,12 @@ export default class PointPresenter {
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#handleModeChange();
-    this.#mode = Mode.EDITING;
+    this.#mode = MODE_TYPE.EDITING;
   };
 
   #replaceFormToPoint = () => {
     replace(this.#pointComponent, this.#pointEditComponent);
-    document.removeEventListener('keydown', this.#escKeyDownHandler); // ЕСЛИ УБРАТЬ, ТО БУДЕТ ОДНА ФОРМА, НО С ОШИБКОЙ!!!!
-    this.#mode = Mode.DEFAULT;
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#mode = MODE_TYPE.DEFAULT;
   };
 }

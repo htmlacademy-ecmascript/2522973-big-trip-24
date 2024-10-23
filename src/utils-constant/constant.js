@@ -92,6 +92,11 @@ const BLANK_POINT = {
   offers:[],
 };
 
+const MODE_TYPE = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
 const POINT_COUNT_PER_STEP = 20;
 
 export {
@@ -106,5 +111,6 @@ export {
   UpdateType,
   POINT_COUNT_PER_STEP,
   NO_POINT_TEXT,
-  BLANK_POINT
+  BLANK_POINT,
+  MODE_TYPE
 };
