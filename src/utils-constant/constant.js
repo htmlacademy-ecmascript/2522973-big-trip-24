@@ -48,7 +48,7 @@ const SortType = {
   OFFERS: 'offers'
 };
 
-const FiltersPoint = {
+const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
   PRESENT: 'present',
@@ -56,17 +56,17 @@ const FiltersPoint = {
 };
 
 const filter = {
-  [FiltersPoint.EVERYTHING]: (points) => [...points],
-  [FiltersPoint.FUTURE]: (points) => points.filter((point) => isFutureEvent(point.dateFrom)),
-  [FiltersPoint.PRESENT]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
-  [FiltersPoint.PAST]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
+  [FilterType.EVERYTHING]: (points) => [...points],
+  [FilterType.FUTURE]: (points) => points.filter((point) => isFutureEvent(point.dateFrom)),
+  [FilterType.PRESENT]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
+  [FilterType.PAST]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
 };
 
 const NO_POINT_TEXT = {
-  [FiltersPoint.EVERYTHING]: 'Click New Event to create your first point',
-  [FiltersPoint.FUTURE]: 'There are no future events now',
-  [FiltersPoint.PAST]: 'There are no past events now',
-  [FiltersPoint.PRESENT]: 'There are no present events now',
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.FUTURE]: 'There are no future events now',
+  [FilterType.PAST]: 'There are no past events now',
+  [FilterType.PRESENT]: 'There are no present events now',
 };
 
 const UserAction = {
@@ -100,7 +100,7 @@ export {
   CITIES,
   OFFERS,
   EMPTY_LIST,
-  FiltersPoint,
+  FilterType,
   filter,
   UserAction,
   UpdateType,

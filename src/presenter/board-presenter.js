@@ -6,7 +6,7 @@ import NewPointPresenter from './new-point-presener.js';
 //import PreloaderView from '../view/preloader.js';
 import { render, remove} from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
-import { SortType, UpdateType, UserAction, POINT_COUNT_PER_STEP, FiltersPoint, filter} from '../utils-constant/constant.js';
+import { SortType, UpdateType, UserAction, POINT_COUNT_PER_STEP, FilterType, filter} from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
 //const siteEventsElement = siteMainElement.querySelector('.trip-events');
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
@@ -23,7 +23,7 @@ export default class BoardPresenter {
   #currentSortType = SortType.DAY;
   #noPointComponent = null;
   #newPointPresenter = null;
-  #filterType = FiltersPoint.EVERYTHING;
+  #filterType = FilterType.EVERYTHING;
   //#isLoading = true;
 
   constructor({container, pointsModel, filterModel, onNewPointDestroy}) {
@@ -72,7 +72,7 @@ export default class BoardPresenter {
 
   createPoint() {
     this.#currentSortType = SortType.DEFAULT;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FiltersPoint.EVERYTHING);
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
   }
 
