@@ -1,12 +1,13 @@
 import TripInfoView from '../view/info-view.js'; //Инфо в шапке про маршрут
 import SortView from '../view/sort-view.js'; //Сортировка DAY, EVENT, PRICE
 import EmptyListView from '../view/message-view.js';//Пустой лист без поинтов
+import ListPointView from '../view/list-point-view.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presener.js';
-//import PreloaderView from '../view/preloader.js';
-import { render, remove} from '../framework/render.js';
+import PreloaderView from '../view/preloader.js';
+import { render, remove, RenderPosition } from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
-import { SortType, UpdateType, UserAction, POINT_COUNT_PER_STEP, FilterType, filter} from '../utils-constant/constant.js';
+import { SortType, UpdateType, UserAction, POINT_COUNT_PER_STEP, FilterType, filter } from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
 //const siteEventsElement = siteMainElement.querySelector('.trip-events');
 const siteTripInfo = siteMainElement.querySelector('.trip-info'); // Инфо в шапке про маршрут
@@ -16,15 +17,16 @@ export default class BoardPresenter {
   #pointsModel = null;
   #filterModel = null;
   #sortComponent = null; //Приватное св-во Сортировки
+  #pointListComponent = new ListPointView();
   #infoView = new TripInfoView(); //Информация в шапке
   #pointPresenters = new Map();
-  //#loadingComponent = new PreloaderView(); //Serv ПРЕЛОАДЕР
+  #loadingComponent = new PreloaderView(); //Serv ПРЕЛОАДЕР
   #renderedPointCount = POINT_COUNT_PER_STEP; //Поинты беруться отсюда
   #currentSortType = SortType.DAY;
   #noPointComponent = null;
   #newPointPresenter = null;
   #filterType = FilterType.EVERYTHING;
-  //#isLoading = true;
+  #isLoading = true;
 
   constructor({container, pointsModel, filterModel, onNewPointDestroy}) {
     this.#container = container;
@@ -46,23 +48,19 @@ export default class BoardPresenter {
     this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
 
-    const filteredPoints = filter[this.#filterType](points);
+    const filteredPoint = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
       case SortType.TIME:
-        return filteredPoints.sort(sortByTime);
+        return filteredPoint.sort(sortByTime);
       case SortType.PRICE:
-        return filteredPoints.sort(sortByPrice);
+        return filteredPoint.sort(sortByPrice);
     }
-    return filteredPoints.sort(sortByDay);
+    return filteredPoint.sort(sortByDay);
   }
 
-  get destinations() {
-    return this.#pointsModel.destinations;
-  }
-
-  get offers() {
-    return this.#pointsModel.offers;
+  get error() {
+    return this.#pointsModel.error;
   }
 
   init() {
@@ -71,22 +69,19 @@ export default class BoardPresenter {
 
 
   createPoint() {
-    this.#currentSortType = SortType.DEFAULT;
+    this.#currentSortType = SortType.DAY;
+    this.#filterType = FilterType.EVERYTHING;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
+    if (this.#noPointComponent) {
+      remove(this.#noPointComponent);
+    }
   }
 
-
-  #renderNoPoint() {
-    this.#noPointComponent = new EmptyListView({filterType: this.#filterType});
-    render(this.#noPointComponent, this.#container);
-  }
-
-  /*
   #renderPreloader() { //Прелоадер
     render(this.#loadingComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
-*/
+
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
@@ -105,22 +100,22 @@ export default class BoardPresenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#pointPresenters.get(data.id).init(data, this.offers, this.destinations);
-        remove(this.#sortComponent);
+        this.#pointPresenters.get(data.id).init(data);
+        //remove(this.#sortComponent);
         break;
       case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderBoard();
-        remove(this.#sortComponent);
+        //remove(this.#sortComponent);
         break;
       case UpdateType.MAJOR:
         this.#clearBoard({resetSortType: true});
         this.#renderBoard();
-        remove(this.#sortComponent);
+        //remove(this.#sortComponent);
         break;
       case UpdateType.INIT:
-        //this.#isLoading = false;
-        //remove(this.#loadingComponent);
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
         this.#renderBoard();
         remove(this.#sortComponent); //НАШЕЛ ОШИБКУ!!!!!!!!!
         break;
@@ -161,22 +156,28 @@ export default class BoardPresenter {
     }
   };
 
+  #renderNoPoint() {
+    this.#noPointComponent = new EmptyListView({filterType: this.#filterType});
+    render(this.#noPointComponent, this.#container);
+  }
+
   #clearBoard({resetSortType = false} = {}) { //Очитска доски
     this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
     remove(this.#sortComponent);
-    if (resetSortType) {
-      this.#currentSortType = SortType.DAY;
-    }
+    remove(this.#loadingComponent);
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
     }
-    //remove(this.#loadingComponent);
+    if (resetSortType) {
+      this.#currentSortType = SortType.DAY;
+    }
   }
 
-  #renderPointsList(points) {
-    points.forEach((point) => this.#renderPoint(point));
+  #renderPointsList() {
+    render(this.#pointListComponent, this.#container);
+    this.points.forEach((point) => this.#renderPoint(point));
   }
 
   #renderPoint(point) {
@@ -192,21 +193,11 @@ export default class BoardPresenter {
 
   #renderBoard() { // Отображение всех остальных компонентов
     this.#renderSort();
-    /*
     if (this.#isLoading) { //Прелоадер, отстутвует надпись , что нет точек на доске
       this.#renderPreloader();
       return;
     }
-      */
     this.#renderInfo();
-    const points = this.points;
-    const pointCount = points.length;
-    /*
-    if (pointCount === 0) { // Рисуется отображение без поинтов, хотя поинты есть!!!
-      this.#renderNoPoint();
-      return;
-    }
-*/
-    this.#renderPointsList(points.slice(0, Math.min(pointCount, this.#renderedPointCount)));
+    this.#renderPointsList();
   }
 }
