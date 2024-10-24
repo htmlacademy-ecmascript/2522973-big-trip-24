@@ -101,23 +101,23 @@ export default class BoardPresenter {
     switch (updateType) {
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data);
-        remove(this.#sortComponent);
+        //remove(this.#sortComponent);
         break;
       case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderBoard();
-        remove(this.#sortComponent);
+        //remove(this.#sortComponent);
         break;
       case UpdateType.MAJOR:
         this.#clearBoard({resetSortType: true});
         this.#renderBoard();
-        remove(this.#sortComponent);
+        //remove(this.#sortComponent);
         break;
       case UpdateType.INIT:
         this.#isLoading = false;
-        remove(this.#loadingComponent);
+        //remove(this.#loadingComponent);
         this.#renderBoard();
-        remove(this.#sortComponent); //НАШЕЛ ОШИБКУ!!!!!!!!!
+        //remove(this.#sortComponent); //НАШЕЛ ОШИБКУ!!!!!!!!!
         break;
     }
   };
@@ -192,12 +192,12 @@ export default class BoardPresenter {
   }
 
   #renderBoard() { // Отображение всех остальных компонентов
-    this.#renderSort();
+    //this.#renderSort();
     if (this.#isLoading) { //Прелоадер, отстутвует надпись , что нет точек на доске
       this.#renderPreloader();
       return;
     }
     this.#renderInfo();
-    this.#renderPointsList();
+    //this.#renderPointsList();
   }
 }
