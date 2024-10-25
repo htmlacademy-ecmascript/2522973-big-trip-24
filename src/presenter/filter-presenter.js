@@ -3,13 +3,13 @@ import FilterView from '../view/filter-view.js';
 import { filter, FilterType, UpdateType } from '../utils-constant/constant';
 
 export default class FilterPresenter {
-  #filterContainer = null;
+  #filtersContainer = null;
   #filterModel = null;
   #pointsModel = null;
   #filterComponent = null;
 
-  constructor({filterContainer, filterModel, pointsModel}) {
-    this.#filterContainer = filterContainer;
+  constructor({filtersContainer, filterModel, pointsModel}) {
+    this.#filtersContainer = filtersContainer;
     this.#filterModel = filterModel;
     this.#pointsModel = pointsModel;
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -58,7 +58,7 @@ export default class FilterPresenter {
     });
 
     if (prevFilterComponent === null) {
-      render(this.#filterComponent, this.#filterContainer);
+      render(this.#filterComponent, this.#filtersContainer);
       return;
     }
 

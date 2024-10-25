@@ -34,9 +34,10 @@ export default class BoardPresenter {
     this.#filterModel = filterModel;
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#isLoading = true;
 
     this.#newPointPresenter = new NewPointPresenter({
-      pointListComponent: this.#container,
+      pointListComponent: this.#pointListComponent.element,
       pointsModel: this.#pointsModel,
       onDataChange: this.#handleViewAction,
       onDestroy: onNewPointDestroy,
@@ -115,7 +116,7 @@ export default class BoardPresenter {
         break;
       case UpdateType.INIT:
         this.#isLoading = false;
-        //remove(this.#loadingComponent);
+        remove(this.#loadingComponent);
         this.#renderBoard();
         //remove(this.#sortComponent); //НАШЕЛ ОШИБКУ!!!!!!!!!
         break;
@@ -137,7 +138,7 @@ export default class BoardPresenter {
     this.#currentSortType = sortType;
     this.#clearBoard({resetRenderedPointCount: true});
     this.#renderBoard();
-    remove(this.#sortComponent);
+    //remove(this.#sortComponent);
   };
 
   #renderSort() { //Сортировка
@@ -146,7 +147,7 @@ export default class BoardPresenter {
       onSortTypeChange: this.#handleSortTypeChange
     });
 
-    render(this.#sortComponent, this.#container);
+    render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
 
   #handleFormReset = () => {
@@ -176,7 +177,7 @@ export default class BoardPresenter {
   }
 
   #renderPointsList() {
-    render(this.#pointListComponent, this.#container);
+    render(this.#pointListComponent, this.#container, RenderPosition.BEFOREEND);
     this.points.forEach((point) => this.#renderPoint(point));
   }
 
@@ -192,12 +193,12 @@ export default class BoardPresenter {
   }
 
   #renderBoard() { // Отображение всех остальных компонентов
-    //this.#renderSort();
     if (this.#isLoading) { //Прелоадер, отстутвует надпись , что нет точек на доске
       this.#renderPreloader();
       return;
     }
     this.#renderInfo();
-    //this.#renderPointsList();
+    this.#renderSort();
+    this.#renderPointsList();
   }
 }
