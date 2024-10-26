@@ -174,6 +174,11 @@ export default class BoardPresenter {
   #renderPointsList() {
     render(this.#pointListComponent, this.#container, RenderPosition.BEFOREEND);
     this.points.forEach((point) => this.#renderPoint(point));
+    /*
+    if (this.#pointListComponent.length === 0) {
+      render(this.#noPointComponent, this.#container);
+    }
+      */
   }
 
   #renderPoint(point) {
