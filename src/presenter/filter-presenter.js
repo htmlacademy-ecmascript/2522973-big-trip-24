@@ -30,14 +30,14 @@ export default class FilterPresenter {
         count: filter[FilterType.FUTURE](points).length
       },
       {
-        type: FilterType.PAST,
-        name: 'past',
-        count: filter[FilterType.PAST](points).length
-      },
-      {
         type: FilterType.PRESENT,
         name: 'present',
         count: filter[FilterType.PRESENT](points).length
+      },
+      {
+        type: FilterType.PAST,
+        name: 'past',
+        count: filter[FilterType.PAST](points).length
       },
     ];
   /* return Object.values(FilterType).map((type) => ({

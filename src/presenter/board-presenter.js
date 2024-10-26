@@ -193,11 +193,15 @@ export default class BoardPresenter {
   }
 
   #renderBoard() {
+    this.#renderInfo();
     if (this.#isLoading) {
       this.#renderPreloader();
       return;
     }
-    this.#renderInfo();
+    const filterType = this.#filterModel.filter;
+    if (this.points.length === 0) {
+      this.#renderNoPoint(filterType);
+    }
     this.#renderSort();
     this.#renderPointsList();
   }
