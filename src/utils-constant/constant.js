@@ -44,6 +44,11 @@ const NO_POINT_TEXT = {
   LOADING_ERROR: 'Failed to load latest route information'
 };
 
+const ValidationStyle = {
+  FOR_BORDER: 'border: 1px solid red; border-radius: 3px',
+  FOR_TEXT_COLOR: 'color: red',
+};
+
 const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
   ADD_POINT: 'ADD_POINT',
@@ -85,6 +90,7 @@ export {
   UserAction,
   UpdateType,
   NO_POINT_TEXT,
+  ValidationStyle,
   BLANK_POINT,
   MODE_TYPE,
   TimeLimit

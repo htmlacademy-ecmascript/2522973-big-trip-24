@@ -2,14 +2,9 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import he from 'he';
 import 'flatpickr/dist/flatpickr.min.css';
-import { TYPES, BLANK_POINT } from '../utils-constant/constant.js';
+import { TYPES, BLANK_POINT, ValidationStyle } from '../utils-constant/constant.js';
 import { capitalizeFirstLetter } from '../utils-constant/utils.js';
 import { DATE_FORMAT, humanizePointDate } from '../utils-constant/date-time.js';
-
-const ValidationStyle = {
-  FOR_BORDER: 'border: 1px solid red; border-radius: 3px',
-  FOR_TEXT_COLOR: 'color: red',
-};
 
 const createAddPointTemplate = (state, allDestinations) => {
   const { id, basePrice, type, dateFrom, dateTo, offers, typeOffers, destination, isDisabled, isSaving, isDeleting } = state;

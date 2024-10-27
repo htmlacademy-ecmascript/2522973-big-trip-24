@@ -9,7 +9,6 @@ import { render, remove, RenderPosition } from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
 import { SortType, UpdateType, UserAction, FilterType, filter, TimeLimit, NO_POINT_TEXT } from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
-//const siteEventsElement = siteMainElement.querySelector('.trip-events');
 const siteTripInfo = siteMainElement.querySelector('.trip-info');
 
 export default class BoardPresenter {
@@ -20,7 +19,6 @@ export default class BoardPresenter {
   #pointListComponent = new ListPointView();
   #infoView = new TripInfoView();
   #pointPresenters = new Map();
-  //#loadingComponent = new PreloaderView();
   #loadingComponent = null;
   #loadingErrorComponent = null;
   #noPointComponent = null;
@@ -86,10 +84,6 @@ export default class BoardPresenter {
     }
   }
 
-  #renderPreloader() {
-    render(this.#loadingComponent, this.#container, RenderPosition.AFTERBEGIN);
-  }
-
   #handleViewAction = async (actionType, updateType, update) => {
     this.#uiBlocker.block();
     switch (actionType) {
@@ -151,14 +145,13 @@ export default class BoardPresenter {
     render(this.#infoView, siteTripInfo);
   }
 
-  #handleSortTypeChange = (sortType) => { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
       return;
     }
     this.#currentSortType = sortType;
-    this.#clearBoard({resetRenderedPointCount: true});
+    this.#clearBoard();
     this.#renderBoard();
-    //remove(this.#sortComponent);
   };
 
   #renderSort() {
@@ -214,11 +207,6 @@ export default class BoardPresenter {
   #renderPointsList() {
     render(this.#pointListComponent, this.#container, RenderPosition.BEFOREEND);
     this.points.forEach((point) => this.#renderPoint(point));
-    /*
-    if (this.#pointListComponent.length === 0) {
-      render(this.#noPointComponent, this.#container);
-    }
-      */
   }
 
   #renderPoint(point) {
@@ -233,20 +221,21 @@ export default class BoardPresenter {
   }
 
   #renderBoard() {
-    this.#renderInfo();
     if (this.error) {
       this.#renderLoadingError();
       return;
     }
+
     if (this.#isLoading) {
       this.#renderLoading();
       return;
     }
+
     const filterType = this.#filterModel.filter;
     if (this.points.length === 0) {
       this.#renderNoPoint(filterType);
     }
-    //console.log(this.points)
+    this.#renderInfo();
     this.#renderSort();
     this.#renderPointsList();
   }

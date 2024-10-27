@@ -27,7 +27,7 @@ export default class PointsApiService extends ApiService {
     const response = await this._load({
       url: `points/${points.id}`,
       method: Method.PUT,
-      body: JSON.stringify(this.#adaptToServer(points)), //Исользование Адаптера
+      body: JSON.stringify(this.#adaptToServer(points)),
       headers: new Headers({'Content-Type': 'application/json'}),
     });
     const parsedResponse = await ApiService.parseResponse(response);
@@ -53,9 +53,9 @@ export default class PointsApiService extends ApiService {
     return response;
   }
 
-  #adaptToServer(point) { //Сервер Адаптер для форматирования данных из клиента НА СЕРВЕР!!!
+  #adaptToServer(point) {
     const adaptedPoint = {...point,
-      'date_from': point.dateFrom instanceof Date ? point.dateFrom.toISOString() : null, // На сервере дата хранится в ISO формате
+      'date_from': point.dateFrom instanceof Date ? point.dateFrom.toISOString() : null,
       'date_to': point.dateTo instanceof Date ? point.dateTo.toISOString() : null,
       'base_price': point.basePrice,
       'is_favorite': point.isFavorite,
@@ -68,5 +68,4 @@ export default class PointsApiService extends ApiService {
 
     return adaptedPoint;
   }
-
 }
