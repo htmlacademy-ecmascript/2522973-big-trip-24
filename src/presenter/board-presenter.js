@@ -66,6 +66,14 @@ export default class BoardPresenter {
     return filteredPoint.sort(sortByDay);
   }
 
+  get offers() {
+    return this.#pointsModel.offers;
+  }
+
+  get destinations() {
+    return this.#pointsModel.destinations;
+  }
+
   get error() {
     return this.#pointsModel.error;
   }
@@ -86,6 +94,7 @@ export default class BoardPresenter {
 
   #handleViewAction = async (actionType, updateType, update) => {
     this.#uiBlocker.block();
+
     switch (actionType) {
       case UserAction.UPDATE_POINT:
         this.#pointPresenters.get(update.id).setSaving();

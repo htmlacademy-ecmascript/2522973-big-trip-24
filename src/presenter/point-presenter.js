@@ -40,7 +40,7 @@ export default class PointPresenter {
       typeOffers: this.#pointsModel.getOffersByType(this.#point.type),
       allDestinations: this.#pointsModel.destinations,
       allOffers: this.#pointsModel.offers,
-      onFormSubmit: this.#handleFormSubmitClick,
+      onFormSubmit: this.#handleFormSubmit,
       onEditRollUp: this.#handleEditRollUp,
       onDeleteClick: this.#handleDeleteClick,
     });
@@ -117,17 +117,16 @@ export default class PointPresenter {
     }
   };
 
-  #handleFormSubmitClick = (update) => {
-    const isMinorUpdate = !isDatesSame(this.#point.dateFrom, update.dateFrom) ||
-    !isDatesSame(this.#point.dateTo, update.dateTo) ||
-    this.#point.basePrice !== update.basePrice;
+  #handleFormSubmit = (update) => {
+    const isPatchUpdate = isDatesSame(this.#point.dateFrom, update.dateFrom) &&
+    isDatesSame(this.#point.dateTo, update.dateTo) &&
+    (parseInt(this.#point.basePrice, 10) === parseInt(update.basePrice, 10));
 
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
-      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
-      update,
+      isPatchUpdate ? UpdateType.PATCH : UpdateType.MINOR,
+      update
     );
-    this.#replaceFormToPoint();
   };
 
   #handleDeleteClick = (point) => {
