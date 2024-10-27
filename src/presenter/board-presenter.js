@@ -1,10 +1,9 @@
 import TripInfoView from '../view/info-view.js';
 import SortView from '../view/sort-view.js';
-import EmptyListView from '../view/message-view.js';
+import EmptyListView from '../view/empty-list-view.js';
 import ListPointView from '../view/list-point-view.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presener.js';
-import PreloaderView from '../view/preloader.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import { render, remove, RenderPosition } from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
@@ -21,7 +20,9 @@ export default class BoardPresenter {
   #pointListComponent = new ListPointView();
   #infoView = new TripInfoView();
   #pointPresenters = new Map();
-  #loadingComponent = new PreloaderView();
+  //#loadingComponent = new PreloaderView();
+  #loadingComponent = null;
+  #loadingErrorComponent = null;
   #noPointComponent = null;
   #newPointPresenter = null;
   #filterType = FilterType.EVERYTHING;
@@ -181,6 +182,21 @@ export default class BoardPresenter {
     render(this.#noPointComponent, this.#container);
   }
 
+  #renderLoading() {
+    this.#loadingComponent = new EmptyListView({
+      filterType: this.#loadingText,
+    });
+    render(this.#loadingComponent, this.#container);
+  }
+
+  #renderLoadingError() {
+    this.#loadingErrorComponent = new EmptyListView({
+      filterType: this.#loadingErrorText,
+    });
+    this.#newPointButton.disabled = true;
+    render(this.#loadingErrorComponent, this.#container);
+  }
+
   #clearBoard({resetSortType = false} = {}) {
     this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
@@ -218,8 +234,12 @@ export default class BoardPresenter {
 
   #renderBoard() {
     this.#renderInfo();
+    if (this.error) {
+      this.#renderLoadingError();
+      return;
+    }
     if (this.#isLoading) {
-      this.#renderPreloader();
+      this.#renderLoading();
       return;
     }
     const filterType = this.#filterModel.filter;
