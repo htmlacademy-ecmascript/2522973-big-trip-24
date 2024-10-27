@@ -54,9 +54,9 @@ export default class PointsModel extends Observable {
     return allOffers.find((item) => item.type === type);
   }
 
-  getOffersById(type, offersId) {
+  getOffersById(type, itemsId) {
     const offersType = this.getOffersByType(type.toLowerCase());
-    return offersType.offers.filter((item)=>offersId.includes(item.id));
+    return offersType.offers.filter((item) => itemsId.find((id) => item.id === id));
   }
 
   async updatePoint(updateType, update) {
