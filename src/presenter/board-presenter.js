@@ -224,7 +224,7 @@ export default class BoardPresenter {
     const pointPresenter = new PointPresenter({
       pointListComponent: this.#pointListComponent.element,
       pointsModel: this.#pointsModel,
-      onPointChange: this.#handleViewAction,
+      onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange
     });
     pointPresenter.init(point);

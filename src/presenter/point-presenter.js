@@ -14,11 +14,11 @@ export default class PointPresenter {
   #handleDataChange = null;
   #mode = MODE_TYPE.DEFAULT;
 
-  constructor({pointListComponent, pointsModel, onPointChange, onModeChange}) {
+  constructor({pointListComponent, pointsModel, onDataChange, onModeChange}) {
     this.#pointListComponent = pointListComponent;
     this.#pointsModel = pointsModel;
     this.#handleModeChange = onModeChange;
-    this.#handleDataChange = onPointChange;
+    this.#handleDataChange = onDataChange;
   }
 
   init(point) {
