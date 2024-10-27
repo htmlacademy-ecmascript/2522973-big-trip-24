@@ -5,7 +5,7 @@ import { UserAction, UpdateType, MODE_TYPE } from '../utils-constant/constant.js
 import { isDatesSame } from '../utils-constant/date-time.js';
 
 export default class PointPresenter {
-  #pointListComponent = null;
+  #container = null;
   #pointsModel = null;
   #point = null;
   #pointComponent = null;
@@ -14,8 +14,8 @@ export default class PointPresenter {
   #handleDataChange = null;
   #mode = MODE_TYPE.DEFAULT;
 
-  constructor({pointListComponent, pointsModel, onPointChange, onModeChange}) {
-    this.#pointListComponent = pointListComponent;
+  constructor({container, pointsModel, onPointChange, onModeChange}) {
+    this.#container = container;
     this.#pointsModel = pointsModel;
     this.#handleModeChange = onModeChange;
     this.#handleDataChange = onPointChange;
@@ -46,7 +46,7 @@ export default class PointPresenter {
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
-      render(this.#pointComponent, this.#pointListComponent);
+      render(this.#pointComponent, this.#container);
       return;
     }
 
