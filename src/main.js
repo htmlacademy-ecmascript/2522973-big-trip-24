@@ -18,11 +18,15 @@ const pointsModel = new PointsModel({ //Serv
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION) //Создает инстанс класса для сервера
 }); //Создаем инстанс класса из модели
 
+const newPointButton = new EditPointButton({
+  onClick: handleNewPointButtonClick
+});
 
 const boardPresenter = new BoardPresenter({
   container: listContainer,
   pointsModel,
   filterModel,
+  newPointButton,
   onNewPointDestroy: handleEditNewPointClose
 });
 
@@ -33,10 +37,6 @@ const filterPresenter = new FilterPresenter({ //!!!!!!!!!!!!!!!!
   pointsModel: pointsModel
 });
 
-
-const newPointButton = new EditPointButton({
-  onClick: handleNewPointButtonClick
-});
 
 function handleNewPointButtonClick() {
   boardPresenter.createPoint();
