@@ -3,7 +3,7 @@ import { capitalizeFirstLetter } from '../utils-constant/utils.js';
 
 const generateFilterButton = (filter, currentFilterType) => {
 
-  const {type, name} = filter;
+  const {type, name, count} = filter;
 
   return (`
     <div class="trip-filters__filter">
@@ -14,8 +14,9 @@ const generateFilterButton = (filter, currentFilterType) => {
         name="trip-filter"
         value="${type}"
         ${type === currentFilterType ? 'checked' : ''}
+        ${!count ? 'disabled' : ''}
       >
-      <label class="trip-filters__filter-label" for="filter-${name}" value="${type}">${capitalizeFirstLetter(type)}</label>
+      <label class="trip-filters__filter-label" for="filter-${name}">${capitalizeFirstLetter(type)}</label>
     </div>
   `);
 };
