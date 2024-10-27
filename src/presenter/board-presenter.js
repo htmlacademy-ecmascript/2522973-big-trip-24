@@ -230,13 +230,14 @@ export default class BoardPresenter {
       this.#renderLoading();
       return;
     }
-
+    if (this.points.length > 0){
+      this.#renderSort();
+    }
     const filterType = this.#filterModel.filter;
     if (this.points.length === 0) {
       this.#renderNoPoint(filterType);
     }
     this.#renderInfo();
-    this.#renderSort();
     this.#renderPointsList();
   }
 }
