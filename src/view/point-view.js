@@ -1,35 +1,16 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import he from 'he';
-//import dayjs from 'dayjs';
 import { getDuration, DATE_FORMAT, humanizePointDate } from '../utils-constant/date-time.js';
 
-/*
-const DATE_FORMAT = {
-  DATE: 'D MMM',
-  TIME: 'HH:mm',
-  FORM: 'DD/MM/YY HH:mm',
-  DATE_FOR_TRIP_INFO: 'D MMM',
-};
-
-const DateFormat = {
-  DATE_FORMAT: 'MMM D',
-  TIME_FORMAT: 'HH:mm',
-  FULL_DATE_FORMAT: 'DD/MM/YY HH:mm',
-  DATE_FOR_TRIP_INFO: 'D MMM',
-};
-
-function humanizePointDate(date, format = DATE_FORMAT.DATE) {
-  return date ? dayjs(date).format(format) : '';
-}
-  */
-
 const createListTemplate = (point, offers, destination) => {
+
   const { basePrice, type, isFavorite, dateFrom, dateTo} = point;
-  //console.log(dayjs(dateFrom.$y))
   const startTime = humanizePointDate(dateFrom, DATE_FORMAT.TIME);
   const endTime = humanizePointDate(dateTo, DATE_FORMAT.TIME);
   const eventDuration = getDuration(dateFrom, dateTo);
+  const datePoint = humanizePointDate(dateFrom, DATE_FORMAT.DATE);
   const typeName = type[0].toUpperCase() + type.slice(1, type.length);
+
   const createEventOfferTemplate = (title, price) => (`
     <li class="event__offer">
       <span class="event__offer-title">${he.encode(title)}</span>
@@ -48,7 +29,7 @@ const createListTemplate = (point, offers, destination) => {
   return (
     `<li class="trip-events__item">
               <div class="event">
-                <time class="event__date" datetime="2019-03-18">MAR 18</time>
+                <time class="event__date" datetime="2019-03-18">${datePoint}</time>
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>

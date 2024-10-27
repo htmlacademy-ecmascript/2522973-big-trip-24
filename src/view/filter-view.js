@@ -1,4 +1,3 @@
-//import { FiltersPoint } from '../utils-constant/constant.js';
 import AbstractView from '../framework/view/abstract-view';
 import { capitalizeFirstLetter } from '../utils-constant/utils.js';
 

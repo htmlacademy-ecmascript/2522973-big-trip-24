@@ -1,4 +1,4 @@
-import { isEventOver, isFutureEvent } from '../utils-constant/date-time.js';
+import { isPastEvent, isFutureEvent, isTodayEvent } from '../utils-constant/date-time.js';
 
 const TYPES = [
   'Taxi',
@@ -11,34 +11,7 @@ const TYPES = [
   'Sightseeing',
   'Restaurant',
 ];
-const CITIES = [
-  'New-York',
-  'Tokio',
-  'Saint-Petersburg',
-  'London',
-  'Paris',
-  'San-Francisco',
-  'Moscow',
-];
-const OFFERS = [
-  'Add luggage',
-  'Switch to comfort class',
-  'Add meal',
-  'Choose seats',
-  'Travel by train',
-  'Order Uber',
-  'Rent a car',
-  'Add breakfast',
-  'Book tickets',
-  'Lunch in city',
-];
 
-const EMPTY_LIST = {
-  'EVERYTHING': 'Click New Event to create your first point',
-  'LOADING': 'Loading...',
-  'LOADING_ERROR': 'Failed to load latest route information'
-};
-export { };
 
 const SortType = {
   DAY: 'day',
@@ -49,17 +22,17 @@ const SortType = {
 };
 
 const FilterType = {
-  EVERYTHING: 'everything',
-  FUTURE: 'future',
-  PRESENT: 'present',
-  PAST: 'past'
+  EVERYTHING: 'Everything',
+  FUTURE: 'Future',
+  PRESENT: 'Present',
+  PAST: 'Past'
 };
 
 const filter = {
   [FilterType.EVERYTHING]: (points) => [...points],
   [FilterType.FUTURE]: (points) => points.filter((point) => isFutureEvent(point.dateFrom)),
-  [FilterType.PRESENT]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
-  [FilterType.PAST]: (points) => points.filter((point) => isEventOver(point.dateFrom)),
+  [FilterType.PRESENT]: (points) => points.filter((point) => isTodayEvent(point.dateFrom, point.dateTo)),
+  [FilterType.PAST]: (points) => points.filter((point) => isPastEvent(point.dateTo)),
 };
 
 const NO_POINT_TEXT = {
@@ -97,19 +70,13 @@ const MODE_TYPE = {
   EDITING: 'EDITING',
 };
 
-const POINT_COUNT_PER_STEP = 20;
-
 export {
   SortType,
   TYPES,
-  CITIES,
-  OFFERS,
-  EMPTY_LIST,
   FilterType,
   filter,
   UserAction,
   UpdateType,
-  POINT_COUNT_PER_STEP,
   NO_POINT_TEXT,
   BLANK_POINT,
   MODE_TYPE

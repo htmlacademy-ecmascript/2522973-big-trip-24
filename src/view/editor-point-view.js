@@ -17,7 +17,6 @@ const createAddPointTemplate = (state, allDestinations) => {
   const startTime = humanizePointDate(dateFrom, DATE_FORMAT.FORM);
   const endTime = humanizePointDate(dateTo, DATE_FORMAT.FORM);
   const roitePointDestination = allDestinations.find((item) => item.id === destination);
-  // const { name, description, pictures } = roitePointDestination;
   const createTypeItemTemplate = (typeItem, isCheckedTypeItem) =>
     `
       <div class="event__type-item">
@@ -140,7 +139,6 @@ const createAddPointTemplate = (state, allDestinations) => {
 export default class EditorPointView extends AbstractStatefulView{
   #allDestinations = [];
   #allOffers = [];
-
   #handleFormSubmit = null;
   #handleEditRollUp = null;
   #initialPoint = null;
