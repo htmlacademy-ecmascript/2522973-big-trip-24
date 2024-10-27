@@ -5,9 +5,10 @@ import ListPointView from '../view/list-point-view.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presener.js';
 import PreloaderView from '../view/preloader.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import { render, remove, RenderPosition } from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
-import { SortType, UpdateType, UserAction, FilterType, filter } from '../utils-constant/constant.js';
+import { SortType, UpdateType, UserAction, FilterType, filter, TimeLimit, NO_POINT_TEXT } from '../utils-constant/constant.js';
 const siteMainElement = document.querySelector('.page-body');
 //const siteEventsElement = siteMainElement.querySelector('.trip-events');
 const siteTripInfo = siteMainElement.querySelector('.trip-info');
@@ -21,11 +22,17 @@ export default class BoardPresenter {
   #infoView = new TripInfoView();
   #pointPresenters = new Map();
   #loadingComponent = new PreloaderView();
-  #currentSortType = SortType.DAY;
   #noPointComponent = null;
   #newPointPresenter = null;
   #filterType = FilterType.EVERYTHING;
+  #currentSortType = SortType.DAY;
+  #loadingText = Object.keys(NO_POINT_TEXT).find((item) => item === 'LOADING');
+  #loadingErrorText = Object.keys(NO_POINT_TEXT).find((item) => item === 'LOADING_ERROR');
   #isLoading = true;
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  });
 
   constructor({container, pointsModel, filterModel, onNewPointDestroy}) {
     this.#container = container;
@@ -81,6 +88,7 @@ export default class BoardPresenter {
   }
 
   #handleViewAction = (actionType, updateType, update) => {
+    this.#uiBlocker.block();
     switch (actionType) {
       case UserAction.UPDATE_POINT:
         this.#pointsModel.updatePoint(updateType, update);
@@ -92,6 +100,7 @@ export default class BoardPresenter {
         this.#pointsModel.deletePoint(updateType, update);
         break;
     }
+    this.#uiBlocker.unblock();
   };
 
 

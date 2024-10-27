@@ -40,6 +40,8 @@ const NO_POINT_TEXT = {
   [FilterType.FUTURE]: 'There are no future events now',
   [FilterType.PAST]: 'There are no past events now',
   [FilterType.PRESENT]: 'There are no present events now',
+  LOADING: 'Loading...',
+  LOADING_ERROR: 'Failed to load latest route information'
 };
 
 const UserAction = {
@@ -70,6 +72,11 @@ const MODE_TYPE = {
   EDITING: 'EDITING',
 };
 
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
 export {
   SortType,
   TYPES,
@@ -79,5 +86,6 @@ export {
   UpdateType,
   NO_POINT_TEXT,
   BLANK_POINT,
-  MODE_TYPE
+  MODE_TYPE,
+  TimeLimit
 };
