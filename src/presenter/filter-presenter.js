@@ -40,11 +40,6 @@ export default class FilterPresenter {
         count: filter[FilterType.PAST](points).length
       },
     ];
-  /* return Object.values(FilterType).map((type) => ({
-      type,
-      points: filter[type](points)
-    }));
-    */
   }
 
   init() {

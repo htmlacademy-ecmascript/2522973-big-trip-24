@@ -32,24 +32,6 @@ function getDuration (pointDateStart, pointDateEnd) {
   return '';
 }
 
-const getRandomInt = (min, max) => {
-  const lower = Math.ceil(Math.min(min, max));
-  const upper = Math.floor(Math.max(min, max));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-const getRandomDate = () => {
-  const switcher = getRandomInt(1,2);
-  const dateNow = dayjs(new Date());
-  switch (switcher){
-    case 1:
-      return dateNow.add(getRandomInt(1,4), 'hour');
-    case 2:
-      return dateNow.subtract(getRandomInt(1,4), 'hour');
-  }
-};
-
 const DATE_FORMAT = {
   DATE: 'D MMM',
   TIME: 'HH:mm',
@@ -78,14 +60,7 @@ function isDatesSame(dateToCheck1, dateToCheck2){
 }
 
 export {
-  getRandomDate,
-  //isDatesSame,
-  //isActualPoint,
-  //isExpiredPoint,
-  //isFuturePoint,
-  //humanizePointDueDate,
   getDuration,
-  //DateFormat,
   isPastEvent,
   isFutureEvent,
   isTodayEvent,
