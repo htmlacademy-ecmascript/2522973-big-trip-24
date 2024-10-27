@@ -23,11 +23,11 @@ export default class PointsApiService extends ApiService {
       .then(ApiService.parseResponse);
   }
 
-  async updatePoint(point) {
+  async updatePoint(points) {
     const response = await this._load({
-      url: `points/${point.id}`,
+      url: `points/${points.id}`,
       method: Method.PUT,
-      body: JSON.stringify(this.#adaptToServer(point)),
+      body: JSON.stringify(this.#adaptToServer(points)),
       headers: new Headers({'Content-Type': 'application/json'}),
     });
     const parsedResponse = await ApiService.parseResponse(response);
