@@ -1,9 +1,16 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import he from 'he';
+import { getDuration, DATE_FORMAT, humanizePointDate } from '../utils-constant/date-time.js';
 
 const createListTemplate = (point, offers, destination) => {
-  const { basePrice, type, isFavorite} = point;
+
+  const { basePrice, type, isFavorite, dateFrom, dateTo} = point;
+  const startTime = humanizePointDate(dateFrom, DATE_FORMAT.TIME);
+  const endTime = humanizePointDate(dateTo, DATE_FORMAT.TIME);
+  const eventDuration = getDuration(dateFrom, dateTo);
+  const datePoint = humanizePointDate(dateFrom, DATE_FORMAT.DATE);
   const typeName = type[0].toUpperCase() + type.slice(1, type.length);
+
   const createEventOfferTemplate = (title, price) => (`
     <li class="event__offer">
       <span class="event__offer-title">${he.encode(title)}</span>
@@ -22,18 +29,18 @@ const createListTemplate = (point, offers, destination) => {
   return (
     `<li class="trip-events__item">
               <div class="event">
-                <time class="event__date" datetime="2019-03-18">MAR 18</time>
+                <time class="event__date" datetime="2019-03-18">${datePoint}</time>
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
                 <h3 class="event__title">${typeName} ${he.encode(destination.name)}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
+                    <time class="event__start-time" datetime="2019-03-18T10:30">${startTime}</time>
                     &mdash;
-                    <time class="event__end-time" datetime="2019-03-18T11:00">11:00</time>
+                    <time class="event__end-time" datetime="2019-03-18T11:00">${endTime}</time>
                   </p>
-                  <p class="event__duration">30M</p>
+                  <p class="event__duration">${eventDuration}</p>
                 </div>
                 <p class="event__price">
                   &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
