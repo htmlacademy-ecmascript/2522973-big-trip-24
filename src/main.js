@@ -9,7 +9,6 @@ import { render, RenderPosition } from './framework/render.js';
 
 const AUTHORIZATION = 'Basic gir87he98qH';
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
-//const siteMainElement = document.querySelector('.page-body');
 const siteTripInfoElement = document.querySelector('.trip-main');
 const filtersContainer = siteTripInfoElement.querySelector('.trip-controls__filters');
 const listContainer = document.querySelector('.trip-events');
