@@ -3,30 +3,19 @@ import flatpickr from 'flatpickr';
 import he from 'he';
 import 'flatpickr/dist/flatpickr.min.css';
 import { TYPES, BLANK_POINT } from '../utils-constant/constant.js';
-import { capitalizeFirstLetter, humanizePointDate } from '../utils-constant/utils.js';
+import { capitalizeFirstLetter } from '../utils-constant/utils.js';
+import { DATE_FORMAT, humanizePointDate } from '../utils-constant/date-time.js';
 
 const ValidationStyle = {
   FOR_BORDER: 'border: 1px solid red; border-radius: 3px',
   FOR_TEXT_COLOR: 'color: red',
 };
 
-const DateFormat = {
-  DATE_FORMAT: 'MMM D',
-  TIME_FORMAT: 'HH:mm',
-  FULL_DATE_FORMAT: 'DD/MM/YY HH:mm',
-  DATE_FOR_TRIP_INFO: 'D MMM',
-};
-/*
-const ValidationStyle = {
-  FOR_BORDER: 'border: 1px solid red; border-radius: 3px',
-  FOR_TEXT_COLOR: 'color: red',
-};
-*/
 const createAddPointTemplate = (state, allDestinations) => {
   const { id, basePrice, type, dateFrom, dateTo, offers, typeOffers, destination, isDisabled, isSaving, isDeleting } = state;
   const typeName = capitalizeFirstLetter(type);
-  const startTime = humanizePointDate(dateFrom, DateFormat.FULL_DATE_FORMAT);
-  const endTime = humanizePointDate(dateTo, DateFormat.FULL_DATE_FORMAT);
+  const startTime = humanizePointDate(dateFrom, DATE_FORMAT.FORM);
+  const endTime = humanizePointDate(dateTo, DATE_FORMAT.FORM);
   const roitePointDestination = allDestinations.find((item) => item.id === destination);
   // const { name, description, pictures } = roitePointDestination;
   const createTypeItemTemplate = (typeItem, isCheckedTypeItem) =>

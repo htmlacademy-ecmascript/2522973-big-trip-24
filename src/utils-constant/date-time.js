@@ -25,6 +25,7 @@ const DateFormat = {
  */
 const humanizePointDueDate = (dueDate, dateFormat) => dueDate ? dayjs(dueDate).format(dateFormat) : '';
 
+
 const isEventOver = (dueDate) => dueDate && dayjs(dueDate).isBefore(dayjs(new Date(), 'D'));
 
 const isFutureEvent = (dueDate) => dueDate && dayjs(dueDate).isAfter(dayjs(new Date(), 'D'));
@@ -46,39 +47,18 @@ const isActualPoint = (point) => point.dateTo && (dayjs().isSame(dayjs(point.dat
  */
 
 const getDuration = (dateFrom, dateTo) => {
-
-  /** Перевод дат начала и окончания события в объекты dayjs для дальнейшей работы с ними */
   const endDate = dayjs(dateTo);
   const startDate = dayjs(dateFrom);
-
-  /** @const {object} объект продолжительности с длительностью времени, находящейся в промежутке между startDate и endDate */
   const durationInUnits = dayjs.duration(endDate.diff(startDate));
-
-  /** @const {number} значение свойства с длительностью времени в милисекундах */
   const durationInMilliseconds = durationInUnits.$ms;
-
-  /** Деструктуризация объекта */
   const { $d } = durationInUnits;
-
-  /** @const {number} значение свойства с длительностью времени в месяцах */
   const countMonths = $d.months;
 
-  /** если true, тогда сделаем "конвертацию" - переведем месяца в дни */
   if (countMonths > 0) {
-
-    /**
-     * @const {object} объект, в метод .duration передаем количество месяцев,
-     * которые в данном объекте будут представлены в милисекундах
-     */
     const monthsInMil = dayjs.duration(countMonths, 'month');
-
-    /**
-     * перезаписывает значение свойства объекта продолжительности,
-     * получает продолжительность времени, измеряемую в днях, здесь .duration может принимать аргументом только милисекунды
-     */
     $d.days += dayjs.duration(monthsInMil.$ms).asDays();
   }
-  /** Если true, конструкция вернет {string} - Формат продолжительности нахождения в точке маршрута в зависимости от длительности */
+
   switch (true) {
     case durationInMilliseconds < TimeInMilliseconds.HOUR:
       return durationInUnits.format(DateFormat.MINUTES_FORMAT);
@@ -107,8 +87,33 @@ const getRandomDate = () => {
   }
 };
 
+const DATE_FORMAT = {
+  DATE: 'D MMM',
+  TIME: 'HH:mm',
+  FORM: 'DD/MM/YY HH:mm',
+  DATE_FOR_TRIP_INFO: 'D MMM',
+};
+
+function humanizePointDate(date, format = DATE_FORMAT.DATE) {
+  return date ? dayjs(date).format(format) : '';
+}
+
 function isDatesSame(dateToCheck1, dateToCheck2){
   return (dateToCheck1 === null && dateToCheck2 === null) || dayjs(dateToCheck1).isSame(dateToCheck2, 'D');
 }
 
-export { getRandomDate, isDatesSame, isActualPoint, isExpiredPoint, isFuturePoint, humanizePointDueDate, getDuration, DateFormat, isEventOver, isFutureEvent, isEventToday};
+export {
+  getRandomDate,
+  isDatesSame,
+  isActualPoint,
+  isExpiredPoint,
+  isFuturePoint,
+  humanizePointDueDate,
+  getDuration,
+  DateFormat,
+  isEventOver,
+  isFutureEvent,
+  isEventToday,
+  DATE_FORMAT,
+  humanizePointDate
+};

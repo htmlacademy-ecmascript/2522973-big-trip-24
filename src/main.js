@@ -7,7 +7,7 @@ import EditPointButton from './view/new-point-button-view.js';
 import PointsApiService from './points-api-service.js'; //Serv
 import { render, RenderPosition } from './framework/render.js';
 
-const AUTHORIZATION = 'Basic gir87he94qb'; //Serv
+const AUTHORIZATION = 'Basic gir87he94qH'; //Serv
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip'; //Serv
 const siteMainElement = document.querySelector('.page-body');
 const siteTripInfoElement = siteMainElement.querySelector('.trip-main'); // шапка

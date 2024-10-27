@@ -47,7 +47,6 @@ export default class BoardPresenter {
   get points() {
     this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
-
     const filteredPoint = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
@@ -66,7 +65,6 @@ export default class BoardPresenter {
   init() {
     this.#renderBoard();
   }
-
 
   createPoint() {
     this.#currentSortType = SortType.DAY;
@@ -202,6 +200,7 @@ export default class BoardPresenter {
     if (this.points.length === 0) {
       this.#renderNoPoint(filterType);
     }
+    //console.log(this.points)
     this.#renderSort();
     this.#renderPointsList();
   }
