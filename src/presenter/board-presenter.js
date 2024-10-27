@@ -13,6 +13,8 @@ const siteTripInfo = siteMainElement.querySelector('.trip-info');
 
 export default class BoardPresenter {
   #container = null;
+  #mainContainer = null;
+  #pointListContainer = null;
   #pointsModel = null;
   #filterModel = null;
   #sortComponent = null;
@@ -34,8 +36,9 @@ export default class BoardPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT
   });
 
-  constructor({container, pointsModel, filterModel, newPointButton, onNewPointDestroy}) {
-    this.#container = container;
+  constructor({mainContainer, pointListContainer, pointsModel, filterModel, newPointButton, onNewPointDestroy}) {
+    this.#mainContainer = mainContainer;
+    this.#pointListContainer = pointListContainer;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -160,7 +163,7 @@ export default class BoardPresenter {
       onSortTypeChange: this.#handleSortTypeChange
     });
 
-    render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
+    render(this.#sortComponent, this.#pointListContainer, RenderPosition.AFTERBEGIN);
   }
 
   #handleFormReset = () => {
@@ -172,14 +175,14 @@ export default class BoardPresenter {
 
   #renderNoPoint() {
     this.#noPointComponent = new EmptyListView({filterType: this.#filterType});
-    render(this.#noPointComponent, this.#container);
+    render(this.#noPointComponent, this.#pointListContainer);
   }
 
   #renderLoading() {
     this.#loadingComponent = new EmptyListView({
       filterType: this.#loadingText,
     });
-    render(this.#loadingComponent, this.#container);
+    render(this.#loadingComponent, this.#pointListContainer);
   }
 
   #renderLoadingError() {
@@ -187,7 +190,7 @@ export default class BoardPresenter {
       filterType: this.#loadingErrorText,
     });
     this.#newPointButton.disabled = true;
-    render(this.#loadingErrorComponent, this.#container);
+    render(this.#loadingErrorComponent, this.#pointListContainer);
   }
 
   #clearBoard({resetSortType = false} = {}) {
@@ -205,13 +208,13 @@ export default class BoardPresenter {
   }
 
   #renderPointsList() {
-    render(this.#pointListComponent, this.#container, RenderPosition.BEFOREEND);
+    render(this.#pointListComponent, this.#pointListContainer);
     this.points.forEach((point) => this.#renderPoint(point));
   }
 
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
-      container: this.#container,
+      pointListComponent: this.#pointListComponent.element,
       pointsModel: this.#pointsModel,
       onPointChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange
