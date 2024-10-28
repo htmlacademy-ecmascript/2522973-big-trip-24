@@ -1,15 +1,16 @@
-import TripInfoView from '../view/info-view.js';
+//import TripInfoView from '../view/info-view.js';
 import SortView from '../view/sort-view.js';
 import EmptyListView from '../view/empty-list-view.js';
 import ListPointView from '../view/list-point-view.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presener.js';
+import TripInfoPresenter from './info-presenter.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import { render, remove, RenderPosition } from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
 import { SortType, UpdateType, UserAction, FilterType, filter, TimeLimit, NO_POINT_TEXT } from '../utils-constant/constant.js';
-const siteMainElement = document.querySelector('.page-body');
-const siteTripInfo = siteMainElement.querySelector('.trip-info');
+//const siteMainElement = document.querySelector('.page-body');
+//const siteTripInfo = siteMainElement.querySelector('.trip-info');
 
 export default class BoardPresenter {
   #mainContainer = null;
@@ -18,12 +19,13 @@ export default class BoardPresenter {
   #filterModel = null;
   #sortComponent = null;
   #pointListComponent = new ListPointView();
-  #infoView = new TripInfoView();
+  //#infoView = new TripInfoView();
   #pointPresenters = new Map();
   #loadingComponent = null;
   #loadingErrorComponent = null;
   #noPointComponent = null;
   #newPointPresenter = null;
+  #tripInfoPresenter = null;
   #filterType = FilterType.EVERYTHING;
   #currentSortType = SortType.DAY;
   #loadingText = Object.keys(NO_POINT_TEXT).find((item) => item === 'LOADING');
@@ -154,7 +156,12 @@ export default class BoardPresenter {
   };
 
   #renderInfo() {
-    render(this.#infoView, siteTripInfo);
+    this.#tripInfoPresenter = new TripInfoPresenter({
+      pointsModel: this.#pointsModel,
+      mainContainer: this.#mainContainer,
+    });
+    this.#tripInfoPresenter.init();
+    //render(this.#infoView, siteTripInfo);
   }
 
   #handleSortTypeChange = (sortType) => {
@@ -203,6 +210,7 @@ export default class BoardPresenter {
   }
 
   #clearBoard({resetSortType = false} = {}) {
+    this.#tripInfoPresenter.destroy();
     this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();

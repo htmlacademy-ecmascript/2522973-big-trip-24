@@ -43,6 +43,10 @@ function humanizePointDate(date, format = DATE_FORMAT.DATE) {
   return date ? dayjs(date).format(format) : '';
 }
 
+function humanizeRoutePointDate(routePointDate, FORMAT_TO_DATE) {
+  return routePointDate ? dayjs(routePointDate).format(FORMAT_TO_DATE) : '';
+}
+
 function isFutureEvent(dateToCheck) {
   return dateToCheck && dayjs(dateToCheck).isAfter(dayjs(new Date(), 'D'));
 }
@@ -66,5 +70,6 @@ export {
   isTodayEvent,
   isDatesSame,
   DATE_FORMAT,
-  humanizePointDate
+  humanizePointDate,
+  humanizeRoutePointDate,
 };
