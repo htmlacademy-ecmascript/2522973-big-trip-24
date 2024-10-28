@@ -37,14 +37,11 @@ const DATE_FORMAT = {
   TIME: 'HH:mm',
   FORM: 'DD/MM/YY HH:mm',
   DATE_FOR_TRIP_INFO: 'D MMM',
+  DATE_FORMAT: 'MMM D',
 };
 
 function humanizePointDate(date, format = DATE_FORMAT.DATE) {
   return date ? dayjs(date).format(format) : '';
-}
-
-function humanizeRoutePointDate(routePointDate, FORMAT_TO_DATE) {
-  return routePointDate ? dayjs(routePointDate).format(FORMAT_TO_DATE) : '';
 }
 
 function isFutureEvent(dateToCheck) {
@@ -71,5 +68,4 @@ export {
   isDatesSame,
   DATE_FORMAT,
   humanizePointDate,
-  humanizeRoutePointDate,
 };

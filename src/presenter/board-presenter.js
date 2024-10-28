@@ -1,4 +1,3 @@
-//import TripInfoView from '../view/info-view.js';
 import SortView from '../view/sort-view.js';
 import EmptyListView from '../view/empty-list-view.js';
 import ListPointView from '../view/list-point-view.js';
@@ -9,8 +8,6 @@ import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import { render, remove, RenderPosition } from '../framework/render.js';
 import { sortByPrice, sortByTime, sortByDay } from '../utils-constant/utils.js';
 import { SortType, UpdateType, UserAction, FilterType, filter, TimeLimit, NO_POINT_TEXT } from '../utils-constant/constant.js';
-//const siteMainElement = document.querySelector('.page-body');
-//const siteTripInfo = siteMainElement.querySelector('.trip-info');
 
 export default class BoardPresenter {
   #mainContainer = null;
@@ -19,7 +16,6 @@ export default class BoardPresenter {
   #filterModel = null;
   #sortComponent = null;
   #pointListComponent = new ListPointView();
-  //#infoView = new TripInfoView();
   #pointPresenters = new Map();
   #loadingComponent = null;
   #loadingErrorComponent = null;
@@ -94,6 +90,7 @@ export default class BoardPresenter {
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
     }
+    this.#newPointButton.disabled = true;
   }
 
   #handleViewAction = async (actionType, updateType, update) => {
@@ -158,10 +155,9 @@ export default class BoardPresenter {
   #renderInfo() {
     this.#tripInfoPresenter = new TripInfoPresenter({
       pointsModel: this.#pointsModel,
-      mainContainer: this.#mainContainer,
+      mainContainer: this.#mainContainer
     });
     this.#tripInfoPresenter.init();
-    //render(this.#infoView, siteTripInfo);
   }
 
   #handleSortTypeChange = (sortType) => {

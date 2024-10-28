@@ -1,15 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {humanizePointDate, DATE_FORMAT } from '../utils-constant/date-time.js';
 
-/*
-const DateFormat = {
-  DATE_FORMAT: 'MMM D',
-  TIME_FORMAT: 'HH:mm',
-  FULL_DATE_FORMAT: 'DD/MM/YY HH:mm',
-  DATE_FOR_TRIP_INFO: 'D MMM',
-};
-*/
-const createTripInfoTemplate = (destinations, dates, cost) => {
+const createTripInfoTemplate = (destinations, dates, price) => {
   const createDatesSection = () => {
     if (dates) {
       const startRoute = humanizePointDate(dates[0], DATE_FORMAT.DATE_FOR_TRIP_INFO);
@@ -31,7 +23,7 @@ const createTripInfoTemplate = (destinations, dates, cost) => {
     }
   };
 
-  const costSection = cost ? `Total: &euro;&nbsp;<span class="trip-info__cost-value">${cost}</span>` : '';
+  const priceSection = price ? `Total: &euro;&nbsp;<span class="trip-info__price-value">${price}</span>` : '';
   return (`
     <section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
@@ -40,8 +32,8 @@ const createTripInfoTemplate = (destinations, dates, cost) => {
         <p class="trip-info__dates">${createDatesSection()}</p>
       </div>
 
-      <p class="trip-info__cost">
-       ${costSection}
+      <p class="trip-info__price">
+       ${priceSection}
       </p>
     </section>`);
 };
@@ -49,16 +41,16 @@ const createTripInfoTemplate = (destinations, dates, cost) => {
 export default class TripInfoView extends AbstractView {
   #destinations = null;
   #dates = null;
-  #cost = null;
+  #price = null;
 
-  constructor({destinations, dates, cost}) {
+  constructor({destinations, dates, price}) {
     super();
     this.#destinations = destinations;
     this.#dates = dates;
-    this.#cost = cost;
+    this.#price = price;
   }
 
   get template() {
-    return createTripInfoTemplate(this.#destinations, this.#dates, this.#cost);
+    return createTripInfoTemplate(this.#destinations, this.#dates, this.#price);
   }
 }

@@ -1,9 +1,7 @@
 import { RenderPosition, remove, render } from '../framework/render.js';
 import { sortByDay } from '../utils-constant/utils.js';
-//import {MAX_COUNT_DESTINATIONS} from '../const.js';
+import {MAX_COUNT_DESTINATIONS} from '../utils-constant/constant.js';
 import TripInfoView from '../view/info-view.js';
-
-const MAX_COUNT_DESTINATIONS = 3;
 
 export default class TripInfoPresenter {
   #pointsModel = null;
@@ -13,7 +11,7 @@ export default class TripInfoPresenter {
   #mainContainer = null;
   #tripInfoComponent = null;
   #tripDates = null;
-  #cost = null;
+  #price = null;
 
   constructor({pointsModel, mainContainer}) {
     this.#pointsModel = pointsModel;
@@ -58,19 +56,19 @@ export default class TripInfoPresenter {
     return this.#tripDates;
   }
 
-  get cost() {
+  get price() {
     if (this.#sortedPoints) {
-      const costPoints = this.#sortedPoints.map((point) => {
+      const pricePoints = this.#sortedPoints.map((point) => {
         const offersPoint = this.#pointsModel.getOffersById(point.type, point.offers);
         const priceOffers = offersPoint.map((offer) => offer.price);
-        const cost = priceOffers.reduce((previousValue, currentValue) => previousValue + currentValue, point.basePrice);
-        return cost;
+        const price = priceOffers.reduce((previousValue, currentValue) => previousValue + currentValue, point.basePrice);
+        return price;
       });
-      this.#cost = costPoints.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+      this.#price = pricePoints.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
     } else if (this.#sortedPoints.length === 0) {
-      this.#cost = null;
+      this.#price = null;
     }
-    return this.#cost;
+    return this.#price;
   }
 
   init() {
@@ -80,7 +78,7 @@ export default class TripInfoPresenter {
     this.#tripInfoComponent = new TripInfoView({
       destinations: this.destinations,
       dates: this.dates,
-      cost: this.cost,
+      price: this.price,
     });
     render(this.#tripInfoComponent, this.#mainContainer, RenderPosition.AFTERBEGIN);
   }
