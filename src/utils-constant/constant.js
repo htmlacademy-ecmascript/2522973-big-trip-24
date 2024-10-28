@@ -82,6 +82,8 @@ const TimeLimit = {
   UPPER_LIMIT: 1000,
 };
 
+const MAX_COUNT_DESTINATIONS = 3;
+
 export {
   SortType,
   TYPES,
@@ -93,5 +95,6 @@ export {
   ValidationStyle,
   BLANK_POINT,
   MODE_TYPE,
-  TimeLimit
+  TimeLimit,
+  MAX_COUNT_DESTINATIONS
 };

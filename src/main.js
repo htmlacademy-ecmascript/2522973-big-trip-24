@@ -6,12 +6,11 @@ import EditPointButton from './view/new-point-button-view.js';
 import PointsApiService from './points-api-service.js';
 import { render, RenderPosition } from './framework/render.js';
 
-const AUTHORIZATION = 'Basic gir87he98qH';
+const AUTHORIZATION = 'Basic giekf8he9854e';
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
-const siteMainElement = document.querySelector('.page-body');
-const siteTripInfoElement = siteMainElement.querySelector('.trip-main');
+const siteTripInfoElement = document.querySelector('.trip-main');
 const filtersContainer = siteTripInfoElement.querySelector('.trip-controls__filters');
-const listContainer = siteMainElement.querySelector('.trip-events');
+const listContainer = document.querySelector('.trip-events');
 const filterModel = new FilterModel();
 const pointsModel = new PointsModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
@@ -22,7 +21,8 @@ const newPointButton = new EditPointButton({
 });
 
 const boardPresenter = new BoardPresenter({
-  container: listContainer,
+  mainContainer: siteTripInfoElement,
+  pointListContainer: listContainer,
   pointsModel,
   filterModel,
   newPointButton,
@@ -39,15 +39,15 @@ const filterPresenter = new FilterPresenter({
 
 function handleNewPointButtonClick() {
   boardPresenter.createPoint();
-  newPointButton.element.disabled = true;
+  newPointButton.element.disable = true;
 }
 
 function handleEditNewPointClose() {
   newPointButton.element.disabled = false;
 }
 
-filterPresenter.init();
 boardPresenter.init();
 pointsModel.init() .finally(() => {
+  filterPresenter.init();
   render(newPointButton, siteTripInfoElement, RenderPosition.BEFOREEND);
 });

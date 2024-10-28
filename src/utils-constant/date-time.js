@@ -37,6 +37,7 @@ const DATE_FORMAT = {
   TIME: 'HH:mm',
   FORM: 'DD/MM/YY HH:mm',
   DATE_FOR_TRIP_INFO: 'D MMM',
+  DATE_FORMAT: 'MMM D',
 };
 
 function humanizePointDate(date, format = DATE_FORMAT.DATE) {
@@ -66,5 +67,5 @@ export {
   isTodayEvent,
   isDatesSame,
   DATE_FORMAT,
-  humanizePointDate
+  humanizePointDate,
 };
